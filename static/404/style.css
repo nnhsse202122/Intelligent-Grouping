@@ -1,0 +1,47 @@
+:root {
+  --light-bg: #f0f0f0;
+  --light-bg-alt: #fcfcfc;
+  --light-txt: #fafafa;
+  --dark: #2e2e2e;
+  --accent: #30a2ff;
+  --light-gray: #bebebe;
+  --lighter-gray: #d3d3d3;
+  --error: #ff5166;
+  --placeholder: #a3a3a3
+}
+
+* {
+  font-family: 'Montserrat', sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  width: 100%;
+  overflow-y: hidden;
+  background: var(--light-bg);
+}
+
+h1 {
+  color: var(--accent);
+  font-size: 16em;
+  margin: 0;
+}
+
+p {
+  color: var(--dark);
+  font-size: 3em;
+  margin: 0;
+}
+
+#error-container {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
