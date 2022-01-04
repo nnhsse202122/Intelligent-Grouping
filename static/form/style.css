@@ -1,0 +1,250 @@
+:root {
+  --light-bg: #f0f0f0;
+  --light-bg-alt: #fcfcfc;
+  --light-txt: #fafafa;
+  --dark: #2e2e2e;
+  --accent: #30a2ff;
+  --light-gray: #bebebe;
+  --lighter-gray: #d3d3d3;
+  --error: #ff5166;
+  --placeholder: #a3a3a3
+}
+
+* {
+  font-family: 'Montserrat', sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  width: 100%;
+  background: var(--light-bg);
+}
+
+#spinner {
+  height: 300px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+#loading-bar-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 4px;
+  width: 100%;
+  z-index: 99;
+}
+
+#loading-bar {
+  background-color: var(--accent);
+  height: 100%;
+  width: 0%;
+  transition: 0.3s all;
+}
+
+.section {
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--light-bg);
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.3s all;
+}
+
+.section.visible {
+  visibility: unset;
+  opacity: 1;
+  transition: visibility 0s 0s, opacity 0.3s 0s;
+}
+
+#form-sec {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#form-container {
+  width: 640px;
+  min-height: 100vh;
+  padding-top: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#banner {
+  background-color: var(--accent) !important;
+  color: var(--light-bg-alt) !important;
+  text-align: center;
+  display: block !important;
+}
+
+#class-title {
+  font-size: 2em !important;
+  font-weight: 500;
+  margin-bottom: 16px !important;
+}
+
+#period-title {
+  font-size: 1.7em !important;
+  font-weight: 500;
+  margin: 0;
+  margin-bottom: 25px !important;
+}
+
+#desc {
+  font-size: 1.5em !important;
+  margin: 0;
+  margin-bottom: 24px !important;
+}
+
+#banner > label > input {
+  border-color: var(--light-bg-alt);
+  background-color: var(--accent);
+  color: var(--light-bg-alt);
+}
+
+#banner > label > span {
+  background-color: var(--accent);
+  color: var(--light-bg);
+}
+
+#form-container > div {
+  padding: 40px;
+  background-color: var(--light-bg-alt);
+  color: var(--dark);
+  border-radius: 16px;
+  margin-bottom: 20px;
+  border: 3px solid var(--accent);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+}
+
+#form-container > div > h1 {
+  margin: 0;
+  margin-bottom: 20px;
+  font-size: 1.7em;
+}
+
+.input {
+  background-color: var(--light-bg-alt);
+  border: var(--dark) 2px solid;
+  color: var(--dark);
+  cursor: pointer;
+  text-align: left;
+  border-radius: 8px;
+  font-size: 1.5em;
+  padding: 8px 12px;
+  transition: 0.3s all;
+  outline: none;
+}
+
+.input:focus {
+  border: var(--accent) 2px solid;
+}
+
+label {
+  position: relative
+}
+
+label > span {
+  position: absolute;
+  padding: 0 5px;
+  left: 12px;
+  background-color: var(--light-bg-alt);
+  top: -8px;
+  border-radius: 20px;
+  font-size: 1.5em;
+  transition: 0.2s all;
+  pointer-events: none;
+  color: var(--placeholder);
+}
+
+.input:focus + span, .input:valid + span {
+  transform: scale(0.75) translate(-9px, -32px);
+  color: var(--dark);
+}
+
+.form-select {
+  font-size: 1.3em;
+  padding: 4px 8px;
+  border: 2px solid var(--accent);
+  border-radius: 8px;
+  width: 100%;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.form-select:valid {
+  font-weight: normal !important;
+}
+
+.form-select > option:disabled {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.button {
+  background-color: transparent;
+  border: var(--accent) 3px solid;
+  color: var(--dark);
+  cursor: pointer;
+  text-align: center;
+  border-radius: 8px;
+  font-size: 1.3em;
+  padding: 5px 0px;
+  outline: none;
+}
+
+#submit {
+  background-color: var(--accent);
+  color: var(--light-bg-alt);
+  padding: 12px 32px;
+  margin-bottom: 40px;
+  font-size: 1.5em;
+}
+
+.error {
+  background-color: var(--error);
+  position: fixed;
+  top: 0px;
+  left: 50%;
+  border-radius: 8px;
+  color: white;
+  margin: 0;
+  font-size: 1.4em;
+  padding: 6px 12px;
+  text-align: center;
+  transition: 0.6s cubic-bezier(.76,-0.47,.24,1.47);
+  z-index: 100;
+  transform: translate(-50%, -100%);
+  max-width: 100%;
+}
+
+.invalid {
+  border-color: var(--error) !important;
+}
+
+#complete-sec {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#thanks {
+  font-size: 4rem;
+}
