@@ -139,3 +139,11 @@ sudo pm2 --name intelligentgrouping start index.js
 ```
 
 21. Restart the node server: `sudo pm2 restart index`
+
+## Detailed File Descriptions:
+
+### -HTML
+
+### -JS
+
+### -CSS
