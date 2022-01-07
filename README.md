@@ -150,15 +150,15 @@ sudo pm2 --name intelligentgrouping start index.js
 
 ## Dependencies:
 
-* body-parser
+* .[body-parser].(https://www.npmjs.com/package/body-parser)
 	* .
-* dotenv
+* .[dotenv].(https://www.npmjs.com/package/dotenv)
 	* .
-* express
+* .[express].(https://www.npmjs.com/package/express)
 	* .
-* google-auth-library
+* .[google-auth-library].(https://www.npmjs.com/package/google-auth-library)
 	* .
-* mongodb
+* .[mongodb].(https://www.npmjs.com/package/mongodb)
 	* .
-* mongoose
+* .[mongoose].(https://www.npmjs.com/package/mongoose) - (.[extra documentation].(https://mongoosejs.com/))
 	* .
