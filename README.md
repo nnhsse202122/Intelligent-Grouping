@@ -147,3 +147,18 @@ sudo pm2 --name intelligentgrouping start index.js
 ### -JS
 
 ### -CSS
+
+## Dependencies:
+
+* body-parser
+	* .
+* dotenv
+	* .
+* express
+	* .
+* google-auth-library
+	* .
+* mongodb
+	* .
+* mongoose
+	* .
