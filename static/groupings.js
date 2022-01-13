@@ -431,7 +431,9 @@ function addGroupingToList(grouping) {
   const groupingName = document.createElement("p")
   groupingName.innerText = `${grouping.name} (${grouping.groups.length})`
   const exportZoom = document.createElement("i")
-  exportZoom.classList = "fa fa-video fa-2x"
+  exportZoom.classList = "fas fa-file-export fa-2x"
+  const copyGroup = document.createElement("i")
+  copyGroup.classList = "fas fa-copy fa-2x"
   const deleteGroup = document.createElement("i")
   deleteGroup.classList = "fa fa-times fa-2x"
 
@@ -454,6 +456,12 @@ function addGroupingToList(grouping) {
     endLoad()
   })
 
+  copyGroup.addEventListener("click", async (e) => {
+    e.stopPropagation()
+    addGroup().groupingName.innerText = `Copy of ${grouping.name} (${grouping.groups.length})`
+
+  })
+
   let csvText = "Pre-assign Room Name,Email Address\n"
   for (let i = 0; i < grouping.groups.length; i++) {
     for (const stu of grouping.groups[i]) {
@@ -468,6 +476,7 @@ function addGroupingToList(grouping) {
 
   groupingContainer.appendChild(groupingName)
   groupingContainer.appendChild(exportZoom)
+  groupingContainer.appendChild(copyGroup)
   groupingContainer.appendChild(deleteGroup)
   groupingsList.appendChild(groupingContainer)
 } 
