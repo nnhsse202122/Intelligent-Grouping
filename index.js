@@ -10,10 +10,11 @@ const fs = require("fs")
 const md5 = require("./md5.js")
 
 // Constants \\
-const DBName = "data"
 
 // Database \\
-mongoose.connect(`mongodb+srv://GroupingApp:${process.env.DBPASS}@groupingapp.iz1de.mongodb.net/${DBName}?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true})
+const connectionStr = `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@${process.env.DBID}.mongodb.net/${process.env.DBNAME}?retryWrites=true&w=majority`;
+console.log(connectionStr);
+mongoose.connect(connectionStr, {useNewUrlParser: true, useUnifiedTopology: true})
 const db = mongoose.connection
 
 db.on('error', console.error.bind(console, 'Connection Error:'))
