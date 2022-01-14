@@ -472,6 +472,16 @@ function addGroupingToList(grouping) {
   groupingsList.appendChild(groupingContainer)
 } 
 
+function showViewGroupsModal(){
+  createModal("fit", (modal,exit) => {
+    modal.classList.add("view-groups-modal");
+    const title = document.createElement('h1');
+    title.classList = "medium";
+    title.innerText = "<CURRENT GROUPING NAME GOES HERE>";
+  
+  })
+}
+
 
 createGroupBtn.addEventListener("click", () => {editGrouping()})
 
@@ -484,6 +494,8 @@ saveGroupBtn.addEventListener("click", async () => {
 })
 
 arrangeStudentsBtn.addEventListener("click", showArrangeStudentsModal)
+
+viewGroupsBtn.addEventListener("click", showViewGroupsModal)
 
 addGroupBtn.addEventListener("click", addGroup)
 
