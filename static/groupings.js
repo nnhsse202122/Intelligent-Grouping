@@ -458,7 +458,11 @@ function addGroupingToList(grouping) {
 
   copyGroup.addEventListener("click", async (e) => {
     e.stopPropagation()
-    addGroup().groupingName.innerText = `Copy of ${grouping.name} (${grouping.groups.length})`
+    constructGroupingFromUI()
+    saveNewGrouping(grouping, state.info.id)
+    //saveNewGrouping(grouping, state.info.id)
+    //editGrouping()
+    //addGroupingToList(addGroup().groupingName.innerText = `Copy of ${grouping.name} (${grouping.groups.length})`)
 
   })
 
