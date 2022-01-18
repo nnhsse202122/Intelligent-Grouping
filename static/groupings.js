@@ -43,6 +43,22 @@ async function completeGroupAdd() {
   endLoad()
 }
 
+async function getGroupingInfo(grouping) {
+  const newName = "Copy of " + grouping.name
+  // Need to find a way to count other groups with same name, leads to while loop that appends either a (1), (2), (3), or etc until it can be made.
+  try {
+    return {
+      id: md5(newName),
+      name: newName,
+      groups: grouping.groups,
+      excluded: grouping.excluded
+    }
+  } catch {
+    Console.WriteLine("Failure")
+  }
+}
+
+
 
 function saveEditedGrouping(grouping, oldId, id) {
   return fetch("/editGrouping", {
@@ -458,11 +474,18 @@ function addGroupingToList(grouping) {
 
   copyGroup.addEventListener("click", async (e) => {
     e.stopPropagation()
-    constructGroupingFromUI()
-    saveNewGrouping(grouping, state.info.id)
-    //saveNewGrouping(grouping, state.info.id)
-    //editGrouping()
-    //addGroupingToList(addGroup().groupingName.innerText = `Copy of ${grouping.name} (${grouping.groups.length})`)
+    const copyGrouping = getGroupingInfo(grouping)
+    const saveResult = await saveNewGrouping(copyGrouping, state.info.id)
+    if(saveResult.status) {
+      classes[state.info.id].obj.groupings.push(copyGrouping)
+      showClass(state.info.id)
+      setState(4, {id: state.info.id})
+      // Steal from completeGroupAdd
+      //addGroupingToList(copyGrouping)
+      //Might not need this method here ^
+      //In completeGroupAdd(), has this line "obj.groupings.push(grouping", might be useful.
+    }
+    addGroupingToList(copyGrouping)
 
   })
 
