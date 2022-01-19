@@ -479,7 +479,6 @@ function addGroupingToList(grouping) {
       classes[state.info.id].obj.groupings.push(copyGrouping)
       showClass(state.info.id)
       setState(4, {id: state.info.id})
-      //addGroupingToList(copyGrouping)
     }
     
 
