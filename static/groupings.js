@@ -43,15 +43,15 @@ async function completeGroupAdd() {
   endLoad()
 }
 
-async function getGroupingInfo(grouping) {
+function getGroupingInfo(grouping) {
   const newName = "Copy of " + grouping.name
   // Need to find a way to count other groups with same name, leads to while loop that appends either a (1), (2), (3), or etc until it can be made.
   try {
     return {
       id: md5(newName),
       name: newName,
-      groups: grouping.groups,
-      excluded: grouping.excluded
+      groups: Array.from(grouping.groups),
+      excluded: Array.from(grouping.excluded)
     }
   } catch {
     Console.WriteLine("Failure")
@@ -101,7 +101,6 @@ function editGrouping(grouping) {
     clearDiv(ungroupedStudentsListDiv)
     clearDiv(excludedStudentsListDiv)
     clearDiv(groupScatter)
-    console.log(state.info.id)
     for (const student of classes[state.info.id].obj.students) {
       const studentContainer = document.createElement("div")
       studentContainer.classList = "student-name-container"
@@ -480,12 +479,9 @@ function addGroupingToList(grouping) {
       classes[state.info.id].obj.groupings.push(copyGrouping)
       showClass(state.info.id)
       setState(4, {id: state.info.id})
-      // Steal from completeGroupAdd
       //addGroupingToList(copyGrouping)
-      //Might not need this method here ^
-      //In completeGroupAdd(), has this line "obj.groupings.push(grouping", might be useful.
     }
-    addGroupingToList(copyGrouping)
+    
 
   })
 
