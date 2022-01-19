@@ -1,3 +1,11 @@
+/*
+* Grouping class variables:
+* id: md5(groupNameInput.value),
+* name: groupNameInput.value,
+* groups: Array.from(groupScatter.children).filter(e => e.id != "add-group").map(e => Array.from(e.children[2].children).map(s => s.id)),
+* excluded: Array.from(excludedStudentsListDiv.children).map(e => e.id)
+*/
+
 function deleteGroupFromDB(id, groupingId) {
   return fetch("/deleteGroup", {
     method: "POST",
@@ -86,6 +94,7 @@ function editGrouping(grouping) {
     clearDiv(excludedStudentsListDiv)
     clearDiv(groupScatter)
     console.log(state.info.id)
+    viewGroupsBtn.addEventListener('click', () => {showViewGroupsModal(grouping)})
     for (const student of classes[state.info.id].obj.students) {
       const studentContainer = document.createElement("div")
       studentContainer.classList = "student-name-container"
@@ -472,12 +481,15 @@ function addGroupingToList(grouping) {
   groupingsList.appendChild(groupingContainer)
 } 
 
-function showViewGroupsModal(){
+function showViewGroupsModal(grouping){
   createModal("fit", (modal,exit) => {
     modal.classList.add("view-groups-modal");
     const title = document.createElement('h1');
     title.classList = "medium";
-    title.innerText = "<CURRENT GROUPING NAME GOES HERE>";
+    title.innerText = grouping.name;
+    const exitView = document.createElement('i');
+    exitView.classList.add("fa fa-times close-view");
+
   
   })
 }
@@ -495,7 +507,6 @@ saveGroupBtn.addEventListener("click", async () => {
 
 arrangeStudentsBtn.addEventListener("click", showArrangeStudentsModal)
 
-viewGroupsBtn.addEventListener("click", showViewGroupsModal)
 
 addGroupBtn.addEventListener("click", addGroup)
 
