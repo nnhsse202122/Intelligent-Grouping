@@ -44,7 +44,18 @@ async function completeGroupAdd() {
 }
 
 function getGroupingInfo(grouping) {
-  const newName = "Copy of " + grouping.name
+  const duplicationNum = 1
+
+  //(Object.values(classes).map(c => c.obj.groupings).flat().map(grouping => grouping.name).includes(groupNameInput.value))
+  
+  for(const group in classes[state.info.id].obj.groupings) {
+    console.log(group)
+    if(group.name.substring(4) === grouping.name || group.name.substring(4) === grouping.name.substring(4))
+    {
+      duplicationNum++
+    }
+  }
+  const newName = `[${duplicationNum}] ${grouping.name}`
   // Need to find a way to count other groups with same name, leads to while loop that appends either a (1), (2), (3), or etc until it can be made.
   try {
     return {
