@@ -94,7 +94,7 @@ function editGrouping(grouping) {
     clearDiv(excludedStudentsListDiv)
     clearDiv(groupScatter)
     console.log(state.info.id)
-    viewGroupsBtn.addEventListener('click', () => {showViewGroupsModal(grouping)})
+    viewGroupsBtn.addEventListener('click', showViewGroupsModal)
     for (const student of classes[state.info.id].obj.students) {
       const studentContainer = document.createElement("div")
       studentContainer.classList = "student-name-container"
@@ -117,7 +117,7 @@ function editGrouping(grouping) {
     setGroups(grouping.groups)
     groupNameInput.value = grouping.name
     switchSection(editGroupSection)
-    setState(6, {id: state.info.id, groupingId: grouping.id})
+    setState(6, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
   } else {
     statusTitle.innerText = "Create Grouping"
     groupNameInput.value = ""
@@ -138,7 +138,7 @@ function editGrouping(grouping) {
     }
     groupNameInput.classList.remove("invalid")
     switchSection(editGroupSection)
-    setState(5, {id: state.info.id})
+    setState(5, {id: state.info.id, currentGroup:null})
   }
 }
 
@@ -481,15 +481,16 @@ function addGroupingToList(grouping) {
   groupingsList.appendChild(groupingContainer)
 } 
 
-function showViewGroupsModal(grouping){
+function showViewGroupsModal(){
+  currentGroup = state.info.currentGroup;
   createModal("fit", (modal,exit) => {
     modal.classList.add("view-groups-modal");
     const title = document.createElement('h1');
     title.classList = "medium";
     title.innerText = grouping.name;
-    const exitView = document.createElement('i');
-    exitView.classList.add("fa fa-times close-view");
 
+    modal.appendChild(title);
+    
   
   })
 }
