@@ -22,6 +22,11 @@ startLoad()
 function setState(mode, info={}) {
   state.mode = mode
   state.info = info
+  console.log(`STATE CHANGE TO ${mode}, INFO:${info}`)
+  for(const prop in info){
+    console.log(prop)
+    
+  }
 }
 
 function resetApp() {
