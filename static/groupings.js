@@ -43,6 +43,21 @@ async function completeGroupAdd() {
   endLoad()
 }
 
+function getGroupingInfo(grouping) {
+  try {
+    newName = `Copy of ${grouping.name}`
+    return {
+      id: md5(newName),
+      name: newName,
+      groups: Array.from(grouping.groups),
+      excluded: Array.from(grouping.excluded)
+    }
+  } catch {
+    Console.WriteLine("Failure")
+  }
+}
+
+
 
 function saveEditedGrouping(grouping, oldId, id) {
   return fetch("/editGrouping", {
@@ -85,7 +100,6 @@ function editGrouping(grouping) {
     clearDiv(ungroupedStudentsListDiv)
     clearDiv(excludedStudentsListDiv)
     clearDiv(groupScatter)
-    console.log(state.info.id)
     for (const student of classes[state.info.id].obj.students) {
       const studentContainer = document.createElement("div")
       studentContainer.classList = "student-name-container"
@@ -430,7 +444,9 @@ function addGroupingToList(grouping) {
   const groupingName = document.createElement("p")
   groupingName.innerText = `${grouping.name} (${grouping.groups.length})`
   const exportZoom = document.createElement("i")
-  exportZoom.classList = "fa fa-video fa-2x"
+  exportZoom.classList = "fas fa-file-export fa-2x"
+  const copyGroup = document.createElement("i")
+  copyGroup.classList = "fas fa-copy fa-2x"
   const deleteGroup = document.createElement("i")
   deleteGroup.classList = "fa fa-times fa-2x"
 
@@ -453,6 +469,19 @@ function addGroupingToList(grouping) {
     endLoad()
   })
 
+  copyGroup.addEventListener("click", async (e) => {
+    e.stopPropagation()
+    const copyGrouping = getGroupingInfo(grouping)
+    const saveResult = await saveNewGrouping(copyGrouping, state.info.id)
+    if(saveResult.status) {
+      classes[state.info.id].obj.groupings.push(copyGrouping)
+      showClass(state.info.id)
+      setState(4, {id: state.info.id})
+    }
+    
+
+  })
+
   let csvText = "Pre-assign Room Name,Email Address\n"
   for (let i = 0; i < grouping.groups.length; i++) {
     for (const stu of grouping.groups[i]) {
@@ -467,6 +496,7 @@ function addGroupingToList(grouping) {
 
   groupingContainer.appendChild(groupingName)
   groupingContainer.appendChild(exportZoom)
+  groupingContainer.appendChild(copyGroup)
   groupingContainer.appendChild(deleteGroup)
   groupingsList.appendChild(groupingContainer)
 } 
