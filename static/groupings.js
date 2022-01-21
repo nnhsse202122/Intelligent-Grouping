@@ -77,7 +77,7 @@ function saveEditedGrouping(grouping, oldId, id) {
 async function completeGroupEdit() {
   startLoad()
   const validateResult = validateGroups()
-  if (validateResult.valid || ValidateResult.error == "Duplicate Grouping Name") {
+  if (validateResult.valid /*|| ValidateResult.error == "Duplicate Grouping Name"*/) {
     const grouping = constructGroupingFromUI()
     const saveResult = await saveEditedGrouping(grouping, state.info.groupingId, state.info.id)
     if (saveResult.status) {
