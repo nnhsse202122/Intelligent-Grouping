@@ -62,7 +62,7 @@ function saveEditedGrouping(grouping, oldId, id) {
 async function completeGroupEdit() {
   startLoad()
   const validateResult = validateGroups()
-  if (validateResult.valid) {
+  if (validateResult.valid || ValidateResult.error == "Duplicate Grouping Name") {
     const grouping = constructGroupingFromUI()
     const saveResult = await saveEditedGrouping(grouping, state.info.groupingId, state.info.id)
     if (saveResult.status) {
@@ -351,15 +351,14 @@ function validateGroups() {
     return {valid: false, error: "Please fill out all fields"}
   }
 
-  if (Object.values(classes).map(c => c.obj.groupings).flat().map(grouping => grouping.name).includes(groupNameInput.value)) {
-    groupNameInput.classList.add("invalid")
-    return {valid: false, error: "Duplicate Grouping Name"}
-  }
-
   if (Array.from(groupScatter.children).length == 1) {
     return {valid: false, error: "Please add at least one group"}
   }
 
+  if (Object.values(classes).map(c => c.obj.groupings).flat().map(grouping => grouping.name).includes(groupNameInput.value)) {
+    groupNameInput.classList.add("invalid")
+    return {valid: false, error: "Duplicate Grouping Name"}
+  }
   return {valid: true}
 }
 
