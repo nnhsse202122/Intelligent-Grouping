@@ -30,7 +30,7 @@ const ungroupedStudentsListDiv = document.getElementById("ungrouped-students-lis
 const excludedStudentsListDiv = document.getElementById("excluded-students-list")
 const groupScatter = document.getElementById("group-scatter")
 const saveGroupBtn = document.getElementById("save-group")
-const viewGroupsBtn = document.getElementById("view-groups")
+
 const addGroupBtn = document.getElementById("add-group")
 const groupNameInput = document.getElementById("group-name-input")
 const groupingsList = document.getElementById("groupings-list")
