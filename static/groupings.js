@@ -94,7 +94,6 @@ function editGrouping(grouping) {
     clearDiv(excludedStudentsListDiv)
     clearDiv(groupScatter)
     console.log(state.info.id)
-    viewGroupsBtn.addEventListener('click', showViewGroupsModal)
     for (const student of classes[state.info.id].obj.students) {
       const studentContainer = document.createElement("div")
       studentContainer.classList = "student-name-container"
@@ -437,12 +436,33 @@ function addGroupingToList(grouping) {
   const groupingContainer = document.createElement("div")
   groupingContainer.classList.add("grouping-container")
   groupingContainer.id = grouping.id
+
   const groupingName = document.createElement("p")
   groupingName.innerText = `${grouping.name} (${grouping.groups.length})`
-  const exportZoom = document.createElement("i")
-  exportZoom.classList = "fa fa-video fa-2x"
-  const deleteGroup = document.createElement("i")
-  deleteGroup.classList = "fa fa-times fa-2x"
+
+  const optionsDropdownContainer = document.createElement("div") //holds additional options ie.(copy, save, view in modal)
+  optionsDropdownContainer.classList.add("grouping-options-container")
+  const dropdownBtn = document.createElement("button")
+  dropdownBtn.classList.add("dropdown-button")
+  const dropdownContent = document.createElement("div")
+  dropdownContent.classList.add("dropdown-content")
+  //options
+  const exportCSV = document.createElement("p")
+
+  const duplicateGroup = document.createElement("p")
+
+  const viewGroup = document.createElement("p")
+
+  const deleteGroup = document.createElement("p")
+
+  
+
+  //const exportZoom = document.createElement("i")
+  //exportZoom.classList = "fa fa-video fa-2x"
+
+  //const deleteGroup = document.createElement("i")
+  //deleteGroup.classList = "fa fa-times fa-2x"
+
 
   groupingContainer.addEventListener("click", () => {
     editGrouping(grouping)
@@ -476,24 +496,11 @@ function addGroupingToList(grouping) {
   })
 
   groupingContainer.appendChild(groupingName)
-  groupingContainer.appendChild(exportZoom)
-  groupingContainer.appendChild(deleteGroup)
+  groupingContainer.appendChild(optionsDropdownContainer)
+  //optionsDropdownContainer.appendChild()
+  
   groupingsList.appendChild(groupingContainer)
 } 
-
-function showViewGroupsModal(){
-  currentGroup = state.info.currentGroup;
-  createModal("fit", (modal,exit) => {
-    modal.classList.add("view-groups-modal");
-    const title = document.createElement('h1');
-    title.classList = "medium";
-    title.innerText = grouping.name;
-
-    modal.appendChild(title);
-    
-  
-  })
-}
 
 
 createGroupBtn.addEventListener("click", () => {editGrouping()})

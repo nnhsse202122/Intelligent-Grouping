@@ -705,7 +705,7 @@ h1 {
   grid-area: 1 / 1 / 2 / 2;
 }
 
-#arrange-students, #save-group, #view-groups {
+#arrange-students, #save-group {
   width: 90%;
 }
 
@@ -740,7 +740,7 @@ h1 {
 
 #group-sidebar {
   display: grid;
-  grid-template-rows: 200px auto 200px;
+  grid-template-rows: 175px auto 200px;
   grid-area: 1 / 2 / 2 / 3;
 }
 
