@@ -29,6 +29,7 @@ function saveNewGrouping(grouping, id) {
 async function completeGroupAdd() {
   startLoad()
   const validateResult = validateGroups()
+  
   if (validateResult.valid) {
     const grouping = constructGroupingFromUI()
     const saveResult = await saveNewGrouping(grouping, state.info.id)
@@ -77,9 +78,13 @@ function saveEditedGrouping(grouping, oldId, id) {
 async function completeGroupEdit() {
   startLoad()
   const validateResult = validateGroups()
-  if (validateResult.valid /*|| ValidateResult.error == "Duplicate Grouping Name"*/) {
+  //print groupname value for bugs
+  if (validateResult.valid || groupNameInput.value == initalGroupname.value) {
+    console.log("test1")
     const grouping = constructGroupingFromUI()
+    console.log("test2")
     const saveResult = await saveEditedGrouping(grouping, state.info.groupingId, state.info.id)
+    console.log("test3")
     if (saveResult.status) {
       addGroupingToList(grouping)
       classes[state.info.id].obj.groupings = classes[state.info.id].obj.groupings.filter(grouping => grouping.id != state.info.groupingId)
@@ -92,6 +97,8 @@ async function completeGroupEdit() {
   }
   endLoad()
 }
+
+
 
 function editGrouping(grouping) {
   if (grouping) {
@@ -121,6 +128,7 @@ function editGrouping(grouping) {
     }
     setGroups(grouping.groups)
     groupNameInput.value = grouping.name
+    initalGroupname.value = grouping.name
     switchSection(editGroupSection)
     setState(6, {id: state.info.id, groupingId: grouping.id})
   } else {
@@ -172,7 +180,6 @@ function showArrangeStudentsModal() {
     const optionsDiv = document.createElement("div")
     const random = document.createElement("button")
     random.classList = "button"
-    random.innerText = "Random"
     random.addEventListener("click", () => {
       exit()
       createModal("tall", (m, e) => {

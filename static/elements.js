@@ -31,6 +31,7 @@ const groupScatter = document.getElementById("group-scatter")
 const saveGroupBtn = document.getElementById("save-group")
 const addGroupBtn = document.getElementById("add-group")
 const groupNameInput = document.getElementById("group-name-input")
+const initalGroupname = ""
 const groupingsList = document.getElementById("groupings-list")
 const addPreference = document.getElementById("add-preference")
 const preferencesList = document.getElementById("preferences-list")
