@@ -442,18 +442,29 @@ function addGroupingToList(grouping) {
 
   const optionsDropdownContainer = document.createElement("div") //holds additional options ie.(copy, save, view in modal)
   optionsDropdownContainer.classList.add("grouping-options-container")
-  const dropdownBtn = document.createElement("button")
-  dropdownBtn.classList.add("dropdown-button")
+  const dropdownIcon = document.createElement("i")
+  dropdownIcon.id = "dropdown-icon"
+  dropdownIcon.classList = "fas fa-ellipsis-v"
+  
   const dropdownContent = document.createElement("div")
   dropdownContent.classList.add("dropdown-content")
   //options
-  const exportCSV = document.createElement("p")
+  const exportZoom = document.createElement("p")
+  exportZoom.innerText = "Export as .csv"
+  exportZoom.classList.add("dropdown-text")
 
   const duplicateGroup = document.createElement("p")
+  duplicateGroup.innerText = "Duplicate"
+  duplicateGroup.classList.add("dropdown-text")
 
   const viewGroup = document.createElement("p")
+  viewGroup.innerText = "Present"
+  viewGroup.classList.add("dropdown-text")
+ 
 
   const deleteGroup = document.createElement("p")
+  deleteGroup.innerText = "Delete"
+  deleteGroup.classList.add("dropdown-text")
 
   
 
@@ -497,7 +508,12 @@ function addGroupingToList(grouping) {
 
   groupingContainer.appendChild(groupingName)
   groupingContainer.appendChild(optionsDropdownContainer)
-  //optionsDropdownContainer.appendChild()
+  groupingContainer.appendChild(dropdownIcon)
+  optionsDropdownContainer.appendChild(exportZoom)
+  optionsDropdownContainer.appendChild(duplicateGroup)
+  optionsDropdownContainer.appendChild(viewGroup)
+  optionsDropdownContainer.appendChild(deleteGroup)
+  
   
   groupingsList.appendChild(groupingContainer)
 } 
