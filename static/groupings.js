@@ -450,7 +450,7 @@ function addGroupingToList(grouping) {
   dropdownContent.classList.add("dropdown-content")
   //options
   const exportZoom = document.createElement("p")
-  exportZoom.innerText = "Export as .csv"
+  exportZoom.innerText = "Export .csv"
   exportZoom.classList.add("dropdown-text")
 
   const duplicateGroup = document.createElement("p")
@@ -458,7 +458,7 @@ function addGroupingToList(grouping) {
   duplicateGroup.classList.add("dropdown-text")
 
   const viewGroup = document.createElement("p")
-  viewGroup.innerText = "Present"
+  viewGroup.innerText = "Present Groups"
   viewGroup.classList.add("dropdown-text")
  
 
@@ -508,11 +508,12 @@ function addGroupingToList(grouping) {
 
   groupingContainer.appendChild(groupingName)
   groupingContainer.appendChild(optionsDropdownContainer)
-  groupingContainer.appendChild(dropdownIcon)
-  optionsDropdownContainer.appendChild(exportZoom)
-  optionsDropdownContainer.appendChild(duplicateGroup)
-  optionsDropdownContainer.appendChild(viewGroup)
-  optionsDropdownContainer.appendChild(deleteGroup)
+  optionsDropdownContainer.appendChild(dropdownIcon)
+  optionsDropdownContainer.appendChild(dropdownContent)
+  dropdownContent.appendChild(exportZoom)
+  dropdownContent.appendChild(duplicateGroup)
+  dropdownContent.appendChild(viewGroup)
+  dropdownContent.appendChild(deleteGroup)
   
   
   groupingsList.appendChild(groupingContainer)
