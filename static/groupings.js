@@ -78,13 +78,10 @@ function saveEditedGrouping(grouping, oldId, id) {
 async function completeGroupEdit() {
   startLoad()
   const validateResult = validateGroups()
-  //print groupname value for bugs
-  if (validateResult.valid || groupNameInput.value == initalGroupname.value) {
-    console.log("test1")
+  if (validateResult.valid || validateResult.error === "Duplicate Grouping Name" && groupNameInput.value === initialName) {
+    groupNameInput.classList.remove("invalid")
     const grouping = constructGroupingFromUI()
-    console.log("test2")
     const saveResult = await saveEditedGrouping(grouping, state.info.groupingId, state.info.id)
-    console.log("test3")
     if (saveResult.status) {
       addGroupingToList(grouping)
       classes[state.info.id].obj.groupings = classes[state.info.id].obj.groupings.filter(grouping => grouping.id != state.info.groupingId)
@@ -99,7 +96,7 @@ async function completeGroupEdit() {
 }
 
 
-
+var initialName = "" // Initial Value of the group name when edited.
 function editGrouping(grouping) {
   if (grouping) {
     statusTitle.innerText = "Edit Group"
@@ -128,7 +125,7 @@ function editGrouping(grouping) {
     }
     setGroups(grouping.groups)
     groupNameInput.value = grouping.name
-    initalGroupname.value = grouping.name
+    initialName = grouping.name
     switchSection(editGroupSection)
     setState(6, {id: state.info.id, groupingId: grouping.id})
   } else {
