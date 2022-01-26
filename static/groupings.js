@@ -461,19 +461,23 @@ function addGroupingToList(grouping) {
   viewGroup.innerText = "Present Groups"
   viewGroup.classList.add("dropdown-text")
  
-
   const deleteGroup = document.createElement("p")
-  deleteGroup.innerText = "Delete"
+  deleteGroup.innerText = "Delete Group"
   deleteGroup.classList.add("dropdown-text")
 
-  
-
-  //const exportZoom = document.createElement("i")
-  //exportZoom.classList = "fa fa-video fa-2x"
-
-  //const deleteGroup = document.createElement("i")
-  //deleteGroup.classList = "fa fa-times fa-2x"
-
+  //method to open dropdown
+  dropdownIcon.addEventListener("click", async (e) => {
+    e.stopPropagation()
+    const dropdownState = getComputedStyle(dropdownContent).display
+    console.log(dropdownState)
+    if(dropdownState == "none"){
+      console.log("set to block")
+    }
+    else{
+      dropdownContent.style = "none"
+      console.log('set to none')
+    }
+  })
 
   groupingContainer.addEventListener("click", () => {
     editGrouping(grouping)
