@@ -44,9 +44,27 @@ async function completeGroupAdd() {
   endLoad()
 }
 
-function getGroupingInfo(grouping) {
+function getGroupingInfo(givenGroup) {
   try {
-    newName = `Copy of ${grouping.name}`
+    classes[state.info.id].obj.groupings
+    const value = 1
+    const newName = "3da"
+    console.log("t0")
+    /*do {
+      console.log("t1")
+      console.log(value)
+      console.log(givenGroup)
+      //newName = `(${value})${givenGroup}`
+      value++
+      console.log("t2")
+    } while(Object.values(classes).map(c => c.obj.groupings).flat().map(grouping => grouping.name).includes(newName))
+    console.log("t3")*/
+
+    for(let classElement of classes)
+    {
+      console.log(classElement);
+    }
+
     return {
       id: md5(newName),
       name: newName,
@@ -54,7 +72,7 @@ function getGroupingInfo(grouping) {
       excluded: Array.from(grouping.excluded)
     }
   } catch {
-    Console.WriteLine("Failure")
+    console.log("Failure")
   }
 }
 
