@@ -50,62 +50,90 @@
       
       <div id="tutorial-sec" class = "section">
         <div id="tutorial-panel" class = "panel">
-          <h1 id="tut-panel-header" class="medium">How to use the app</h1>
-          <h2> Adding Classes </h2>
-          <ul>
-          <li>After the website finishes loading, simply press the &quot;Sign in with Google&quot; button and sign in using whatever email you wish, keeping in mind that that email is your account for this website.</li>
-          <li>Currently only naperville203.org organization emails are permitted</li>
-          <li>To add classes, simply click the &quot;Add Class&quot; button in the bottom left of the screen.</li>
-          <li>For manual entry, click the manual entry button in the popup and input your students one by one. Afterward, click &quot;save&quot; to save the completed manual class.</li>
-          <li>For automatic fill in with a .CSV file, click &quot;Import Class Roster&quot; on the popup and select the desired CSV file from Infinite Campus to add your classes. This works with CSV files exported form infinite campus.<br /></li>
-          <li>To edit classes, select a class from the sidebar and then click the pencil icon, and the manual entry form will pop up, allowing you to change values.</li>
-          <li>To delete classes, select a class from the sidebar and then click the trash can icon.</li></ul>
-
-          <h2>Instructions for making basic random groups</h2>
-          <ul>
-          <li>Click the desired class in the sidebar.</li>
-          <li>In the panel, select &quot;Create grouping&quot;
-            <ul>
-            <li>In case somebody is absent or otherwise not supposed to be put into a group, like for example if they are a teacher's assistant, click their name on the right sidebar, and then click the red outlined section of that sidebar. This will place them within the exclusion category and exclude them from groupings. Doing the reverse will reverse this exclusion.</li>
-            </ul></li>
-          <li>Click the large plus button in the main canvas to add a grouping.</li>
-          <li>Click the &quot;Arrange Students&quot; button.</li>
-          <li>Select &quot;Random Grouping&quot;.</li>
-          <li>Input the desired parameters (amount of groups made or people per group).</li>
-          <li>Click "Submit"</li>
-          </ul>
-
-          <h2>How to set up preferences and sending out forms</h2>
-          <ul>
-            <li>Click on the desired class in the sidebar.</li>
-            <li>On the rightmost panel, click "Add Choice."</li>
-            <ul>
-                <li>For each choice setting you add, there will be more items added to the automatically generated forms that you can send to your students.</li>
-            </ul>
-            <li>Select a choice of grouping type.</li>
-            <ul>
-                <li>Preferred students allows students to choose who they wish to be paired up with</li>
-                <li>Unpreferred students allows students to choose who they think they cannot work well with easily</li>
-                <li>Preferred topic is applicable when each group will be covering a different topic, and allows them to choose what they would rather learn/talk about.</li>
-                <li>Unpreferred topic is the same as preferred topic but for topics they do not want to learn about.</li>
-            </ul>
-            <li>Input a description for the context for which these preferences are being asked for (in case of people wanting to work with others in certain contexts, or different events requiring different sets of topics), followed by the number of choices the student can make (ranking people).</li>
-            <ul>
-              <li>For topic preferences, there are additional steps in the form of adding the name of the topics in question. To set up choices for topics, type in the names for each followed by a new line.</li>
-            </ul>
-            
-            <li>After entering all necessary information, click "add choice" and a new option should pop up on the preferences panel on the class screen.</li>
-            <li>If necessary, pressing the x button can remove a preference choice.</li>
-            <li>To send out forms, simply click "copy form link" at the bottom right and then paste the link to somewhere where anyone can access and click it.</li>
-          </ul>
-          <h2>How to fill out forms for Students</h2>
-          <ul>
-            <li>Enter your student ID into the Student ID field on the form.</li>
-            <li>Use the dropdown menus to rank other students and topics in the order in which you would rather not or would rather have as a part of your group.</li>
-            <li>Submit the form.</li>
-          </ul>
-
-        
+          <div class="accordion-container">
+            <div class="accordion">
+              <div class="accordion-item">
+                <div class="accordion-link">
+                  Adding classes
+                  <i class="fas fa-angle-right"></i>
+                </div>
+                <div class="answer">
+                  <ul>
+                    <li>Click the &quot;Add Class&quot; button in the left pannel.</li>
+                    <li>For manual entry, click the manual entry button in the popup and input your students one by one. Afterward, click &quot;save&quot; to save the completed manual class.</li>
+                    <li>For automatic fill in with a .CSV file, click &quot;Import Class Roster&quot; on the popup. This works with CSV files exported form infinite campus.<br /></li>
+                    <li>To edit classes, select a class from the sidebar and then click the pencil icon, and the manual entry form will pop up, allowing you to change values.</li>
+                    <li>To delete classes, select a class from the sidebar and then click the trash can icon.</li>
+                  </ul>
+                </div>
+              </div>
+    
+              <div class="accordion-item">
+                <div class="accordion-link">
+                  Making basic random groups
+                  <i class="fas fa-angle-right"></i>
+                </div>
+                <div class="answer">
+                  <ul>
+                    <li>Select the desired class in the sidebar.</li>
+                    <li>Click &quot;Create grouping&quot;
+                      <ul>
+                      <li>In case somebody is absent or otherwise not supposed to be put into a group, like for example if they are a teacher's assistant, click their name on the right sidebar, and then click the red outlined section of that sidebar. This will place them within the exclusion category and exclude them from groupings. Doing the reverse will reverse this exclusion.</li>
+                      </ul></li>
+                    <li>Click the large plus button in the main canvas to add a grouping.</li>
+                    <li>Click the &quot;Arrange Students&quot; button.</li>
+                    <li>Select &quot;Random Grouping&quot;.</li>
+                    <li>Input the desired parameters (amount of groups made or people per group).</li>
+                    <li>Click "Submit"</li>
+                    </ul>
+                </div>
+              </div>
+    
+              <div class="accordion-item">
+                <div class="accordion-link">
+                  Setting up preferences and sending out forms
+                  <i class="fas fa-angle-right"></i>
+                </div>
+                <div class="answer">
+                  <ul>
+                    <li>Click on the desired class in the left sidebar.</li>
+                    <li>On the right panel, click "Add Question."</li>
+                    <ul>
+                        <li>Each question will be added to the automatically generated forms that you can send to your students.</li>
+                    </ul>
+                    <li>Select a choice of grouping type.</li>
+                    <ul>
+                        <li>Preferred Students</li>
+                        <li>Unpreferred Students</li>
+                        <li>Preferred Topic</li>
+                        <li>Unpreferred Topic</li>
+                    </ul>
+                    <li>Input a category for the context for which these preferences are being asked for (ex: group presentation).</li>
+                    <ul>
+                      <li>For topic preferences, type in the choices separated by a new line.</li>
+                    </ul>
+                    <li>After entering all necessary information, click "add choice".</li>
+                    <li>If necessary, press the x button to remove a choice.</li>
+                    <li>Copy the form link to send to your students.</li>
+                  </ul>
+                </div>
+              </div>
+    
+              <div class="accordion-item">
+                <div class="accordion-link">
+                  Filling out forms as a student
+                  <i class="fas fa-angle-right"></i>
+                </div>
+                <div class="answer">
+                  <ul>
+                    <li>Enter your student ID.</li>
+                    <li>Rank the choices using the dropdown menus.</li>
+                    <li>Submit the form.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -134,9 +162,9 @@
         </div>
         
         <div id="preferences-panel" class = "panel">
-          <h1 id="preferences-title" class="medium">Student Choices</h1>
+          <h1 id="preferences-title" class="medium">Student Survey Questions</h1>
           <div id="preferences-list"></div>
-          <button id="add-preference" class="button">Add Choice</button>
+          <button id="add-preference" class="button">Add Question</button>
           <button id="copy-form-link" class="button">Copy Form Link</button>
         </div>
         
