@@ -46,30 +46,14 @@ async function completeGroupAdd() {
 
 function getGroupingInfo(givenGroup) {
   try {
-    classes[state.info.id].obj.groupings
     const value = 1
-    const newName = "3da"
-    console.log("t0")
-    /*do {
-      console.log("t1")
-      console.log(value)
-      console.log(givenGroup)
-      //newName = `(${value})${givenGroup}`
-      value++
-      console.log("t2")
-    } while(Object.values(classes).map(c => c.obj.groupings).flat().map(grouping => grouping.name).includes(newName))
-    console.log("t3")*/
-
-    for(let classElement of classes)
-    {
-      console.log(classElement);
-    }
+    const newName = `(${value})${givenGroup}`
 
     return {
       id: md5(newName),
       name: newName,
-      groups: Array.from(grouping.groups),
-      excluded: Array.from(grouping.excluded)
+      groups: Array.from(givenGroup.groups),
+      excluded: Array.from(givenGroup.excluded)
     }
   } catch {
     console.log("Failure")
