@@ -93,6 +93,7 @@ async function completeGroupEdit() {
   endLoad()
 }
 
+var initialName = "" // Initial Value of the group name when edited.
 function editGrouping(grouping) {
   if (grouping) {
     statusTitle.innerText = "Edit Group"
