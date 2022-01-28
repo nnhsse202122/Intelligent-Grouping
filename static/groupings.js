@@ -371,6 +371,17 @@ function validateGroups() {
   return {valid: true}
 }
 
+function showViewGroupsModal(grouping){
+  //view groups button 
+}
+
+function showActionsModal(grouping){
+  //shows a modal that has the actions that can be done on a grouping
+  createModal("tall", (modal, exit) => {
+    modal.classList.add("show-actions-modal")
+  })
+}
+
 function openAcceptStudent(student) {
   student.classList.add("selected")
   state.info.student = student
@@ -447,7 +458,7 @@ function addGroupingToList(grouping) {
   dropdownIcon.classList = "fas fa-ellipsis-v"
   
   const dropdownContent = document.createElement("div")
-  dropdownContent.classList.add("dropdown-content")
+  dropdownContent.classList.add("dropdown-content-hidden")
   //options
   const exportZoom = document.createElement("p")
   exportZoom.innerText = "Export .csv"
@@ -468,14 +479,12 @@ function addGroupingToList(grouping) {
   //method to open dropdown
   dropdownIcon.addEventListener("click", async (e) => {
     e.stopPropagation()
-    const dropdownState = getComputedStyle(dropdownContent).display
-    console.log(dropdownState)
-    if(dropdownState == "none"){
-      console.log("set to block")
+    const isShown = dropdownContent.classList == "dropdown-content-visible"
+    if(isShown){
+      dropdownContent.classList = "dropdown-content-hidden"
     }
     else{
-      dropdownContent.style = "none"
-      console.log('set to none')
+      dropdownContent.classList = "dropdown-content-visible"
     }
   })
 
