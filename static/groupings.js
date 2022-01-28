@@ -77,8 +77,7 @@ function saveEditedGrouping(grouping, oldId, id) {
 async function completeGroupEdit() {
   startLoad()
   const validateResult = validateGroups()
-  if (validateResult.valid || validateResult.error === "Duplicate Grouping Name" && groupNameInput.value === initialName) {
-    groupNameInput.classList.remove("invalid")
+  if (validateResult.valid) {
     const grouping = constructGroupingFromUI()
     const saveResult = await saveEditedGrouping(grouping, state.info.groupingId, state.info.id)
     if (saveResult.status) {
@@ -123,7 +122,6 @@ function editGrouping(grouping) {
     }
     setGroups(grouping.groups)
     groupNameInput.value = grouping.name
-    initialName = grouping.name
     switchSection(editGroupSection)
     setState(6, {id: state.info.id, groupingId: grouping.id})
   } else {
