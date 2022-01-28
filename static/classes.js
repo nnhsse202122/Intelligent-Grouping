@@ -380,6 +380,20 @@ async function deleteClass(id) {
   endLoad()
 }
 
+async function archiveClass(id) {
+  startLoad()
+  const deleteResult = await deleteClassFromDB(id)
+  if (deleteResult.status) {
+    classListDiv.removeChild(classes[id].element)
+    delete classes[id]
+    statusTitle.innerText = "Dashboard"
+    switchSection(welcomeSection)
+  } else {
+    createError(deleteResult.error)
+  }
+  endLoad()
+}
+
 function exitEditClass() {
   if (state.mode == 3) {
     showClass(state.info.id)
@@ -449,6 +463,10 @@ editClassBtn.addEventListener("click", () => {
 
 deleteClassBtn.addEventListener("click", () => {
   deleteClass(state.info.id)
+})
+
+archiveClassBtn.addEventListener("click", () => {
+  archiveClass(state.info.id)
 })
 
 cancelClassBtn.addEventListener("click", exitEditClass)
