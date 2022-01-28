@@ -29,7 +29,6 @@ function saveNewGrouping(grouping, id) {
 async function completeGroupAdd() {
   startLoad()
   const validateResult = validateGroups()
-  
   if (validateResult.valid) {
     const grouping = constructGroupingFromUI()
     const saveResult = await saveNewGrouping(grouping, state.info.id)
@@ -44,27 +43,9 @@ async function completeGroupAdd() {
   endLoad()
 }
 
-function getGroupingInfo(givenGroup) {
+function getGroupingInfo(grouping) {
   try {
-    classes[state.info.id].obj.groupings
-    const value = 1
-    const newName = "3da"
-    console.log("t0")
-    /*do {
-      console.log("t1")
-      console.log(value)
-      console.log(givenGroup)
-      //newName = `(${value})${givenGroup}`
-      value++
-      console.log("t2")
-    } while(Object.values(classes).map(c => c.obj.groupings).flat().map(grouping => grouping.name).includes(newName))
-    console.log("t3")*/
-
-    for(let classElement of classes)
-    {
-      console.log(classElement);
-    }
-
+    newName = `Copy of ${grouping.name}`
     return {
       id: md5(newName),
       name: newName,
@@ -72,7 +53,7 @@ function getGroupingInfo(givenGroup) {
       excluded: Array.from(grouping.excluded)
     }
   } catch {
-    console.log("Failure")
+    Console.WriteLine("Failure")
   }
 }
 
@@ -96,8 +77,7 @@ function saveEditedGrouping(grouping, oldId, id) {
 async function completeGroupEdit() {
   startLoad()
   const validateResult = validateGroups()
-  if (validateResult.valid || validateResult.error === "Duplicate Grouping Name" && groupNameInput.value === initialName) {
-    groupNameInput.classList.remove("invalid")
+  if (validateResult.valid) {
     const grouping = constructGroupingFromUI()
     const saveResult = await saveEditedGrouping(grouping, state.info.groupingId, state.info.id)
     if (saveResult.status) {
@@ -113,8 +93,6 @@ async function completeGroupEdit() {
   endLoad()
 }
 
-
-var initialName = "" // Initial Value of the group name when edited.
 function editGrouping(grouping) {
   if (grouping) {
     statusTitle.innerText = "Edit Group"
@@ -143,7 +121,6 @@ function editGrouping(grouping) {
     }
     setGroups(grouping.groups)
     groupNameInput.value = grouping.name
-    initialName = grouping.name
     switchSection(editGroupSection)
     setState(6, {id: state.info.id, groupingId: grouping.id})
   } else {
@@ -195,6 +172,7 @@ function showArrangeStudentsModal() {
     const optionsDiv = document.createElement("div")
     const random = document.createElement("button")
     random.classList = "button"
+    random.innerText = "Random"
     random.addEventListener("click", () => {
       exit()
       createModal("tall", (m, e) => {
@@ -387,14 +365,15 @@ function validateGroups() {
     return {valid: false, error: "Please fill out all fields"}
   }
 
-  if (Array.from(groupScatter.children).length == 1) {
-    return {valid: false, error: "Please add at least one group"}
-  }
-
   if (Object.values(classes).map(c => c.obj.groupings).flat().map(grouping => grouping.name).includes(groupNameInput.value)) {
     groupNameInput.classList.add("invalid")
     return {valid: false, error: "Duplicate Grouping Name"}
   }
+
+  if (Array.from(groupScatter.children).length == 1) {
+    return {valid: false, error: "Please add at least one group"}
+  }
+
   return {valid: true}
 }
 
