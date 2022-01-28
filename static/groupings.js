@@ -29,7 +29,6 @@ function saveNewGrouping(grouping, id) {
 async function completeGroupAdd() {
   startLoad()
   const validateResult = validateGroups()
-  
   if (validateResult.valid) {
     const grouping = constructGroupingFromUI()
     const saveResult = await saveNewGrouping(grouping, state.info.id)
@@ -44,19 +43,17 @@ async function completeGroupAdd() {
   endLoad()
 }
 
-function getGroupingInfo(givenGroup) {
+function getGroupingInfo(grouping) {
   try {
-    const value = 1
-    const newName = `(${value})${givenGroup}`
-
+    newName = `Copy of ${grouping.name}`
     return {
       id: md5(newName),
       name: newName,
-      groups: Array.from(givenGroup.groups),
-      excluded: Array.from(givenGroup.excluded)
+      groups: Array.from(grouping.groups),
+      excluded: Array.from(grouping.excluded)
     }
   } catch {
-    console.log("Failure")
+    Console.WriteLine("Failure")
   }
 }
 
@@ -96,7 +93,6 @@ async function completeGroupEdit() {
   }
   endLoad()
 }
-
 
 var initialName = "" // Initial Value of the group name when edited.
 function editGrouping(grouping) {
@@ -179,6 +175,7 @@ function showArrangeStudentsModal() {
     const optionsDiv = document.createElement("div")
     const random = document.createElement("button")
     random.classList = "button"
+    random.innerText = "Random"
     random.addEventListener("click", () => {
       exit()
       createModal("tall", (m, e) => {
@@ -371,14 +368,15 @@ function validateGroups() {
     return {valid: false, error: "Please fill out all fields"}
   }
 
-  if (Array.from(groupScatter.children).length == 1) {
-    return {valid: false, error: "Please add at least one group"}
-  }
-
   if (Object.values(classes).map(c => c.obj.groupings).flat().map(grouping => grouping.name).includes(groupNameInput.value)) {
     groupNameInput.classList.add("invalid")
     return {valid: false, error: "Duplicate Grouping Name"}
   }
+
+  if (Array.from(groupScatter.children).length == 1) {
+    return {valid: false, error: "Please add at least one group"}
+  }
+
   return {valid: true}
 }
 
