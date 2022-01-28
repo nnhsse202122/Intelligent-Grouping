@@ -45,7 +45,15 @@ async function completeGroupAdd() {
 
 function getGroupingInfo(grouping) {
   try {
-    newName = `Copy of ${grouping.name}`
+    value = 1
+    newName = `[${value}]${grouping.name}`
+    for(const group of classes[state.info.id].obj.groupings) {
+      if(group.name === newName) {
+        value++
+        newName = `[${value}]${grouping.name}`
+      }
+    }
+    
     return {
       id: md5(newName),
       name: newName,
