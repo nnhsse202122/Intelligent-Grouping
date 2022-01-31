@@ -373,12 +373,19 @@ function validateGroups() {
 
 function showViewGroupsModal(grouping){
   //view groups button 
+  createModal("tall", (modal,exit) =>{
+    modal.classList.add('view-groups-modal')
+  })
 }
 
 function showActionsModal(grouping){
   //shows a modal that has the actions that can be done on a grouping
   createModal("tall", (modal, exit) => {
     modal.classList.add("show-actions-modal")
+    title = document.createElement('h1')
+    title.innerText = grouping.name
+
+    modal.appendChild(title)
   })
 }
 
@@ -487,8 +494,12 @@ function addGroupingToList(grouping) {
       dropdownContent.classList = "dropdown-content-visible"
     }
   })
-
+  viewGroup.addEventListener('click', async (e)=>{
+    e.stopPropagation()
+    showActionsModal(grouping)
+  })
   groupingContainer.addEventListener("click", () => {
+    
     editGrouping(grouping)
   })
 
