@@ -381,17 +381,7 @@ async function deleteClass(id) {
 }
 
 async function archiveClass(id) {
-  startLoad()
-  const deleteResult = await deleteClassFromDB(id)
-  if (deleteResult.status) {
-    classListDiv.removeChild(classes[id].element)
-    delete classes[id]
-    statusTitle.innerText = "Dashboard"
-    switchSection(welcomeSection)
-  } else {
-    createError(deleteResult.error)
-  }
-  endLoad()
+  //needs implementation
 }
 
 function exitEditClass() {
@@ -462,11 +452,23 @@ editClassBtn.addEventListener("click", () => {
 })
 
 deleteClassBtn.addEventListener("click", () => {
-  deleteClass(state.info.id)
-})
+  Confirm.open({
+    title: 'Delete class?',
+    message: 'This action can not be undone.',
+    onok: () => {
+      deleteClass(state.info.id)
+    }
+  })
+});
 
 archiveClassBtn.addEventListener("click", () => {
-  archiveClass(state.info.id)
-})
+  Confirm.open({
+    title: 'Archive class?',
+    message: 'This class will be moved to the archive category.',
+    onok: () => {
+      archiveClass(state.info.id)
+    }
+  })
+});
 
 cancelClassBtn.addEventListener("click", exitEditClass)
