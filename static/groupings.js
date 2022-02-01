@@ -382,10 +382,56 @@ function showActionsModal(grouping){
   //shows a modal that has the actions that can be done on a grouping
   createModal("tall", (modal, exit) => {
     modal.classList.add("show-actions-modal")
-    title = document.createElement('h1')
+    const title = document.createElement('h1')
     title.innerText = grouping.name
 
+    const btnDiv = document.createElement("div")
+    //All option buttons
+    const exportBtn = document.createElement('button')
+    exportBtn.innerText = "Export as .CSV"
+
+    const duplicateBtn = document.createElement('button')
+    duplicateBtn.innerText = "Duplicate Grouping"
+
+    const viewGroupsBtn = document.createElement('button')
+    viewGroupsBtn.innerText = "Present Grouping"
+
+    const deleteBtn = document.createElement('button')
+    deleteBtn.innerText = "Delete Grouping"
+
+    //button event listeners
+    deleteBtn.addEventListener("click", async (e) => {
+      e.stopPropagation()
+      startLoad()
+      const deleteResult = await deleteGroupFromDB(state.info.id, grouping.id)
+      console.log(deleteResult)
+      if (deleteResult.status) {
+        groupingsList.removeChild(groupingContainer)
+        const deleteIndex = classes[state.info.id].obj.groupings.find(g => g.id == grouping.id)
+        classes[state.info.id].obj.groupings.splice(deleteIndex, 1)
+      } else {
+        createError(deleteResult.error)
+      }
+      endLoad()
+    })
+    let csvText = "Pre-assign Room Name,Email Address\n"
+    for (let i = 0; i < grouping.groups.length; i++) {
+      for (const stu of grouping.groups[i]) {
+        csvText += `group${i+1},${classes[state.info.id].obj.students.find(s => s.id == stu).email}\n`
+      }
+    }
+
+    exportBtn.addEventListener("click", async (e) => {
+      e.stopPropagation()
+      downloadCSV(`${grouping.name}.csv`, csvText)
+    })
+    //adding all buttons to modal
     modal.appendChild(title)
+    modal.appendChild(btnDiv)
+    btnDiv.appendChild(exportBtn)
+    btnDiv.appendChild(duplicateBtn)
+    btnDiv.appendChild(viewGroupsBtn)
+    btnDiv.appendChild(deleteBtn)
   })
 }
 
@@ -503,32 +549,9 @@ function addGroupingToList(grouping) {
     editGrouping(grouping)
   })
 
-  deleteGroup.addEventListener("click", async (e) => {
-    e.stopPropagation()
-    startLoad()
-    const deleteResult = await deleteGroupFromDB(state.info.id, grouping.id)
-    console.log(deleteResult)
-    if (deleteResult.status) {
-      groupingsList.removeChild(groupingContainer)
-      const deleteIndex = classes[state.info.id].obj.groupings.find(g => g.id == grouping.id)
-      classes[state.info.id].obj.groupings.splice(deleteIndex, 1)
-    } else {
-      createError(deleteResult.error)
-    }
-    endLoad()
-  })
+  
 
-  let csvText = "Pre-assign Room Name,Email Address\n"
-  for (let i = 0; i < grouping.groups.length; i++) {
-    for (const stu of grouping.groups[i]) {
-      csvText += `group${i+1},${classes[state.info.id].obj.students.find(s => s.id == stu).email}\n`
-    }
-  }
-
-  exportZoom.addEventListener("click", async (e) => {
-    e.stopPropagation()
-    downloadCSV(`${grouping.name}.csv`, csvText)
-  })
+  
 
   groupingContainer.appendChild(groupingName)
   groupingContainer.appendChild(optionsDropdownContainer)
