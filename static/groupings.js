@@ -494,10 +494,10 @@ function addGroupingToList(grouping) {
 
   })
 
-  let csvText = "Pre-assign Room Name,Email Address\n"
+  let csvText = "Pre-assign Room Name,Student ID,Last Name,First Name,Middle Name,Email Address\n"
   for (let i = 0; i < grouping.groups.length; i++) {
     for (const stu of grouping.groups[i]) {
-      csvText += `group${i+1},${classes[state.info.id].obj.students.find(s => s.id == stu).email}\n`
+      csvText += `group${i+1},${classes[state.info.id].obj.students.find(s => s.id == stu).id},${classes[state.info.id].obj.students.find(s => s.id == stu).last},${classes[state.info.id].obj.students.find(s => s.id == stu).first},${classes[state.info.id].obj.students.find(s => s.id == stu).middle},${classes[state.info.id].obj.students.find(s => s.id == stu).email}\n`
     }
   }
 
