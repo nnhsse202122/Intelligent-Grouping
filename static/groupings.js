@@ -378,11 +378,12 @@ function showViewGroupsModal(grouping){
   })
 }
 
-function showActionsModal(grouping){
+function showActionsModal(grouping,groupingContainer){
   //shows a modal that has the actions that can be done on a grouping
   createModal("tall", (modal, exit) => {
     modal.classList.add("show-actions-modal")
     const title = document.createElement('h1')
+    title.id = "show-actions-modal-title"
     title.innerText = grouping.name
 
     const btnDiv = document.createElement("div")
@@ -398,10 +399,16 @@ function showActionsModal(grouping){
 
     const deleteBtn = document.createElement('button')
     deleteBtn.innerText = "Delete Grouping"
+    deleteBtn.id = "delete-group-button"
 
     //button event listeners
+    viewGroupsBtn.addEventListener("click", async (e) =>{
+      e.stopPropagation()
+      showViewGroupsModal(grouping)
+    })
     deleteBtn.addEventListener("click", async (e) => {
       e.stopPropagation()
+      exit()
       startLoad()
       const deleteResult = await deleteGroupFromDB(state.info.id, grouping.id)
       console.log(deleteResult)
@@ -504,45 +511,17 @@ function addGroupingToList(grouping) {
   const groupingName = document.createElement("p")
   groupingName.innerText = `${grouping.name} (${grouping.groups.length})`
 
-  const optionsDropdownContainer = document.createElement("div") //holds additional options ie.(copy, save, view in modal)
-  optionsDropdownContainer.classList.add("grouping-options-container")
   const dropdownIcon = document.createElement("i")
   dropdownIcon.id = "dropdown-icon"
-  dropdownIcon.classList = "fas fa-ellipsis-v"
+  dropdownIcon.classList = "fas fa-sliders-h"
+  //"fas fa-ellipsis-v"
+  //"fas fa-sliders-h"
   
-  const dropdownContent = document.createElement("div")
-  dropdownContent.classList.add("dropdown-content-hidden")
-  //options
-  const exportZoom = document.createElement("p")
-  exportZoom.innerText = "Export .csv"
-  exportZoom.classList.add("dropdown-text")
-
-  const duplicateGroup = document.createElement("p")
-  duplicateGroup.innerText = "Duplicate"
-  duplicateGroup.classList.add("dropdown-text")
-
-  const viewGroup = document.createElement("p")
-  viewGroup.innerText = "Present Groups"
-  viewGroup.classList.add("dropdown-text")
- 
-  const deleteGroup = document.createElement("p")
-  deleteGroup.innerText = "Delete Group"
-  deleteGroup.classList.add("dropdown-text")
 
   //method to open dropdown
   dropdownIcon.addEventListener("click", async (e) => {
     e.stopPropagation()
-    const isShown = dropdownContent.classList == "dropdown-content-visible"
-    if(isShown){
-      dropdownContent.classList = "dropdown-content-hidden"
-    }
-    else{
-      dropdownContent.classList = "dropdown-content-visible"
-    }
-  })
-  viewGroup.addEventListener('click', async (e)=>{
-    e.stopPropagation()
-    showActionsModal(grouping)
+    showActionsModal(grouping, groupingContainer)
   })
   groupingContainer.addEventListener("click", () => {
     
@@ -551,16 +530,11 @@ function addGroupingToList(grouping) {
 
   
 
-  
-
   groupingContainer.appendChild(groupingName)
-  groupingContainer.appendChild(optionsDropdownContainer)
-  optionsDropdownContainer.appendChild(dropdownIcon)
-  optionsDropdownContainer.appendChild(dropdownContent)
-  dropdownContent.appendChild(exportZoom)
-  dropdownContent.appendChild(duplicateGroup)
-  dropdownContent.appendChild(viewGroup)
-  dropdownContent.appendChild(deleteGroup)
+
+  groupingContainer.appendChild(dropdownIcon)
+  
+  
   
   
   groupingsList.appendChild(groupingContainer)

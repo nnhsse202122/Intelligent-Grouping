@@ -937,34 +937,10 @@ h1 {
   margin-bottom: 16px;
 }
 
-.dropdown-content-visible {
-  display:block;
-  position:absolute;
-  background-color: var(--lighter-gray);
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-.dropdown-content-hidden {
-  display:none;
-  position:sticky;
-  background-color: var(--lighter-gray);
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-.dropdown-text {
-  padding: 8px 12px;
-}
-.dropdown-text:hover {
-  background-color: var(--light-gray);
-}
+
 #dropdown-icon {
   font-size: 30px;
 }
-
-
-
 
 .preference-container {
   display: flex;
@@ -1063,8 +1039,12 @@ h1 {
   align-items: center;
   margin-top: 20px;
   width: 100%;
-  column-gap: 5px;
 }
+
+#show-actions-modal-title{
+  text-align:center;
+}
+
 .show-actions-modal > div > button{
   background-color: transparent;
   border: var(--accent) 3px solid;
@@ -1073,9 +1053,16 @@ h1 {
   text-align: center;
   border-radius: 8px;
   font-size: 1.3em;
-  padding: 5px 0px;
+  padding: 8px 2px;
   outline: none;
+  width: 90%;
+  margin-top:20px;
 }
+
+#delete-group-button{
+  border: #f25252 3px solid;
+}
+
 
 
 
