@@ -392,7 +392,7 @@ function showActionsModal(grouping,groupingContainer){
     const btnDiv = document.createElement("div")
     //All option buttons
     const exportBtn = document.createElement('button')
-    exportBtn.innerText = "Export as .CSV"
+    exportBtn.innerText = "Export for Zoom"
 
     const duplicateBtn = document.createElement('button')
     duplicateBtn.innerText = "Duplicate Grouping"
@@ -517,8 +517,8 @@ function addGroupingToList(grouping) {
   const menuIcon = document.createElement("i")
   menuIcon.id = "menu-icon"
   menuIcon.classList = "fas fa-sliders-h"
-  //"fas fa-ellipsis-v"
-  //"fas fa-sliders-h"
+  //"fas fa-ellipsis-v" //vertical ellipse
+  //"fas fa-sliders-h" //sliders (current)
   
 
   //method to open dropdown
