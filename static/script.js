@@ -14,6 +14,7 @@ let state = {mode: 0, info: {}}
 4 = class view
 5 = create group
 6 = edit group
+7 = seating chart
 */
 //-------\\
 
