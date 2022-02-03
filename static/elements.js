@@ -22,6 +22,7 @@ const infoPanelNumStudents = document.getElementById("info-panel-num-students")
 const infoPanelNumGroups = document.getElementById("info-panel-num-groups")
 const editClassBtn = document.getElementById("edit-class")
 const deleteClassBtn = document.getElementById("delete-class")
+
 const createGroupBtn = document.getElementById("create-group")
 const editGroupSection = document.getElementById("edit-group-sec")
 const arrangeStudentsBtn = document.getElementById("arrange-students")
@@ -29,6 +30,7 @@ const ungroupedStudentsListDiv = document.getElementById("ungrouped-students-lis
 const excludedStudentsListDiv = document.getElementById("excluded-students-list")
 const groupScatter = document.getElementById("group-scatter")
 const saveGroupBtn = document.getElementById("save-group")
+
 const addGroupBtn = document.getElementById("add-group")
 const groupNameInput = document.getElementById("group-name-input")
 const groupingsList = document.getElementById("groupings-list")
