@@ -51,7 +51,7 @@ const userSchema = new mongoose.Schema({
           id: String,
           name: String,
           excluded: [],
-          groups: [[String]]
+          groups: [[String]],
         }
       ]
     }

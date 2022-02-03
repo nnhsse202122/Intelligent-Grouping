@@ -1102,3 +1102,59 @@ h1 {
 #open-tutorial {
   cursor: pointer;
 }
+/*junion edits below:*/
+.accordion-item{
+  background-color: #30a3ff;
+  border-radius:.4rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  box-shadow: .5rem 2px .5rem rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: 500ms;
+}
+
+.accordion-item:hover{
+  filter: brightness(90%);
+  transition: filter 0ms;
+  transition: background-color 500ms;
+}
+
+.accordion-link{
+  font-size: 1.6rem;
+  color: #fcfcfc;
+  text-decoration: none;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.accordion-link i{
+  padding: .5 rem;
+}
+
+.answer{
+  max-height: 0;
+  overflow: hidden;
+  position: relative;
+  transition: 500ms;
+  font-size: 1.4rem;
+  color: #FFFFFF;
+}
+
+.accordion-item.active{
+  background-color:#2e2e2e;
+  transition: 500ms;
+}
+
+.accordion-item.active .answer{
+  max-height: 40rem;
+}
+
+.accordion-item .fa-angle-right{
+  transition: 500ms;
+}
+
+.accordion-item.active .fa-angle-right{
+  transform: rotate(90deg);
+}
