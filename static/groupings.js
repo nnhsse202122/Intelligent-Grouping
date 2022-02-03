@@ -51,6 +51,29 @@ async function completeGroupAdd() {
   endLoad()
 }
 
+function getGroupingInfo(grouping) {
+  try {
+    value = 1
+    newName = `[${value}]${grouping.name}`
+    for(const group of classes[state.info.id].obj.groupings) {
+      if(group.name === newName) {
+        value++
+        newName = `[${value}]${grouping.name}`
+      }
+    }
+    
+    return {
+      id: md5(newName),
+      name: newName,
+      groups: Array.from(grouping.groups),
+      excluded: Array.from(grouping.excluded)
+    }
+  } catch {
+    Console.WriteLine("Failure")
+  }
+}
+
+
 
 function saveEditedGrouping(grouping, oldId, id) {
   return fetch("/editGrouping", {
@@ -70,7 +93,8 @@ function saveEditedGrouping(grouping, oldId, id) {
 async function completeGroupEdit() {
   startLoad()
   const validateResult = validateGroups()
-  if (validateResult.valid) {
+  if (validateResult.valid || validateResult.error === "Duplicate Grouping Name" && groupNameInput.value === initialName) {
+    groupNameInput.classList.remove("invalid")
     const grouping = constructGroupingFromUI()
     const saveResult = await saveEditedGrouping(grouping, state.info.groupingId, state.info.id)
     if (saveResult.status) {
@@ -86,6 +110,7 @@ async function completeGroupEdit() {
   endLoad()
 }
 
+var initialName = "" // Initial Value of the group name when edited.
 function editGrouping(grouping) {
   if (grouping) {
     statusTitle.innerText = "Edit Group"
@@ -93,7 +118,6 @@ function editGrouping(grouping) {
     clearDiv(ungroupedStudentsListDiv)
     clearDiv(excludedStudentsListDiv)
     clearDiv(groupScatter)
-    console.log(state.info.id)
     for (const student of classes[state.info.id].obj.students) {
       const studentContainer = document.createElement("div")
       studentContainer.classList = "student-name-container"
@@ -115,6 +139,7 @@ function editGrouping(grouping) {
     }
     setGroups(grouping.groups)
     groupNameInput.value = grouping.name
+    initialName = grouping.name
     switchSection(editGroupSection)
     setState(6, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
   } else {
@@ -435,6 +460,18 @@ function showActionsModal(grouping,groupingContainer){
       e.stopPropagation()
       downloadCSV(`${grouping.name}.csv`, csvText)
     })
+    duplicateBtn.addEventListener("click", async (e) => {
+    e.stopPropagation()
+    const copyGrouping = getGroupingInfo(grouping)
+    const saveResult = await saveNewGrouping(copyGrouping, state.info.id)
+    if(saveResult.status) {
+      classes[state.info.id].obj.groupings.push(copyGrouping)
+      showClass(state.info.id)
+      setState(4, {id: state.info.id})
+    }
+    
+
+  })
     //adding all buttons to modal
     modal.appendChild(title)
     modal.appendChild(btnDiv)
@@ -527,19 +564,13 @@ function addGroupingToList(grouping) {
     showActionsModal(grouping, groupingContainer)
   })
   groupingContainer.addEventListener("click", () => {
-    
     editGrouping(grouping)
   })
 
   
 
   groupingContainer.appendChild(groupingName)
-
   groupingContainer.appendChild(menuIcon)
-  
-  
-  
-  
   groupingsList.appendChild(groupingContainer)
 } 
 
