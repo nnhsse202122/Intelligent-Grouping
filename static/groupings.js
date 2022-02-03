@@ -1,3 +1,11 @@
+/*
+* Grouping class variables:
+* id: md5(groupNameInput.value),
+* name: groupNameInput.value,
+* groups: Array.from(groupScatter.children).filter(e => e.id != "add-group").map(e => Array.from(e.children[2].children).map(s => s.id)),
+* excluded: Array.from(excludedStudentsListDiv.children).map(e => e.id)
+*/
+
 function deleteGroupFromDB(id, groupingId) {
   return fetch("/deleteGroup", {
     method: "POST",
@@ -133,7 +141,7 @@ function editGrouping(grouping) {
     groupNameInput.value = grouping.name
     initialName = grouping.name
     switchSection(editGroupSection)
-    setState(6, {id: state.info.id, groupingId: grouping.id})
+    setState(6, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
   } else {
     statusTitle.innerText = "Create Grouping"
     groupNameInput.value = ""
@@ -154,7 +162,7 @@ function editGrouping(grouping) {
     }
     groupNameInput.classList.remove("invalid")
     switchSection(editGroupSection)
-    setState(5, {id: state.info.id})
+    setState(5, {id: state.info.id, currentGroup:null})
   }
 }
 
@@ -388,6 +396,92 @@ function validateGroups() {
   return {valid: true}
 }
 
+function showViewGroupsModal(grouping){
+  //view groups button 
+  createModal("tall", (modal,exit) =>{
+    modal.classList.add('view-groups-modal')
+    const title = document.createElement("h1")
+    title.innerText = "placeholder"
+    modal.appendChild(title)
+  })
+}
+
+function showActionsModal(grouping,groupingContainer){
+  //shows a modal that has the actions that can be done on a grouping
+  createModal("tall", (modal, exit) => {
+    modal.classList.add("show-actions-modal")
+    const title = document.createElement('h1')
+    title.id = "show-actions-modal-title"
+    title.innerText = grouping.name
+
+    const btnDiv = document.createElement("div")
+    //All option buttons
+    const exportBtn = document.createElement('button')
+    exportBtn.innerText = "Export for Zoom"
+
+    const duplicateBtn = document.createElement('button')
+    duplicateBtn.innerText = "Duplicate Grouping"
+
+    const viewGroupsBtn = document.createElement('button')
+    viewGroupsBtn.innerText = "Present Grouping"
+
+    const deleteBtn = document.createElement('button')
+    deleteBtn.innerText = "Delete Grouping"
+    deleteBtn.id = "delete-group-button"
+
+    //button event listeners
+    viewGroupsBtn.addEventListener("click", async (e) =>{
+      e.stopPropagation()
+      showViewGroupsModal(grouping)
+    })
+    deleteBtn.addEventListener("click", async (e) => {
+      e.stopPropagation()
+      exit()
+      startLoad()
+      const deleteResult = await deleteGroupFromDB(state.info.id, grouping.id)
+      console.log(deleteResult)
+      if (deleteResult.status) {
+        groupingsList.removeChild(groupingContainer)
+        const deleteIndex = classes[state.info.id].obj.groupings.find(g => g.id == grouping.id)
+        classes[state.info.id].obj.groupings.splice(deleteIndex, 1)
+      } else {
+        createError(deleteResult.error)
+      }
+      endLoad()
+    })
+    let csvText = "Pre-assign Room Name,Email Address\n"
+    for (let i = 0; i < grouping.groups.length; i++) {
+      for (const stu of grouping.groups[i]) {
+        csvText += `group${i+1},${classes[state.info.id].obj.students.find(s => s.id == stu).email}\n`
+      }
+    }
+
+    exportBtn.addEventListener("click", async (e) => {
+      e.stopPropagation()
+      downloadCSV(`${grouping.name}.csv`, csvText)
+    })
+    duplicateBtn.addEventListener("click", async (e) => {
+    e.stopPropagation()
+    const copyGrouping = getGroupingInfo(grouping)
+    const saveResult = await saveNewGrouping(copyGrouping, state.info.id)
+    if(saveResult.status) {
+      classes[state.info.id].obj.groupings.push(copyGrouping)
+      showClass(state.info.id)
+      setState(4, {id: state.info.id})
+    }
+    
+
+  })
+    //adding all buttons to modal
+    modal.appendChild(title)
+    modal.appendChild(btnDiv)
+    btnDiv.appendChild(exportBtn)
+    btnDiv.appendChild(duplicateBtn)
+    btnDiv.appendChild(viewGroupsBtn)
+    btnDiv.appendChild(deleteBtn)
+  })
+}
+
 function openAcceptStudent(student) {
   student.classList.add("selected")
   state.info.student = student
@@ -453,63 +547,30 @@ function addGroupingToList(grouping) {
   const groupingContainer = document.createElement("div")
   groupingContainer.classList.add("grouping-container")
   groupingContainer.id = grouping.id
+
   const groupingName = document.createElement("p")
   groupingName.innerText = `${grouping.name} (${grouping.groups.length})`
-  const exportZoom = document.createElement("i")
-  exportZoom.classList = "fas fa-file-export fa-2x"
-  const copyGroup = document.createElement("i")
-  copyGroup.classList = "fas fa-copy fa-2x"
-  const deleteGroup = document.createElement("i")
-  deleteGroup.classList = "fa fa-times fa-2x"
 
+  const menuIcon = document.createElement("i")
+  menuIcon.id = "menu-icon"
+  menuIcon.classList = "fas fa-sliders-h"
+  //"fas fa-ellipsis-v" //vertical ellipse
+  //"fas fa-sliders-h" //sliders (current)
+  
+
+  //method to open dropdown
+  menuIcon.addEventListener("click", async (e) => {
+    e.stopPropagation()
+    showActionsModal(grouping, groupingContainer)
+  })
   groupingContainer.addEventListener("click", () => {
     editGrouping(grouping)
   })
 
-  deleteGroup.addEventListener("click", async (e) => {
-    e.stopPropagation()
-    startLoad()
-    const deleteResult = await deleteGroupFromDB(state.info.id, grouping.id)
-    console.log(deleteResult)
-    if (deleteResult.status) {
-      groupingsList.removeChild(groupingContainer)
-      const deleteIndex = classes[state.info.id].obj.groupings.find(g => g.id == grouping.id)
-      classes[state.info.id].obj.groupings.splice(deleteIndex, 1)
-    } else {
-      createError(deleteResult.error)
-    }
-    endLoad()
-  })
-
-  copyGroup.addEventListener("click", async (e) => {
-    e.stopPropagation()
-    const copyGrouping = getGroupingInfo(grouping)
-    const saveResult = await saveNewGrouping(copyGrouping, state.info.id)
-    if(saveResult.status) {
-      classes[state.info.id].obj.groupings.push(copyGrouping)
-      showClass(state.info.id)
-      setState(4, {id: state.info.id})
-    }
-    
-
-  })
-
-  let csvText = "Pre-assign Room Name,Student ID,Last Name,First Name,Middle Name,Email Address\n"
-  for (let i = 0; i < grouping.groups.length; i++) {
-    for (const stu of grouping.groups[i]) {
-      csvText += `group${i+1},${classes[state.info.id].obj.students.find(s => s.id == stu).id},${classes[state.info.id].obj.students.find(s => s.id == stu).last},${classes[state.info.id].obj.students.find(s => s.id == stu).first},${classes[state.info.id].obj.students.find(s => s.id == stu).middle},${classes[state.info.id].obj.students.find(s => s.id == stu).email}\n`
-    }
-  }
-
-  exportZoom.addEventListener("click", async (e) => {
-    e.stopPropagation()
-    downloadCSV(`${grouping.name}.csv`, csvText)
-  })
+  
 
   groupingContainer.appendChild(groupingName)
-  groupingContainer.appendChild(exportZoom)
-  groupingContainer.appendChild(copyGroup)
-  groupingContainer.appendChild(deleteGroup)
+  groupingContainer.appendChild(menuIcon)
   groupingsList.appendChild(groupingContainer)
 } 
 
@@ -525,6 +586,7 @@ saveGroupBtn.addEventListener("click", async () => {
 })
 
 arrangeStudentsBtn.addEventListener("click", showArrangeStudentsModal)
+
 
 addGroupBtn.addEventListener("click", addGroup)
 
