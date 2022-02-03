@@ -375,6 +375,9 @@ function showViewGroupsModal(grouping){
   //view groups button 
   createModal("tall", (modal,exit) =>{
     modal.classList.add('view-groups-modal')
+    const title = document.createElement("h1")
+    title.innerText = "placeholder"
+    modal.appendChild(title)
   })
 }
 
