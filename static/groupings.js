@@ -461,13 +461,14 @@ function showActionsModal(grouping,groupingContainer){
       downloadCSV(`${grouping.name}.csv`, csvText)
     })
     duplicateBtn.addEventListener("click", async (e) => {
-    e.stopPropagation()
-    const copyGrouping = getGroupingInfo(grouping)
-    const saveResult = await saveNewGrouping(copyGrouping, state.info.id)
-    if(saveResult.status) {
-      classes[state.info.id].obj.groupings.push(copyGrouping)
-      showClass(state.info.id)
-      setState(4, {id: state.info.id})
+      e.stopPropagation()
+      exit()
+      const copyGrouping = getGroupingInfo(grouping)
+      const saveResult = await saveNewGrouping(copyGrouping, state.info.id)
+      if(saveResult.status) {
+        classes[state.info.id].obj.groupings.push(copyGrouping)
+        showClass(state.info.id)
+        setState(4, {id: state.info.id})
     }
     
 
