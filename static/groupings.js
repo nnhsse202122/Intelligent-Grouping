@@ -514,15 +514,15 @@ function addGroupingToList(grouping) {
   const groupingName = document.createElement("p")
   groupingName.innerText = `${grouping.name} (${grouping.groups.length})`
 
-  const dropdownIcon = document.createElement("i")
-  dropdownIcon.id = "dropdown-icon"
-  dropdownIcon.classList = "fas fa-sliders-h"
+  const menuIcon = document.createElement("i")
+  menuIcon.id = "menu-icon"
+  menuIcon.classList = "fas fa-sliders-h"
   //"fas fa-ellipsis-v"
   //"fas fa-sliders-h"
   
 
   //method to open dropdown
-  dropdownIcon.addEventListener("click", async (e) => {
+  menuIcon.addEventListener("click", async (e) => {
     e.stopPropagation()
     showActionsModal(grouping, groupingContainer)
   })
@@ -535,7 +535,7 @@ function addGroupingToList(grouping) {
 
   groupingContainer.appendChild(groupingName)
 
-  groupingContainer.appendChild(dropdownIcon)
+  groupingContainer.appendChild(menuIcon)
   
   
   
