@@ -744,6 +744,11 @@ h1 {
   grid-area: 1 / 2 / 2 / 3;
 }
 
+#seating-chart-sec{
+  display: grid;
+  padding: 0;
+}
+
 .modal.tall {
   width: 350px;
   height: 600px;

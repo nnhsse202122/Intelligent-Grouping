@@ -110,6 +110,7 @@ async function completeGroupEdit() {
   endLoad()
 }
 
+
 var initialName = "" // Initial Value of the group name when edited.
 function editGrouping(grouping) {
   if (grouping) {
@@ -396,15 +397,6 @@ function validateGroups() {
   return {valid: true}
 }
 
-function showViewGroupsModal(grouping){
-  //view groups button 
-  createModal("tall", (modal,exit) =>{
-    modal.classList.add('view-groups-modal')
-    const title = document.createElement("h1")
-    title.innerText = "placeholder"
-    modal.appendChild(title)
-  })
-}
 
 function showActionsModal(grouping,groupingContainer){
   //shows a modal that has the actions that can be done on a grouping
@@ -423,7 +415,10 @@ function showActionsModal(grouping,groupingContainer){
     duplicateBtn.innerText = "Duplicate Grouping"
 
     const viewGroupsBtn = document.createElement('button')
-    viewGroupsBtn.innerText = "Present Grouping"
+    viewGroupsBtn.innerText = "Seating Chart"
+
+    const archiveGroupBtn = document.createElement('button')
+    archiveGroupBtn.innerText = "Archive Grouping"
 
     const deleteBtn = document.createElement('button')
     deleteBtn.innerText = "Delete Grouping"
@@ -432,8 +427,10 @@ function showActionsModal(grouping,groupingContainer){
     //button event listeners
     viewGroupsBtn.addEventListener("click", async (e) =>{
       e.stopPropagation()
-      showViewGroupsModal(grouping)
+      exit()
+      seatingChart(grouping)
     })
+
     deleteBtn.addEventListener("click", async (e) => {
       e.stopPropagation()
       exit()
@@ -469,17 +466,19 @@ function showActionsModal(grouping,groupingContainer){
         classes[state.info.id].obj.groupings.push(copyGrouping)
         showClass(state.info.id)
         setState(4, {id: state.info.id})
-    }
+      }
     
 
-  })
+    })
     //adding all buttons to modal
     modal.appendChild(title)
     modal.appendChild(btnDiv)
     btnDiv.appendChild(exportBtn)
     btnDiv.appendChild(duplicateBtn)
     btnDiv.appendChild(viewGroupsBtn)
+    btnDiv.appendChild(archiveGroupBtn)
     btnDiv.appendChild(deleteBtn)
+    
   })
 }
 
