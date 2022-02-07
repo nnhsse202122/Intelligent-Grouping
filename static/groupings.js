@@ -417,6 +417,9 @@ function showActionsModal(grouping,groupingContainer){
     const viewGroupsBtn = document.createElement('button')
     viewGroupsBtn.innerText = "Seating Chart"
 
+    const archiveGroupBtn = document.createElement('button')
+    archiveGroupBtn.innerText = "Archive Grouping"
+
     const deleteBtn = document.createElement('button')
     deleteBtn.innerText = "Delete Grouping"
     deleteBtn.id = "delete-group-button"
@@ -473,7 +476,9 @@ function showActionsModal(grouping,groupingContainer){
     btnDiv.appendChild(exportBtn)
     btnDiv.appendChild(duplicateBtn)
     btnDiv.appendChild(viewGroupsBtn)
+    btnDiv.appendChild(archiveGroupBtn)
     btnDiv.appendChild(deleteBtn)
+    
   })
 }
 
