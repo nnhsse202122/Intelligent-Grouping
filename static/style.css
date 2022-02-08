@@ -1163,3 +1163,27 @@ h1 {
 .accordion-item.active .fa-angle-right{
   transform: rotate(90deg);
 }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.box {
+  background-color: #444;
+  color: #fff;
+  border-radius: 5px;
+/*   padding: 20px; */
+  font-size: 150%;
+  cursor: pointer;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body {
+  margin: 0rem;
+  font: 12px system-ui;
+}
