@@ -10,9 +10,9 @@ function getGroups(grouping){
     //making deep copy of groups for names
     const nameGroups = [];
     for(const group of grouping.groups){
-        nameGroups.push(...group)
+        nameGroups.push([...group])
     }
-    console.log(nameGroups)
+    
     //changing from ids to names
     for(const student of classes[state.info.id].obj.students){
         for(const group of nameGroups){
@@ -24,5 +24,37 @@ function getGroups(grouping){
             }
         }
     }
-    console.log(nameGroups);
+    
+    return nameGroups;
+}
+
+function populateSidebar(groups){
+    const MAX_STUDENTS_DISPLAYED = 3 //how many student names are shown before it is cut off by ellipse (...)
+    let groupNum = 1; 
+    for(const group of groups){
+        const groupDiv = document.createElement('div')
+        groupDiv.classList.add("group-chart-div")
+        groupDiv.id = `group-${groupNum}`
+
+        const groupName = document.createElement("h1")
+        groupName.innerText = `Group ${groupNum}`
+        groupDiv.appendChild(groupName)
+        let displayed = 0
+        for(const student of group){
+            if(displayed >= MAX_STUDENTS_DISPLAYED){
+                break
+            }
+            const studentText = document.createElement('p')
+            studentText.innerText = student.firstName + " " + student.lastName[0]
+            studentText.classList.add("student-chart-name")
+            groupDiv.appendChild(studentText)
+            displayed++
+        }
+        const ellipseEnd = document.createElement('p')
+        ellipseEnd.innerText = "..."
+        ellipseEnd.classList = "ellipse-text"
+        seatingChartSidebar.appendChild(groupDiv)
+        groupNum++
+    }
+
 }
