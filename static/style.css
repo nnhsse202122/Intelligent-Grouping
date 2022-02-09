@@ -170,7 +170,7 @@ body {
 }
 
 #profile-detail {
-  background: #30a2ff;
+  background: var(--accent);
   grid-area: 1 / 1 / 3 /  2;
   display: grid;
   grid-template-columns: auto;
@@ -1107,9 +1107,9 @@ h1 {
 #open-tutorial {
   cursor: pointer;
 }
-/*junion edits below:*/
+
 .accordion-item{
-  background-color: #30a3ff;
+  background-color: var(--accent);
   border-radius:.4rem;
   margin-bottom: 1rem;
   padding: 1rem;
@@ -1126,7 +1126,7 @@ h1 {
 
 .accordion-link{
   font-size: 1.6rem;
-  color: #fcfcfc;
+  color: var(--light-bg-alt);
   text-decoration: none;
   width: 100%;
   display: flex;
@@ -1148,7 +1148,7 @@ h1 {
 }
 
 .accordion-item.active{
-  background-color:#2e2e2e;
+  background-color:var(--dark);
   transition: 500ms;
 }
 
