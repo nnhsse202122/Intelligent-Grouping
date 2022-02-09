@@ -3,6 +3,9 @@ function seatingChart(grouping){
     statusTitle.innerText = "Seating Chart"
     switchSection(seatingChartSection)
     setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
+    if(document.querySelector('.grid').children.length <= 0) {
+      createGrid(6); // Note that this only runs if the grid class in HTML has no child elements
+    }
 }
 
 window.addEventListener("DOMContentLoaded", function() {
@@ -16,14 +19,15 @@ window.addEventListener("DOMContentLoaded", function() {
     });
   });
 
-function createGrid()
+
+function createGrid(size)
 {
-    for(let row = 0; row < 6; row++) {
-        for(let col = 0; col < 6; col++) {
-            let div = document.createElement("div");
-            let place = div.classList.add(`box [${row}][${col}]`);
-            div.appendChild(place);
-            grid.appendChild(div); // Trying to append div to grid
-        }
+  for(let row = 0; row < size; row++) {
+    for(let col = 0; col < size; col++) {
+      let div = document.createElement("div");
+      div.className = `box`;
+      console.log("test")
+      document.querySelector('.grid').appendChild(div);
     }
+  }
 }
