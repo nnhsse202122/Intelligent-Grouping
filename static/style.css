@@ -1167,13 +1167,13 @@ h1 {
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
+  gap: 0rem;
 }
 
 .box {
-  background-color: #444;
+  background-color: var(--light-bg);
   color: #fff;
-  border-radius: 5px;
+  border-radius: 1px;
 /*   padding: 20px; */
   font-size: 150%;
   cursor: pointer;
@@ -1181,6 +1181,11 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
+
+}
+
+.box:hover {
+  border: 5px solid var(--accent);
 }
 
 body {
