@@ -3,9 +3,10 @@ function seatingChart(grouping){
     statusTitle.innerText = "Seating Chart"
     switchSection(seatingChartSection)
     setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
-    getGroups(grouping)
+    populateSidebar(getGroups(grouping))
 }
 
+//returns a list of groups filled with student objects
 function getGroups(grouping){
     //making deep copy of groups for names
     const nameGroups = [];
@@ -29,14 +30,20 @@ function getGroups(grouping){
 }
 
 function populateSidebar(groups){
+    // TEMP \\
+    seatingChartSidebar = document.createElement('div')
+    seatingChartSection.appendChild(seatingChartSidebar)
+
+    //      \\
     const MAX_STUDENTS_DISPLAYED = 3 //how many student names are shown before it is cut off by ellipse (...)
     let groupNum = 1; 
     for(const group of groups){
         const groupDiv = document.createElement('div')
-        groupDiv.classList.add("group-chart-div")
+        groupDiv.classList.add("sidebar-group-div")
         groupDiv.id = `group-${groupNum}`
 
         const groupName = document.createElement("h1")
+        groupName.classList.add("sidebar-header")
         groupName.innerText = `Group ${groupNum}`
         groupDiv.appendChild(groupName)
         let displayed = 0
@@ -45,7 +52,7 @@ function populateSidebar(groups){
                 break
             }
             const studentText = document.createElement('p')
-            studentText.innerText = student.firstName + " " + student.lastName[0]
+            studentText.innerText = student.first + " " + student.last[0]
             studentText.classList.add("student-chart-name")
             groupDiv.appendChild(studentText)
             displayed++
@@ -53,8 +60,9 @@ function populateSidebar(groups){
         const ellipseEnd = document.createElement('p')
         ellipseEnd.innerText = "..."
         ellipseEnd.classList = "ellipse-text"
+        groupDiv.appendChild(ellipseEnd)
         seatingChartSidebar.appendChild(groupDiv)
         groupNum++
     }
-
+    
 }
