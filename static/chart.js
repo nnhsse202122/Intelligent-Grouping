@@ -3,7 +3,7 @@ function seatingChart(grouping){
     statusTitle.innerText = "Seating Chart"
     switchSection(seatingChartSection)
     setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
-    if(document.querySelector('.grid').children.length <= 0) {
+    if(chartGrid.children.length <= 0) {
       createGrid(6); // Note that this only runs if the grid class in HTML has no child elements
     }
 }
@@ -20,7 +20,7 @@ function createGrid(size)
       div.className = `box`;
       div.setAttribute('row',row) // The divs created for each box have two attributes, their row position and col position
       div.setAttribute('col',col) // Both positions run from 0 - 5
-      document.querySelector('.grid').appendChild(div);
+      chartGrid.appendChild(div);
     }
   }
   let boxes = document.querySelectorAll(".box");
@@ -30,4 +30,15 @@ function createGrid(size)
       console.log(`[${box.getAttribute('row')}][${box.getAttribute('col')}]`)
     });
   });
+}
+
+/**
+ * Gets rid of all current boxes inside of the grid
+ */
+function destroyGrid()
+{
+  while(chartGrid.firstChild)
+  {
+    chartGrid.removeChild(chartGrid.firstChild)
+  }
 }
