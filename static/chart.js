@@ -10,7 +10,7 @@ function seatingChart(grouping){
 
 /***
  * Creates a grid of interactable boxes
- * @param size The X and Y dimension of the box
+ * @param size The X and Y dimension of the grid
  */
 function createGrid(size)
 {
