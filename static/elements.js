@@ -40,3 +40,5 @@ const copyFormLink = document.getElementById("copy-form-link")
 const openTutorial = document.getElementById("open-tutorial")
 const tutorialSection = document.getElementById("tutorial-sec")
 const seatingChartSection = document.getElementById("seating-chart-sec")
+
+const chartGrid = document.getElementById("chart-grid")
