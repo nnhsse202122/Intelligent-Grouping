@@ -39,28 +39,42 @@ function populateSidebar(groups){
     let groupNum = 1; 
     for(const group of groups){
         const groupDiv = document.createElement('div')
-        groupDiv.classList.add("sidebar-group-div")
+        groupDiv.classList.add("chart-sidebar-group-div")
         groupDiv.id = `group-${groupNum}`
 
         const groupName = document.createElement("h1")
-        groupName.classList.add("sidebar-header")
+        groupName.classList.add("chart-sidebar-header")
         groupName.innerText = `Group ${groupNum}`
         groupDiv.appendChild(groupName)
+
+        const studentCount = document.createElement('h2')
+        studentCount.classList.add('chart-student-count')
+        let plural = ""
+        if(group.length < 2){
+            plural = "s"
+        }
+        studentCount.innerText = `${group.length} Student${plural}`
+        groupDiv.appendChild(studentCount)
+
         let displayed = 0
+        let isShortened = false;
         for(const student of group){
             if(displayed >= MAX_STUDENTS_DISPLAYED){
+                isShortened = true;
                 break
             }
             const studentText = document.createElement('p')
             studentText.innerText = student.first + " " + student.last[0]
-            studentText.classList.add("student-chart-name")
+            studentText.classList.add("chart-sidebar-text")
             groupDiv.appendChild(studentText)
             displayed++
         }
-        const ellipseEnd = document.createElement('p')
-        ellipseEnd.innerText = "..."
-        ellipseEnd.classList = "ellipse-text"
-        groupDiv.appendChild(ellipseEnd)
+        if(isShortened){
+            const ellipseEnd = document.createElement('p')
+            ellipseEnd.innerText = "..."
+            ellipseEnd.classList = "chart-sidebar-ellipse"
+            groupDiv.appendChild(ellipseEnd)
+        }
         seatingChartSidebar.appendChild(groupDiv)
         groupNum++
     }

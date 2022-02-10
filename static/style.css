@@ -1165,6 +1165,36 @@ h1 {
 }
 
 /* Seating Chart CSS */
-.sidebar-header{
-  font-size: .1em;
+.chart-sidebar-group-div{
+  border: var(--accent) solid 3px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  width: 10%;
+  height: 15%;
+  background: var(--light-bg-alt);
+}
+
+.chart-sidebar-header{
+  font-size: 1.2em;
+}
+
+.chart-student-count{
+  font-size: .8em;
+  color: var(--accent);
+}
+
+.chart-sidebar-text{
+  font-size: .7em;
+  text-align:center;
+  color: #3d3d3d; 
+  margin:4px;
+  /*slight off gray to make less important*/
+}
+
+.chart-sidebar-ellipse{
+  font-size: .8em;
+  font-weight: bold;
+  margin:4px;
+  text-align:center;
 }
