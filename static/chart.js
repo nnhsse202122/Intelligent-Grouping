@@ -30,5 +30,4 @@ function createGrid(size)
       console.log(`[${box.getAttribute('row')}][${box.getAttribute('col')}]`)
     });
   });
-
 }
