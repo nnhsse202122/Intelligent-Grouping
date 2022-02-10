@@ -8,26 +8,27 @@ function seatingChart(grouping){
     }
 }
 
-window.addEventListener("DOMContentLoaded", function() {
-    let boxes = document.querySelectorAll(".box");
-  
-    Array.from(boxes, function(box) {
-      box.addEventListener("click", function() {
-        alert(this.classList[1]);
-        // On box click function here for when we need to move groups to click location
-      });
-    });
-  });
-
-
+/***
+ * Creates a grid of interactable boxes
+ * @param size The X and Y dimension of the box
+ */
 function createGrid(size)
 {
   for(let row = 0; row < size; row++) {
     for(let col = 0; col < size; col++) {
       let div = document.createElement("div");
       div.className = `box`;
-      console.log("test")
+      div.setAttribute('row',row) // The divs created for each box have two attributes, their row position and col position
+      div.setAttribute('col',col) // Both positions run from 0 - 5
       document.querySelector('.grid').appendChild(div);
     }
   }
+  let boxes = document.querySelectorAll(".box");
+
+  Array.from(boxes, function(box) {
+    box.addEventListener("click", function() {
+      console.log(`[${box.getAttribute('row')}][${box.getAttribute('col')}]`)
+    });
+  });
+
 }
