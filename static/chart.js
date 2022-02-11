@@ -33,10 +33,10 @@ function populateSidebar(groups){
     // TEMP \\
     seatingChartSidebar = document.createElement('div')
     seatingChartSection.appendChild(seatingChartSidebar)
-
+    console.log("populateSidebar() currently putting all sidebar groups on the main area for testing, change this in chart.js")
     //      \\
     const MAX_STUDENTS_DISPLAYED = 3 //how many student names are shown before it is cut off by ellipse (...)
-    let groupNum = 1; 
+    let groupNum = 1; //current group being displauyed
     for(const group of groups){
         const groupDiv = document.createElement('div')
         groupDiv.classList.add("chart-sidebar-group-div")
@@ -50,7 +50,7 @@ function populateSidebar(groups){
         const studentCount = document.createElement('h2')
         studentCount.classList.add('chart-student-count')
         let plural = ""
-        if(group.length < 2){
+        if(group.length > 1){
             plural = "s"
         }
         studentCount.innerText = `${group.length} Student${plural}`
@@ -69,12 +69,13 @@ function populateSidebar(groups){
             groupDiv.appendChild(studentText)
             displayed++
         }
+        const ellipseEnd = document.createElement('p')
+        ellipseEnd.innerText = " "
+        ellipseEnd.classList = "chart-sidebar-ellipse"
         if(isShortened){
-            const ellipseEnd = document.createElement('p')
             ellipseEnd.innerText = "..."
-            ellipseEnd.classList = "chart-sidebar-ellipse"
-            groupDiv.appendChild(ellipseEnd)
         }
+        groupDiv.appendChild(ellipseEnd)
         seatingChartSidebar.appendChild(groupDiv)
         groupNum++
     }
