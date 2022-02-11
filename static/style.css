@@ -1164,6 +1164,47 @@ h1 {
   transform: rotate(90deg);
 }
 
+/* Seating Chart CSS */
+.chart-sidebar-group-div{
+  border: var(--accent) solid 3px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  width: 10%;
+  height: 17%;
+  background: var(--light-bg-alt);
+}
+
+.chart-sidebar-header{
+  font-size: 1.2em;
+  margin-bottom:2px;
+  
+  text-align:center;
+}
+
+.chart-student-count{
+  font-size: .8em;
+  color: var(--accent);
+  text-align:center;
+  margin-top:3px;
+  margin-bottom:1px;
+}
+
+.chart-sidebar-text{
+  font-size: .7em;
+  text-align:center;
+  color: #3d3d3d; 
+  margin:3px;
+  /*slight off gray to make less important*/
+}
+
+.chart-sidebar-ellipse{
+  font-size: .8em;
+  font-weight: bold;
+  margin-top:3px;
+  margin-bottom:1px;
+  text-align:center;
+}
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -1174,7 +1215,6 @@ h1 {
   background-color: var(--light-bg);
   color: #fff;
   border-radius: 1px;
-/*   padding: 20px; */
   font-size: 150%;
   cursor: pointer;
   
