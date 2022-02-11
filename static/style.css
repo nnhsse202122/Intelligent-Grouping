@@ -1205,3 +1205,30 @@ h1 {
   margin-bottom:1px;
   text-align:center;
 }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0rem;
+}
+
+.box {
+  background-color: var(--light-bg);
+  color: #fff;
+  border-radius: 1px;
+  font-size: 150%;
+  cursor: pointer;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.box:hover {
+  border: 5px solid var(--accent);
+}
+
+body {
+  margin: 0rem;
+  font: 12px system-ui;
+}
