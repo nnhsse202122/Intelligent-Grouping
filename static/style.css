@@ -1227,8 +1227,6 @@ h1 {
 .box:hover {
   border: 5px solid var(--accent);
 }
-
-body {
-  margin: 0rem;
-  font: 12px system-ui;
+.blue {
+  background-color: var(--accent);
 }

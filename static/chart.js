@@ -3,10 +3,12 @@ function seatingChart(grouping){
     statusTitle.innerText = "Seating Chart"
     switchSection(seatingChartSection)
     setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
-    populateSidebar(getGroups(grouping))
+    const groups = getGroups(grouping)
+    //populateSidebar(groups)
     if(chartGrid.children.length <= 0) {
         createGrid(6); // Note that this only runs if the grid class in HTML has no child elements
     }
+    createGridGroup(groups[0],2,2)
 }
 
 //returns a list of groups filled with student objects
@@ -33,11 +35,7 @@ function getGroups(grouping){
 }
 
 function populateSidebar(groups){
-    // TEMP \\
-    seatingChartSidebar = document.createElement('div')
-    seatingChartSection.appendChild(seatingChartSidebar)
-    console.log("populateSidebar() currently putting all sidebar groups on the main area for testing, change this in chart.js")
-    //      \\
+    const seatingChartSidebar = document.createElement('div') //temp PLS CHANGE JONATHAN
     const MAX_STUDENTS_DISPLAYED = 3 //how many student names are shown before it is cut off by ellipse (...)
     let groupNum = 1; //current group being displauyed
     for(const group of groups){
@@ -118,4 +116,19 @@ function destroyGrid()
   {
     chartGrid.removeChild(chartGrid.firstChild)
   }
+}
+
+/**
+ * Displays a group on the grid, scaling by size
+ * @param group The group to be displayed
+ */
+function createGridGroup(group,row,col){
+  //finding box
+  for(const box of chartGrid.children){
+    if(box.attributes.row == row && box.attributes.col == col){
+      console.log("box located");
+      box.classList.add('blue');
+    }
+  }
+  
 }
