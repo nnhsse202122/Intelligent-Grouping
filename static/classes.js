@@ -443,12 +443,50 @@ saveClassBtn.addEventListener("click", async () => {
   }
 })
 
+/**
+ * Confirmation menu that appears when deleting a class
+ */
+function deleteConfirm(id){
+  createModal("tall", (modal, exit) => {
+    modal.classList.add("confirm-deletion-modal")
+    const title = document.createElement('h1')
+    title.id = "confirm-deletion-modal-title"
+    title.innerText = "Are you sure you want to delete this class?" // Make sure to change this to state the class name
+
+    const btnDiv = document.createElement("div")
+
+    const noBtn = document.createElement('button')
+    noBtn.innerText = "Cancel"
+
+    const yesBtn = document.createElement('button')
+    yesBtn.innerText = "Delete"
+
+    noBtn.addEventListener("click", async (e) =>{
+      e.stopPropagation()
+      exit()
+      console.log("Cancelled")
+    })
+
+    yesBtn.addEventListener("click", async (e) =>{
+      e.stopPropagation()
+      deleteClass(id)
+      switchSection(welcomeSection) // Only need a section switch to make the process appear smoother
+      exit()
+    })
+
+    modal.appendChild(title)
+    modal.append(btnDiv)
+    btnDiv.append(noBtn)
+    btnDiv.append(yesBtn)
+  })
+}
+
 editClassBtn.addEventListener("click", () => {
   editClass(classes[state.info.id])
 })
 
 deleteClassBtn.addEventListener("click", () => {
-  deleteClass(state.info.id)
+  deleteConfirm(state.info.id)
 })
 
 cancelClassBtn.addEventListener("click", exitEditClass)
