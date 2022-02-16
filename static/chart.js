@@ -6,9 +6,9 @@ function seatingChart(grouping){
     const groups = getGroups(grouping)
     //populateSidebar(groups)
     if(chartGrid.children.length <= 0) {
-        createGrid(6); // Note that this only runs if the grid class in HTML has no child elements
+        createGrid(5,8); // Note that this only runs if the grid class in HTML has no child elements
     }
-    createGridGroup(groups[0],2,2)
+    createGridGroup(groups[0], getBox(2,2))
 }
 
 //returns a list of groups filled with student objects
@@ -85,12 +85,13 @@ function populateSidebar(groups){
 
 /***
  * Creates a grid of interactable boxes
- * @param size The X and Y dimension of the grid
+ * @param rows The amount of rows in the grid
+ * @param columns The amount of columns in the grid
  */
-function createGrid(size)
+function createGrid(rows,columns)
 {
-  for(let row = 0; row < size; row++) {
-    for(let col = 0; col < size; col++) {
+  for(let row = 0; row < rows; row++) {
+    for(let col = 0; col < columns; col++) {
       let div = document.createElement("div");
       div.className = `box`;
       div.setAttribute('row',row) // The divs created for each box have two attributes, their row position and col position
@@ -118,17 +119,29 @@ function destroyGrid()
   }
 }
 
+function getBox(row,col){
+  let currentRow = 0;
+  let currentCol = 0;
+  let foundBox = null;
+  for(const box of chartGrid.children){
+    currentRow = box.attributes.row.value;
+    currentCol = box.attributes.col.value;
+    if(currentRow == row && currentCol== col){
+      foundBox = box;
+      break;
+    }
+  }
+  return foundBox;
+}
+
 /**
  * Displays a group on the grid, scaling by size
  * @param group The group to be displayed
  */
-function createGridGroup(group,row,col){
-  //finding box
-  for(const box of chartGrid.children){
-    if(box.attributes.row == row && box.attributes.col == col){
-      console.log("box located");
-      box.classList.add('blue');
-    }
-  }
+function createGridGroup(group, box){
+  const gridGroupContainer = document.createElement('div');
+  const title = document.createElement('h1');
+  const namesDiv = document.createElement('div');
+
   
 }
