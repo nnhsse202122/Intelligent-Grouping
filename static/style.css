@@ -1207,7 +1207,8 @@ h1 {
 }
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(12%, 1fr));
+  grid-template-rows: repeat(auto-fill, minmax(20%, 1fr));
   gap: 0rem;
 }
 
@@ -1225,7 +1226,7 @@ h1 {
 }
 
 .box:hover {
-  border: 5px solid var(--accent);
+  border: 2px solid var(--accent);
 }
 .blue {
   background-color: var(--accent);
