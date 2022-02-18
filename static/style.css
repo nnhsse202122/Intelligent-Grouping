@@ -754,6 +754,11 @@ h1 {
   height: 600px;
 }
 
+.modal.wide {
+  width: 600px;
+  height: 250px;
+}
+
 .arrange-options-modal {
   display: flex;
   flex-direction: column;
@@ -1029,6 +1034,40 @@ h1 {
 
 .add-preference-modal > button {
   width: 100%;
+}
+
+.confirm-deletion-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+.confirm-deletion-modal > div{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.confirm-deletion-modal > div > button{
+  background-color: transparent;
+  border: var(--accent) 3px solid;
+  color: var(--dark);
+  cursor: pointer;
+  text-align: center;
+  border-radius: 16px;
+  font-size: 1.3em;
+  padding: 8px 2px;
+  outline: none;
+  width: 90%;
+  margin: 8px;
+  margin-top:20px;
+}
+
+#confirm-deletion-modal-title{
+  text-align:center;
 }
 
 .show-actions-modal {
