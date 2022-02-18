@@ -445,13 +445,15 @@ saveClassBtn.addEventListener("click", async () => {
 
 /**
  * Confirmation menu that appears when deleting a class
+ * 
+ * @param id The ID of the class being deleted
  */
 function deleteConfirm(id){
-  createModal("tall", (modal, exit) => {
+  createModal("wide", (modal, exit) => {
     modal.classList.add("confirm-deletion-modal")
     const title = document.createElement('h1')
     title.id = "confirm-deletion-modal-title"
-    title.innerText = "Are you sure you want to delete this class?" // Make sure to change this to state the class name
+    title.innerText = `Delete '${classes[id].obj.name}'?`
 
     const btnDiv = document.createElement("div")
 
@@ -460,11 +462,11 @@ function deleteConfirm(id){
 
     const yesBtn = document.createElement('button')
     yesBtn.innerText = "Delete"
+    yesBtn.id = "delete-group-button"
 
     noBtn.addEventListener("click", async (e) =>{
       e.stopPropagation()
       exit()
-      console.log("Cancelled")
     })
 
     yesBtn.addEventListener("click", async (e) =>{
