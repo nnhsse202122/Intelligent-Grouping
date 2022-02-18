@@ -8,26 +8,30 @@ function seatingChart(grouping){
     if(chartGrid.children.length <= 0) {
         createGrid(5,8); // Note that this only runs if the grid class in HTML has no child elements
     }
-    createGridGroup(groups[0], getBox(2,2))
+    createGridGroup(groups[0], getBox(2,2));
 }
 
 //returns a list of groups filled with student objects
 function getGroups(grouping){
     //making deep copy of groups for names
     const nameGroups = [];
-    for(const group of grouping.groups){
-        nameGroups.push([...group])
+    for(let i = 0; i < grouping.groups.length; i++){
+        const list = [...grouping.groups[i]];
+        list.unshift(i+1);
+        nameGroups.push(list);
     }
     
     //changing from ids to names
     for(const student of classes[state.info.id].obj.students){
         for(const group of nameGroups){
+            
             for(let i = 0; i < group.length; i++){
                 //console.log(`STU: ${student.id} vs GROUP: ${group[i]}`)
                 if(student.id == group[i]){
                     group[i] = student; //changes it to a student OBJECT (not string)
                 }
             }
+            
         }
     }
     
@@ -51,7 +55,7 @@ function populateSidebar(groups){
         const studentCount = document.createElement('h2')
         studentCount.classList.add('chart-student-count')
         let plural = ""
-        if(group.length > 1){
+        if(group.length-1 > 1){
             plural = "s"
         }
         studentCount.innerText = `${group.length} Student${plural}`
@@ -60,9 +64,12 @@ function populateSidebar(groups){
         let displayed = 0
         let isShortened = false;
         for(const student of group){
+            if(student == group[0]){
+              continue; //skipping the group number
+            }
             if(displayed >= MAX_STUDENTS_DISPLAYED){
                 isShortened = true;
-                break
+                break;
             }
             const studentText = document.createElement('p')
             studentText.innerText = student.first + " " + student.last[0]
@@ -140,8 +147,22 @@ function getBox(row,col){
  */
 function createGridGroup(group, box){
   const gridGroupContainer = document.createElement('div');
+  gridGroupContainer.classList.add('grid-group-container');
   const title = document.createElement('h1');
-  const namesDiv = document.createElement('div');
+  title.classList.add("grid-group-title");
+  title.innerText = `Group ${group[0]}:`;
 
-  
+  const namesList = document.createElement('ul');
+  namesList.classList.add('grid-names-list');
+
+  for(let i = 1; i < group.length;i++){
+    const studentName = document.createElement('li');
+    const student = group[i];
+    studentName.innerText = `${student.first} ${student.last[0]}`;
+    studentName.classList.add('grid-name');
+    namesList.appendChild(studentName);
+  }
+  gridGroupContainer.appendChild(title);
+  gridGroupContainer.appendChild(namesList);
+  box.appendChild(gridGroupContainer);
 }

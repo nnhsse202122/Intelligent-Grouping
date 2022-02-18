@@ -1228,6 +1228,20 @@ h1 {
 .box:hover {
   border: 2px solid var(--accent);
 }
-.blue {
-  background-color: var(--accent);
+
+.grid-group-title{
+  font-size: .5em;
+}
+
+.grid-names-list{
+  columns:30px 2;
+}
+
+.grid-name{
+  font-size: .3em;
+}
+
+.grid-group-container{
+  width: 100%;
+  height: 100%;
 }
