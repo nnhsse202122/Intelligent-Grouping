@@ -1229,19 +1229,25 @@ h1 {
   border: 2px solid var(--accent);
 }
 
+
 .grid-group-title{
-  font-size: .5em;
+  font-size: .7em;
+  text-align: center;
 }
 
 .grid-names-list{
   columns:30px 2;
+  padding-left: 15%;
 }
 
 .grid-name{
-  font-size: .3em;
+  font-size: .5em;
+  color: var(--dark);
 }
 
 .grid-group-container{
-  width: 100%;
-  height: 100%;
+  width: 95%;
+  height: 95%;
+  border-radius: 4px;
+  border: 1px solid var(--dark);
 }
