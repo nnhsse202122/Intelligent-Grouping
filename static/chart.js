@@ -141,6 +141,10 @@ function getBox(row,col){
   return foundBox;
 }
 
+function clearBox(row,col){
+  getBox(row,col)
+}
+
 /**
  * Displays a group on the grid, scaling by size
  * @param group The group to be displayed
