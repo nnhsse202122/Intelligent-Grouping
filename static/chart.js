@@ -8,7 +8,11 @@ function seatingChart(grouping){
     if(chartGrid.children.length <= 0) {
         createGrid(5,8); // Note that this only runs if the grid class in HTML has no child elements
     }
+    //all testing of grid groups below
+    clearBox(2,2);
+    clearBox(3,2);
     createGridGroup(groups[0], getBox(2,2));
+    createGridGroup(groups[1], getBox(3,2));
 }
 
 //returns a list of groups filled with student objects
@@ -126,6 +130,12 @@ function destroyGrid()
   }
 }
 
+/**
+ * 
+ * @param row the row of the box in the seating chart grid 
+ * @param col the column of the box in the seating chart grid
+ * @returns the DOM div of the box in the seating chart grid
+ */
 function getBox(row,col){
   let currentRow = 0;
   let currentCol = 0;
@@ -142,7 +152,12 @@ function getBox(row,col){
 }
 
 function clearBox(row,col){
-  getBox(row,col)
+  const box = getBox(row,col);
+  if(box.firstChild){
+    box.removeChild(box.firstChild);
+    return true;
+  }
+  return false;
 }
 
 /**
