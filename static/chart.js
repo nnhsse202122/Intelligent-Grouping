@@ -3,7 +3,7 @@ function seatingChart(grouping){
     statusTitle.innerText = "Seating Chart"
     switchSection(seatingChartSection)
     setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
-    populateSidebar(getGroups(grouping))
+    //populateSidebar(getGroups(grouping))
     if(chartGrid.children.length <= 0) {
         createGrid(6); // Note that this only runs if the grid class in HTML has no child elements
     }
@@ -91,6 +91,7 @@ function populateSidebar(groups){
  */
 function createGrid(size)
 {
+  document.querySelector('.grid').style.setProperty('--size', size) // Changes Grid size in CSS
   for(let row = 0; row < size; row++) {
     for(let col = 0; col < size; col++) {
       let div = document.createElement("div");
