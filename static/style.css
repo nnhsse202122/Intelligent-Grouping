@@ -1164,7 +1164,7 @@ h1 {
   transform: rotate(90deg);
 }
 
-.sidebar{
+#chart-sidebar{
   position: fixed;
   width: 240px;
   right: -240px;
@@ -1172,16 +1172,7 @@ h1 {
   background: #1e1e1e;
   transition: all .5s ease;
 }
-.sidebar header{
-  font-size: 28px;
-  color: white;
-  line-height: 70px;
-  text-align: center;
-  background: #1b1b1b;
-  user-select: none;
-  font-family: 'Montserrat', sans-serif;
-}
-.sidebar a{
+#chart-sidebar a{
   display: block;
   height: 65px;
   width: 100%;
@@ -1195,22 +1186,12 @@ h1 {
   font-family: 'Open Sans', sans-serif;
   transition: all .5s ease;
 }
-a.active,a:hover{
-  border-left: 5px solid #b93632;
-  color: #b93632;
-}
-.sidebar a i{
+#chart-sidebar i{
   font-size: 23px;
   margin-right: 16px;
+  color: white;
 }
-.sidebar a span{
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-#check{
-  display: none;
-}
-label #btn,label #cancel{
+#chart-button #btn,#chart-button #cancel{
   position: absolute;
   cursor: pointer;
   color: white;
@@ -1226,51 +1207,20 @@ label #btn,label #cancel{
   line-height: 45px;
   transition: all .5s ease;
 }
-label #cancel{
+#chart-button #cancel{
   opacity: 0;
   visibility: hidden;
 }
-#check:checked ~ .sidebar{
+#chart-sidebar.active{
   right: 0;
 }
-#check:checked ~ label #btn{
+#chart-button.active #btn{
   right: 245px;
   opacity: 0;
   visibility: hidden;
 }
-#check:checked ~ label #cancel{
+#chart-button.active #cancel{
   right: 270px;
   opacity: 1;
   visibility: visible;
-}
-@media(max-width : 860px){
-  .sidebar{
-    height: auto;
-    width: 70px;
-    left: 0;
-    margin: 100px 0;
-  }
-  header,#btn,#cancel{
-    display: none;
-  }
-  span{
-    position: absolute;
-    margin-left: 23px;
-    opacity: 0;
-    visibility: hidden;
-  }
-  .sidebar a{
-    height: 60px;
-  }
-  .sidebar a i{
-    margin-left: -10px;
-  }
-  a:hover {
-    width: 200px;
-    background: inherit;
-  }
-  .sidebar a:hover span{
-    opacity: 1;
-    visibility: visible;
-  }
 }

@@ -4,3 +4,9 @@ function seatingChart(grouping){
     switchSection(seatingChartSection)
     setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
 }
+
+//expand and hide menu
+document.getElementById('chart-button').addEventListener('click', function(){
+    this.classList.toggle('active')
+    document.getElementById('chart-sidebar').classList.toggle('active')
+})
