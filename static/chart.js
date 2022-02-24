@@ -101,6 +101,8 @@ function populateSidebar(groups){
  */
 function createGrid(rows,columns)
 {
+  document.querySelector('.grid').style.setProperty('--rowSize', rows) // Changes Grid size in CSS
+  document.querySelector('.grid').style.setProperty('--colSize', columns) // Changes Grid size in CSS
   for(let row = 0; row < rows; row++) {
     for(let col = 0; col < columns; col++) {
       let div = document.createElement("div");
