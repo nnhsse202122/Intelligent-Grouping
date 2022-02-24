@@ -3,29 +3,39 @@ function seatingChart(grouping){
     statusTitle.innerText = "Seating Chart"
     switchSection(seatingChartSection)
     setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
-    populateSidebar(getGroups(grouping))
+    const groups = getGroups(grouping)
+    //populateSidebar(groups)
     if(chartGrid.children.length <= 0) {
-        createGrid(6); // Note that this only runs if the grid class in HTML has no child elements
+        createGrid(5,8); // Note that this only runs if the grid class in HTML has no child elements
     }
+    //all testing of grid groups below
+    clearBox(2,2);
+    clearBox(3,2);
+    createGridGroup(groups[0], getBox(2,2));
+    createGridGroup(groups[1], getBox(3,2));
 }
 
 //returns a list of groups filled with student objects
 function getGroups(grouping){
     //making deep copy of groups for names
     const nameGroups = [];
-    for(const group of grouping.groups){
-        nameGroups.push([...group])
+    for(let i = 0; i < grouping.groups.length; i++){
+        const list = [...grouping.groups[i]];
+        list.unshift(i+1);
+        nameGroups.push(list);
     }
     
     //changing from ids to names
     for(const student of classes[state.info.id].obj.students){
         for(const group of nameGroups){
+            
             for(let i = 0; i < group.length; i++){
                 //console.log(`STU: ${student.id} vs GROUP: ${group[i]}`)
                 if(student.id == group[i]){
                     group[i] = student; //changes it to a student OBJECT (not string)
                 }
             }
+            
         }
     }
     
@@ -33,11 +43,7 @@ function getGroups(grouping){
 }
 
 function populateSidebar(groups){
-    // TEMP \\
-    seatingChartSidebar = document.createElement('div')
-    seatingChartSection.appendChild(seatingChartSidebar)
-    console.log("populateSidebar() currently putting all sidebar groups on the main area for testing, change this in chart.js")
-    //      \\
+    const seatingChartSidebar = document.createElement('div') //temp PLS CHANGE JONATHAN
     const MAX_STUDENTS_DISPLAYED = 3 //how many student names are shown before it is cut off by ellipse (...)
     let groupNum = 1; //current group being displauyed
     for(const group of groups){
@@ -53,7 +59,7 @@ function populateSidebar(groups){
         const studentCount = document.createElement('h2')
         studentCount.classList.add('chart-student-count')
         let plural = ""
-        if(group.length > 1){
+        if(group.length-1 > 1){
             plural = "s"
         }
         studentCount.innerText = `${group.length} Student${plural}`
@@ -62,9 +68,12 @@ function populateSidebar(groups){
         let displayed = 0
         let isShortened = false;
         for(const student of group){
+            if(student == group[0]){
+              continue; //skipping the group number
+            }
             if(displayed >= MAX_STUDENTS_DISPLAYED){
                 isShortened = true;
-                break
+                break;
             }
             const studentText = document.createElement('p')
             studentText.innerText = student.first + " " + student.last[0]
@@ -87,12 +96,13 @@ function populateSidebar(groups){
 
 /***
  * Creates a grid of interactable boxes
- * @param size The X and Y dimension of the grid
+ * @param rows The amount of rows in the grid
+ * @param columns The amount of columns in the grid
  */
-function createGrid(size)
+function createGrid(rows,columns)
 {
-  for(let row = 0; row < size; row++) {
-    for(let col = 0; col < size; col++) {
+  for(let row = 0; row < rows; row++) {
+    for(let col = 0; col < columns; col++) {
       let div = document.createElement("div");
       div.className = `box`;
       div.setAttribute('row',row) // The divs created for each box have two attributes, their row position and col position
@@ -118,4 +128,60 @@ function destroyGrid()
   {
     chartGrid.removeChild(chartGrid.firstChild)
   }
+}
+
+/**
+ * 
+ * @param row the row of the box in the seating chart grid 
+ * @param col the column of the box in the seating chart grid
+ * @returns the DOM div of the box in the seating chart grid
+ */
+function getBox(row,col){
+  let currentRow = 0;
+  let currentCol = 0;
+  let foundBox = null;
+  for(const box of chartGrid.children){
+    currentRow = box.attributes.row.value;
+    currentCol = box.attributes.col.value;
+    if(currentRow == row && currentCol== col){
+      foundBox = box;
+      break;
+    }
+  }
+  return foundBox;
+}
+
+function clearBox(row,col){
+  const box = getBox(row,col);
+  if(box.firstChild){
+    box.removeChild(box.firstChild);
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Displays a group on the grid, scaling by size
+ * @param group The group to be displayed
+ */
+function createGridGroup(group, box){
+  const gridGroupContainer = document.createElement('div');
+  gridGroupContainer.classList.add('grid-group-container');
+  const title = document.createElement('h1');
+  title.classList.add("grid-group-title");
+  title.innerText = `Group ${group[0]}:`;
+
+  const namesList = document.createElement('ul');
+  namesList.classList.add('grid-names-list');
+
+  for(let i = 1; i < group.length;i++){
+    const studentName = document.createElement('li');
+    const student = group[i];
+    studentName.innerText = `${student.first} ${student.last[0]}`;
+    studentName.classList.add('grid-name');
+    namesList.appendChild(studentName);
+  }
+  gridGroupContainer.appendChild(title);
+  gridGroupContainer.appendChild(namesList);
+  box.appendChild(gridGroupContainer);
 }
