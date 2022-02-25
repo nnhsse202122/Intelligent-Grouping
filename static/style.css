@@ -1169,58 +1169,52 @@ h1 {
   width: 240px;
   right: -240px;
   height: 100%;
-  background: #1e1e1e;
+  background: var(--dark);
   transition: all .5s ease;
 }
-#chart-sidebar a{
-  display: block;
-  height: 65px;
-  width: 100%;
-  color: white;
-  line-height: 65px;
-  padding-left: 30px;
-  box-sizing: border-box;
-  border-bottom: 1px solid black;
-  border-top: 1px solid rgba(255,255,255,.1);
-  border-left: 5px solid transparent;
-  font-family: 'Open Sans', sans-serif;
-  transition: all .5s ease;
+#chart-sidebar .buttons{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 10px;
 }
 #chart-sidebar i{
-  font-size: 23px;
-  margin-right: 16px;
+  cursor: pointer;
   color: white;
+  border-radius: 5px;
+  top: 30px;
+  right: 30px;
+  font-size: 30px;
+  background: var(--accent);
+  height: 45px;
+  width: 105px;
+  text-align: center;
+  line-height: 45px;
 }
-#chart-button #btn,#chart-button #cancel{
+#chart-button #angle{
   position: absolute;
   cursor: pointer;
   color: white;
   border-radius: 5px;
-  border: 1px solid #262626;
-  top: 30px;
-  right: 30px;
-  font-size: 29px;
-  background: #88aaff;
+  top: 10px;
+  right: 10px;
+  font-size: 45px;
+  background: var(--accent);
   height: 45px;
   width: 45px;
   text-align: center;
   line-height: 45px;
   transition: all .5s ease;
 }
-#chart-button #cancel{
-  opacity: 0;
-  visibility: hidden;
-}
 #chart-sidebar.active{
   right: 0;
 }
-#chart-button.active #btn{
-  right: 245px;
-  opacity: 0;
-  visibility: hidden;
+#chart-button.active #angle{
+  right: 250px;
 }
-#chart-button.active #cancel{
-  right: 270px;
-  opacity: 1;
-  visibility: visible;
+#chart-button i{
+  transition: all .5s ease;
+}
+#chart-button.active i{
+  transform: rotate(180deg);
 }
