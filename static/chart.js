@@ -3,13 +3,6 @@ function seatingChart(grouping){
     statusTitle.innerText = "Seating Chart"
     switchSection(seatingChartSection)
     setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
-}
-
-//expand and hide menu
-document.getElementById('chart-button').addEventListener('click', function(){
-    this.classList.toggle('active')
-    document.getElementById('chart-sidebar').classList.toggle('active')
-})
 
     const groups = getGroups(grouping)
     //populateSidebar(groups)
@@ -17,11 +10,14 @@ document.getElementById('chart-button').addEventListener('click', function(){
         createGrid(5,8); // Note that this only runs if the grid class in HTML has no child elements
     }
     //all testing of grid groups below
-    clearBox(2,2);
-    clearBox(3,2);
-    createGridGroup(groups[0], getBox(2,2));
-    createGridGroup(groups[1], getBox(3,2));
 }
+
+//expand and hide menu
+document.getElementById('chart-button').addEventListener('click', function(){
+  this.classList.toggle('active')
+  document.getElementById('chart-sidebar').classList.toggle('active')
+})
+
 
 //returns a list of groups filled with student objects
 function getGroups(grouping){
@@ -125,6 +121,7 @@ function createGrid(rows,columns)
   Array.from(boxes, function(box) {
     box.addEventListener("click", function() {
       console.log(`[${box.getAttribute('row')}][${box.getAttribute('col')}]`)
+      createGridGroup(GetGroups(insertGrouphere)[0],getBox(row,col))
     });
   });
 }
