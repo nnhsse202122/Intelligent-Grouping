@@ -1,18 +1,16 @@
-//all the code for the seating chart of groups 
-function seatingChart(grouping){
-    statusTitle.innerText = "Seating Chart"
-    switchSection(seatingChartSection)
-    setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
-}
-
 //expand and hide menu
 document.getElementById('chart-button').addEventListener('click', function(){
     this.classList.toggle('active')
     document.getElementById('chart-sidebar').classList.toggle('active')
 })
 
+//all the code for the seating chart of groups 
+function seatingChart(grouping){
+    statusTitle.innerText = "Seating Chart"
+    switchSection(seatingChartSection)
+    setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
     const groups = getGroups(grouping)
-    //populateSidebar(groups)
+    populateSidebar(groups)
     if(chartGrid.children.length <= 0) {
         createGrid(5,8); // Note that this only runs if the grid class in HTML has no child elements
     }
@@ -51,7 +49,7 @@ function getGroups(grouping){
 }
 
 function populateSidebar(groups){
-    const seatingChartSidebar = document.createElement('div') //temp PLS CHANGE JONATHAN
+    const seatingChartSidebar = document.getElementById('chart-sidebar') //temp PLS CHANGE JONATHAN
     const MAX_STUDENTS_DISPLAYED = 3 //how many student names are shown before it is cut off by ellipse (...)
     let groupNum = 1; //current group being displauyed
     for(const group of groups){
