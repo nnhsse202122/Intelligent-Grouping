@@ -754,6 +754,11 @@ h1 {
   height: 600px;
 }
 
+.modal.wide {
+  width: 600px;
+  height: 250px;
+}
+
 .arrange-options-modal {
   display: flex;
   flex-direction: column;
@@ -1031,6 +1036,40 @@ h1 {
   width: 100%;
 }
 
+.confirm-deletion-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+.confirm-deletion-modal > div{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.confirm-deletion-modal > div > button{
+  background-color: transparent;
+  border: var(--accent) 3px solid;
+  color: var(--dark);
+  cursor: pointer;
+  text-align: center;
+  border-radius: 16px;
+  font-size: 1.3em;
+  padding: 8px 2px;
+  outline: none;
+  width: 90%;
+  margin: 8px;
+  margin-top:20px;
+}
+
+#confirm-deletion-modal-title{
+  text-align:center;
+}
+
 .show-actions-modal {
   display: flex;
   flex-direction: column;
@@ -1164,6 +1203,7 @@ h1 {
   transform: rotate(90deg);
 }
 
+/* Seating Chart CSS */
 #chart-sidebar{
   position: fixed;
   width: 240px;
@@ -1217,4 +1257,95 @@ h1 {
 }
 #chart-button.active i{
   transform: rotate(180deg);
+}
+
+.chart-sidebar-group-div{
+  border: var(--accent) solid 3px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  width: 10%;
+  height: 17%;
+  background: var(--light-bg-alt);
+}
+
+.chart-sidebar-header{
+  font-size: 1.2em;
+  margin-bottom:2px;
+  
+  text-align:center;
+}
+
+.chart-student-count{
+  font-size: .8em;
+  color: var(--accent);
+  text-align:center;
+  margin-top:3px;
+  margin-bottom:1px;
+}
+
+.chart-sidebar-text{
+  font-size: .7em;
+  text-align:center;
+  color: #3d3d3d; 
+  margin:3px;
+  /*slight off gray to make less important*/
+}
+
+.chart-sidebar-ellipse{
+  font-size: .8em;
+  font-weight: bold;
+  margin-top:3px;
+  margin-bottom:1px;
+  text-align:center;
+}
+.grid {
+  --rowSize: 6;
+  --colSize: 6;
+  display: grid;
+  grid-template-columns: repeat(var(--colSize), 1fr);
+  grid-template-rows: repeat(var(--rowSize), 1fr);
+  gap: 0rem;
+}
+
+.box {
+  background-color: var(--light-bg);
+  color: #fff;
+  border-radius: 1px;
+  font-size: 150%;
+  cursor: pointer;
+  padding-top:1px;
+  padding-left: 1px;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.box:hover {
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+}
+
+.grid-group-title{
+  font-size: .7em;
+  text-align: center;
+}
+
+.grid-names-list{
+  columns:30px 2;
+  padding-left: 15%;
+}
+
+.grid-name{
+  font-size: .4em;
+  color: var(--dark);
+}
+
+.grid-group-container{
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  border: 1px solid var(--dark);
 }
