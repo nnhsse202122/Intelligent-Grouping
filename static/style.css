@@ -1211,6 +1211,7 @@ h1 {
   height: 100%;
   background: var(--dark);
   transition: all .5s ease;
+  overflow-y:auto;
 }
 #chart-sidebar .buttons{
   display: flex;
