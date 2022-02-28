@@ -1349,3 +1349,9 @@ h1 {
   border-radius: 4px;
   border: 1px solid var(--dark);
 }
+
+.no-size{
+  width: 0%;
+  height: 0%;
+  display: contents;
+}
