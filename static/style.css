@@ -1218,11 +1218,12 @@ h1 {
   flex-direction: row;
   justify-content: space-between;
   margin: 10px;
+  gap: 10px;
 }
 #chart-sidebar i{
   cursor: pointer;
   color: var(--light-bg-alt);
-  border-radius: 5px;
+  border-radius: 8px;
   top: 30px;
   right: 30px;
   font-size: 30px;
@@ -1236,7 +1237,7 @@ h1 {
   position: absolute;
   cursor: pointer;
   color: var(--light-bg-alt);
-  border-radius: 5px;
+  border-radius: 8px;
   top: 10px;
   right: 10px;
   font-size: 45px;
@@ -1265,9 +1266,10 @@ h1 {
   border-radius: 8px;
   display: flex;
   flex-direction: column;
-  width: 10%;
+  width: auto;
   height: 17%;
   background: var(--light-bg-alt);
+  margin: 10px;
 }
 
 .chart-sidebar-header{
