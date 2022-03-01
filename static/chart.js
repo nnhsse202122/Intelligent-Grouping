@@ -10,6 +10,7 @@ function seatingChart(grouping){
     switchSection(seatingChartSection)
     setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
     const groups = getGroups(grouping)
+    clearSidebar()
     populateSidebar(groups)
     if(chartGrid.children.length <= 0) {
         createGrid(5,8); // Note that this only runs if the grid class in HTML has no child elements
@@ -98,6 +99,13 @@ function populateSidebar(groups){
         groupNum++
     }
     
+}
+
+function clearSidebar() { //fix later lol
+  const seatingChartSidebar = document.getElementById('chart-sidebar')
+  while (seatingChartSidebar.firstChild) {
+    seatingChartSidebar.removeChild(seatingChartSidebar.firstChild);
+  }
 }
 
 /***
