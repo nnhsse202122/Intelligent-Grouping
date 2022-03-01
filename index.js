@@ -51,7 +51,11 @@ const userSchema = new mongoose.Schema({
           id: String,
           name: String,
           excluded: [],
-          groups: [[String]],
+          groups: [{
+            ids: [String],
+            row: Number,
+            col: Number,
+          }],
         }
       ]
     }
@@ -316,13 +320,17 @@ function makeGroupsByNumGroups(students, numGroups) {
   students = [...students]
   let groups = []
   for (let i = 0; i < numGroups; i++) {
-    groups.push([])
+    groups.push({
+      ids: [],
+      row: -1,
+      col: -1,
+    })
   }
 
   let counter = 0
   while (students.length) {
     const randomIndex = Math.floor(Math.random() * students.length)
-    groups[counter].push(students[randomIndex])
+    groups[counter].ids.push(students[randomIndex])
     students.splice(randomIndex, 1)
     counter = (counter+1) % groups.length
   }
@@ -338,14 +346,18 @@ function makeGroupsByNumStudents(students, numStudents) {
   }
   
   for (let i = 0; i < numGroups; i++) {
-    groups.push([])
+    groups.push({
+      ids: [],
+      row: -1,
+      col: -1,
+    })
   }
 
   let counter = 0
   
   while (students.length) {
     const randomIndex = Math.floor(Math.random() * students.length)
-    groups[counter].push(students[randomIndex])
+    groups[counter].ids.push(students[randomIndex])
     students.splice(randomIndex, 1)
     counter = (counter+1) % groups.length
   }

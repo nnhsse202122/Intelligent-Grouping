@@ -142,7 +142,7 @@ function editGrouping(grouping) {
     groupNameInput.value = grouping.name
     initialName = grouping.name
     switchSection(editGroupSection)
-    setState(6, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
+    setState(6, {id: state.info.id, groupingId: grouping.id})
   } else {
     statusTitle.innerText = "Create Grouping"
     groupNameInput.value = ""
@@ -448,7 +448,7 @@ function showActionsModal(grouping,groupingContainer){
     })
     let csvText = "Pre-assign Room Name,Email Address\n"
     for (let i = 0; i < grouping.groups.length; i++) {
-      for (const stu of grouping.groups[i]) {
+      for (const stu of grouping.groups.ids[i]) {
         csvText += `group${i+1},${classes[state.info.id].obj.students.find(s => s.id == stu).email}\n`
       }
     }
