@@ -49,7 +49,7 @@ function getGroups(grouping){
 }
 
 function populateSidebar(groups){
-    const seatingChartSidebar = document.getElementById('chart-sidebar') //temp PLS CHANGE JONATHAN
+    const seatingChartSidebar = document.getElementById('chart-sidebar')
     const MAX_STUDENTS_DISPLAYED = 3 //how many student names are shown before it is cut off by ellipse (...)
     let groupNum = 1; //current group being displauyed
     for(const group of groups){
