@@ -4,10 +4,10 @@ function seatingChart(grouping){
     switchSection(seatingChartSection)
     setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
 
-    const groups = getGroups(grouping)
+    let groups = getGroups(grouping)
     //populateSidebar(groups)
     if(chartGrid.children.length <= 0) {
-        createGrid(5,8); // Note that this only runs if the grid class in HTML has no child elements
+        createGrid(5,8,groups); // Note that this only runs if the grid class in HTML has no child elements
     }
     //all testing of grid groups below
 }
@@ -103,7 +103,7 @@ function populateSidebar(groups){
  * @param rows The amount of rows in the grid
  * @param columns The amount of columns in the grid
  */
-function createGrid(rows,columns)
+function createGrid(rows,columns,gr)
 {
   document.querySelector('.grid').style.setProperty('--rowSize', rows) // Changes Grid size in CSS
   document.querySelector('.grid').style.setProperty('--colSize', columns) // Changes Grid size in CSS
@@ -121,7 +121,12 @@ function createGrid(rows,columns)
   Array.from(boxes, function(box) {
     box.addEventListener("click", function() {
       console.log(`[${box.getAttribute('row')}][${box.getAttribute('col')}]`)
-      createGridGroup(GetGroups(insertGrouphere)[0],getBox(row,col))
+      let selectedB = getBox(box.getAttribute('row'),box.getAttribute('col'))
+      if(box.querySelector(".grid-group-container")) {
+        box.removeChild(box.querySelector(".grid-group-container"))
+      } else {
+        createGridGroup(gr[0],selectedB)
+      }
     });
   });
 }
