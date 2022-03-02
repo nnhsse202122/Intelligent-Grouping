@@ -1,9 +1,4 @@
-//all the code for the seating chart of groups 
-function seatingChart(grouping){
-    statusTitle.innerText = "Seating Chart"
-    switchSection(seatingChartSection)
-    setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
-}
+let selectedGroup = null;
 
 //expand and hide menu
 document.getElementById('chart-button').addEventListener('click', function(){
@@ -11,17 +6,26 @@ document.getElementById('chart-button').addEventListener('click', function(){
     document.getElementById('chart-sidebar').classList.toggle('active')
 })
 
+//all the code for the seating chart of groups 
+function seatingChart(grouping){
+    statusTitle.innerText = "Seating Chart"
+    switchSection(seatingChartSection)
+    setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
     const groups = getGroups(grouping)
-    //populateSidebar(groups)
+    //clearSidebar()
+    populateSidebar(groups)
     if(chartGrid.children.length <= 0) {
         createGrid(5,8); // Note that this only runs if the grid class in HTML has no child elements
     }
     //all testing of grid groups below
-    clearBox(2,2);
-    clearBox(3,2);
-    createGridGroup(groups[0], getBox(2,2));
-    createGridGroup(groups[1], getBox(3,2));
 }
+
+//expand and hide menu
+document.getElementById('chart-button').addEventListener('click', function(){
+  this.toggle('active')
+  document.getElementById('chart-sidebar').classList.toggle('active')
+})
+
 
 //returns a list of groups filled with student objects
 function getGroups(grouping){
@@ -51,7 +55,7 @@ function getGroups(grouping){
 }
 
 function populateSidebar(groups){
-    const seatingChartSidebar = document.createElement('div') //temp PLS CHANGE JONATHAN
+    const seatingChartSidebar = document.getElementById('chart-sidebar')
     const MAX_STUDENTS_DISPLAYED = 3 //how many student names are shown before it is cut off by ellipse (...)
     let groupNum = 1; //current group being displauyed
     for(const group of groups){
@@ -96,10 +100,20 @@ function populateSidebar(groups){
             ellipseEnd.innerText = "..."
         }
         groupDiv.appendChild(ellipseEnd)
+        groupDiv.addEventListener("click", function() {
+          selectedGroup = group;
+          console.log(selectedGroup)
+        });
         seatingChartSidebar.appendChild(groupDiv)
         groupNum++
     }
-    
+}
+
+function clearSidebar() { //fix later lol
+  const seatingChartSidebar = document.getElementById('chart-sidebar')
+  while (seatingChartSidebar.firstChild) {
+    seatingChartSidebar.removeChild(seatingChartSidebar.firstChild);
+  }
 }
 
 /***
@@ -125,6 +139,12 @@ function createGrid(rows,columns)
   Array.from(boxes, function(box) {
     box.addEventListener("click", function() {
       console.log(`[${box.getAttribute('row')}][${box.getAttribute('col')}]`)
+      let selectedB = getBox(box.getAttribute('row'),box.getAttribute('col'))
+      if(box.querySelector(".grid-group-container")) {
+        box.removeChild(box.querySelector(".grid-group-container"))
+      } else {
+        createGridGroup(selectedGroup,selectedB)
+      }
     });
   });
 }
