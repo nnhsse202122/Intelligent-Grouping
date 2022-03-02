@@ -1,20 +1,28 @@
+let selectedGroup = null;
+
+//expand and hide menu
+document.getElementById('chart-button').addEventListener('click', function(){
+    this.classList.toggle('active')
+    document.getElementById('chart-sidebar').classList.toggle('active')
+})
+
 //all the code for the seating chart of groups 
 function seatingChart(grouping){
     statusTitle.innerText = "Seating Chart"
     switchSection(seatingChartSection)
     setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
-
-    let groups = getGroups(grouping)
-    //populateSidebar(groups)
+    const groups = getGroups(grouping)
+    //clearSidebar()
+    populateSidebar(groups)
     if(chartGrid.children.length <= 0) {
-        createGrid(5,8,groups); // Note that this only runs if the grid class in HTML has no child elements
+        createGrid(5,8); // Note that this only runs if the grid class in HTML has no child elements
     }
     //all testing of grid groups below
 }
 
 //expand and hide menu
 document.getElementById('chart-button').addEventListener('click', function(){
-  this.classList.toggle('active')
+  this.toggle('active')
   document.getElementById('chart-sidebar').classList.toggle('active')
 })
 
@@ -47,7 +55,7 @@ function getGroups(grouping){
 }
 
 function populateSidebar(groups){
-    const seatingChartSidebar = document.createElement('div') //temp PLS CHANGE JONATHAN
+    const seatingChartSidebar = document.getElementById('chart-sidebar')
     const MAX_STUDENTS_DISPLAYED = 3 //how many student names are shown before it is cut off by ellipse (...)
     let groupNum = 1; //current group being displauyed
     for(const group of groups){
@@ -92,10 +100,20 @@ function populateSidebar(groups){
             ellipseEnd.innerText = "..."
         }
         groupDiv.appendChild(ellipseEnd)
+        groupDiv.addEventListener("click", function() {
+          selectedGroup = group;
+          console.log(selectedGroup)
+        });
         seatingChartSidebar.appendChild(groupDiv)
         groupNum++
     }
-    
+}
+
+function clearSidebar() { //fix later lol
+  const seatingChartSidebar = document.getElementById('chart-sidebar')
+  while (seatingChartSidebar.firstChild) {
+    seatingChartSidebar.removeChild(seatingChartSidebar.firstChild);
+  }
 }
 
 /***
@@ -103,7 +121,7 @@ function populateSidebar(groups){
  * @param rows The amount of rows in the grid
  * @param columns The amount of columns in the grid
  */
-function createGrid(rows,columns,gr)
+function createGrid(rows,columns)
 {
   document.querySelector('.grid').style.setProperty('--rowSize', rows) // Changes Grid size in CSS
   document.querySelector('.grid').style.setProperty('--colSize', columns) // Changes Grid size in CSS
@@ -125,7 +143,7 @@ function createGrid(rows,columns,gr)
       if(box.querySelector(".grid-group-container")) {
         box.removeChild(box.querySelector(".grid-group-container"))
       } else {
-        createGridGroup(gr[0],selectedB)
+        createGridGroup(selectedGroup,selectedB)
       }
     });
   });
