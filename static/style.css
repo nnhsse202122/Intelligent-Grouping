@@ -1211,17 +1211,19 @@ h1 {
   height: 100%;
   background: var(--dark);
   transition: all .5s ease;
+  overflow-y:auto;
 }
 #chart-sidebar .buttons{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin: 10px;
+  gap: 10px;
 }
 #chart-sidebar i{
   cursor: pointer;
-  color: white;
-  border-radius: 5px;
+  color: var(--light-bg-alt);
+  border-radius: 8px;
   top: 30px;
   right: 30px;
   font-size: 30px;
@@ -1234,8 +1236,8 @@ h1 {
 #chart-button #angle{
   position: absolute;
   cursor: pointer;
-  color: white;
-  border-radius: 5px;
+  color: var(--light-bg-alt);
+  border-radius: 8px;
   top: 10px;
   right: 10px;
   font-size: 45px;
@@ -1264,9 +1266,11 @@ h1 {
   border-radius: 8px;
   display: flex;
   flex-direction: column;
-  width: 10%;
+  width: auto;
   height: 17%;
   background: var(--light-bg-alt);
+  margin: 10px;
+  cursor: pointer;
 }
 
 .chart-sidebar-header{
