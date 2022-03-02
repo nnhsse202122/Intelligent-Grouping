@@ -1,3 +1,5 @@
+let selectedGroup = null;
+
 //expand and hide menu
 document.getElementById('chart-button').addEventListener('click', function(){
     this.classList.toggle('active')
@@ -10,7 +12,7 @@ function seatingChart(grouping){
     switchSection(seatingChartSection)
     setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
     const groups = getGroups(grouping)
-    clearSidebar()
+    //clearSidebar()
     populateSidebar(groups)
     if(chartGrid.children.length <= 0) {
         createGrid(5,8); // Note that this only runs if the grid class in HTML has no child elements
@@ -95,10 +97,13 @@ function populateSidebar(groups){
             ellipseEnd.innerText = "..."
         }
         groupDiv.appendChild(ellipseEnd)
+        groupDiv.addEventListener("click", function() {
+          selectedGroup = group;
+          console.log(selectedGroup)
+        });
         seatingChartSidebar.appendChild(groupDiv)
         groupNum++
     }
-    
 }
 
 function clearSidebar() { //fix later lol

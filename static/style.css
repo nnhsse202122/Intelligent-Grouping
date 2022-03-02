@@ -1270,6 +1270,7 @@ h1 {
   height: 17%;
   background: var(--light-bg-alt);
   margin: 10px;
+  cursor: pointer;
 }
 
 .chart-sidebar-header{
