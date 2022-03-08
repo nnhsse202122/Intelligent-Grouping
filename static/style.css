@@ -1262,7 +1262,7 @@ h1 {
 }
 
 .chart-sidebar-group-div{
-  border: var(--accent) solid 3px;
+  border: var(--dark) solid 3px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -1325,7 +1325,7 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
-
+  transition: 0.3s all;
 }
 
 .box:hover {
