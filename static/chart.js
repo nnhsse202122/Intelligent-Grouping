@@ -29,19 +29,18 @@ function getGroups(grouping){
     const groups = [];
     for(let i = 0; i < grouping.groups.length; i++){
         const groupObj = grouping.group[i];
-        const list = {ids:[...groupObj.ids], row:groupObj.row, col:groupObj.col}
-        list.unshift(i+1);
-        groups.push(list);
+        const group = {ids:[...groupObj.ids], row:groupObj.row, col:groupObj.col, groupNum:groupObj.groupNum}
+        groups.push(group);
     }
     
     //changing from ids to names
     for(const student of classes[state.info.id].obj.students){
-        for(const group of nameGroups){
+        for(const group of groups){
             
             for(let i = 0; i < group.length; i++){
                 //console.log(`STU: ${student.id} vs GROUP: ${group[i]}`)
-                if(student.id == group[i]){
-                    group[i] = student; //changes it to a student OBJECT (not string)
+                if(student.id == group.ids[i]){
+                    group.ids[i] = student; //changes it to a student OBJECT (not string)
                 }
             }
             
@@ -54,32 +53,28 @@ function getGroups(grouping){
 function populateSidebar(groups){
     const seatingChartSidebar = document.createElement('div') //temp PLS CHANGE JONATHAN
     const MAX_STUDENTS_DISPLAYED = 3 //how many student names are shown before it is cut off by ellipse (...)
-    let groupNum = 1; //current group being displauyed
     for(const group of groups){
         const groupDiv = document.createElement('div')
         groupDiv.classList.add("chart-sidebar-group-div")
-        groupDiv.id = `group-${groupNum}`
+        groupDiv.id = `group-${group.groupNum}`
 
         const groupName = document.createElement("h1")
         groupName.classList.add("chart-sidebar-header")
-        groupName.innerText = `Group ${groupNum}`
+        groupName.innerText = `Group ${group.groupNum}`
         groupDiv.appendChild(groupName)
 
         const studentCount = document.createElement('h2')
         studentCount.classList.add('chart-student-count')
         let plural = ""
-        if(group.length-1 > 1){
+        if(group.ids.length-1 > 1){
             plural = "s"
         }
-        studentCount.innerText = `${group.length} Student${plural}`
+        studentCount.innerText = `${group.ids.length} Student${plural}`
         groupDiv.appendChild(studentCount)
 
         let displayed = 0
         let isShortened = false;
-        for(const student of group){
-            if(student == group[0]){
-              continue; //skipping the group number
-            }
+        for(const student of group.ids){
             if(displayed >= MAX_STUDENTS_DISPLAYED){
                 isShortened = true;
                 break;
@@ -98,7 +93,6 @@ function populateSidebar(groups){
         }
         groupDiv.appendChild(ellipseEnd)
         seatingChartSidebar.appendChild(groupDiv)
-        groupNum++
     }
     
 }
@@ -185,9 +179,9 @@ function createGridGroup(group, box){
   const namesList = document.createElement('ul');
   namesList.classList.add('grid-names-list');
 
-  for(let i = 1; i < group.length;i++){
+  for(let i = 1; i < group.ids.length;i++){
     const studentName = document.createElement('li');
-    const student = group[i];
+    const student = group.ids[i];
     studentName.innerText = `${student.first} ${student.last[0]}`;
     studentName.classList.add('grid-name');
     namesList.appendChild(studentName);

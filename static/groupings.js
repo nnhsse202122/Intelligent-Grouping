@@ -353,7 +353,7 @@ function setGroups(groups) {
   clearDiv(groupScatter)
   for (let i = 0; i < groups.length; i++) {
     const groupContainer = addGroup()
-    for (const student of groups[i]) {
+    for (const student of groups[i].ids) {
       groupContainer.children[2].appendChild(Array.from(ungroupedStudentsListDiv.children).find(e => e.id == student))
     }
   }
@@ -369,11 +369,20 @@ function normalizeGroupTitles() {
 }
 
 function constructGroupingFromUI() {
+  const groupObjs = []
+  const excludedObjs = []
+  for(const idList of Array.from(groupScatter.children).filter(e => e.id != "add-group").map(e => Array.from(e.children[2].children).map(s => s.id))){
+    groupObjs.push({ids:idList, row:-1, col:-1, groupNum:-1})
+  }
+  for(const idList of Array.from(excludedStudentsListDiv.children).map(e => e.id)){
+    excludedObjs.push({ids:idList, row:-1, col:-1, groupNum:-1})
+  }
+
   return {
     id: md5(groupNameInput.value),
     name: groupNameInput.value,
-    groups: Array.from(groupScatter.children).filter(e => e.id != "add-group").map(e => Array.from(e.children[2].children).map(s => s.id)),
-    excluded: Array.from(excludedStudentsListDiv.children).map(e => e.id)
+    groups: groupObjs,
+    excluded: excludedObjs
   }
 }
 
