@@ -1,3 +1,6 @@
+//this is very likely to have errors with the database changes, I started to change some of the code but I am going to leave most of it 
+// untouched so that I don't mess it up much.
+
 //CONSTANTS
 const QUARTER_SIZE = 25 //1/4th of the size of each generation
 const FREE_ITERATIONS = 100 //free iterations of the genetic algorithm before starting checking for the escape condition
@@ -120,7 +123,7 @@ function startGenetic(students, preferences, groupSizer, amountOrSize)
   }
 
   //maps the 2d array within the best generation to be a 2d array of student ids and returns the result
-  return bestGeneration[0].g.map(group => group.map(student => student.id)) 
+  return {ids:bestGeneration[0].g.map(group => group.map(student => student.id)), row:-1, col:-1, groupNum:-1}
 }
 
 /*
@@ -156,7 +159,7 @@ function randomize(students, groupSizer, amountOrSize)
   }
 
   //return the new 2d array
-  return output
+  return {ids:output, row:-1, col:-1, groupNum:-1,}
 }
 /*
 scores a member of a genetic generation
@@ -187,7 +190,7 @@ function score(grouping, preferences)
   }
   
   //loop through all students in array
-  for(let group of grouping) {for(let student of group) 
+  for(let group of grouping) {for(let student of group.ids) 
   {
     //check whether a given preference is going to be checked or not for this student
     let checkLike = [] //array of length student.preferences.studentLike.length that tells the program whether to check a given studentLike preference or not based on value and position
@@ -198,7 +201,7 @@ function score(grouping, preferences)
     for(let sd of student.preferences.studentDislike) checkDislike.push((preferences.map(pref => pref.id)).includes(sd.id))
 
     //loop through all other students within the group other than the student currently being analyzed
-    for(let studentCheck of group) { if(studentCheck.id != student.id) 
+    for(let studentCheck of group.ids) { if(studentCheck.id != student.id) 
     {
       //because if it isn't in the like list it is either not in either or just in the dislike list, if it is found in the like list the dislike list will not be checked.
       let found = false
@@ -242,7 +245,7 @@ array: the 2d array to flatten
 returns: an object containing the linearized array and the grouping data in the following format:
 {a: [], g: [{startingIndex: Integer, endingIndex: Integer}]}, where a is the linearized array, and g is the array of groupingData objects
 */
-function linearize(array)
+function linearize(array)//POINT OF POSSIBLE ERROR ______________________________________________________________________
 {
   //declare outputs
   let linearized = [] //linearized array
