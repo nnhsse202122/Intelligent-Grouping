@@ -123,7 +123,7 @@ function startGenetic(students, preferences, groupSizer, amountOrSize)
   }
 
   //maps the 2d array within the best generation to be a 2d array of student ids and returns the result
-  return {ids:bestGeneration[0].g.map(group => group.map(student => student.id)), row:-1, col:-1, groupNum:-1}
+  return {ids:bestGeneration[0].g.map(group => group.map(student => student.id)), row:-1, col:-1}
 }
 
 /*
@@ -159,7 +159,7 @@ function randomize(students, groupSizer, amountOrSize)
   }
 
   //return the new 2d array
-  return {ids:output, row:-1, col:-1, groupNum:-1,}
+  return {ids:output, row:-1, col:-1}
 }
 /*
 scores a member of a genetic generation

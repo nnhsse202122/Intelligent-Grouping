@@ -29,7 +29,7 @@ function getGroups(grouping){
     const groups = [];
     for(let i = 0; i < grouping.groups.length; i++){
         const groupObj = grouping.group[i];
-        const group = {ids:[...groupObj.ids], row:groupObj.row, col:groupObj.col, groupNum:groupObj.groupNum}
+        const group = {ids:[...groupObj.ids], row:groupObj.row, col:groupObj.col}
         groups.push(group);
     }
     
@@ -53,14 +53,15 @@ function getGroups(grouping){
 function populateSidebar(groups){
     const seatingChartSidebar = document.createElement('div') //temp PLS CHANGE JONATHAN
     const MAX_STUDENTS_DISPLAYED = 3 //how many student names are shown before it is cut off by ellipse (...)
+    let count = 1
     for(const group of groups){
         const groupDiv = document.createElement('div')
         groupDiv.classList.add("chart-sidebar-group-div")
-        groupDiv.id = `group-${group.groupNum}`
+        groupDiv.id = `group-${count}`
 
         const groupName = document.createElement("h1")
         groupName.classList.add("chart-sidebar-header")
-        groupName.innerText = `Group ${group.groupNum}`
+        groupName.innerText = `Group ${count}`
         groupDiv.appendChild(groupName)
 
         const studentCount = document.createElement('h2')
@@ -93,6 +94,7 @@ function populateSidebar(groups){
         }
         groupDiv.appendChild(ellipseEnd)
         seatingChartSidebar.appendChild(groupDiv)
+        count++
     }
     
 }
