@@ -55,7 +55,6 @@ const userSchema = new mongoose.Schema({
             ids: [String],
             row: Number,
             col: Number,
-            groupNum: Number,
           }],
         }
       ]
@@ -328,7 +327,6 @@ function makeGroupsByNumGroups(students, numGroups) {
       ids: [],
       row: -1,
       col: -1,
-      groupNum: i+1,
     })
   }
 
@@ -355,7 +353,6 @@ function makeGroupsByNumStudents(students, numStudents) {
       ids: [],
       row: -1,
       col: -1,
-      groupNum:i+1,
     })
   }
 
