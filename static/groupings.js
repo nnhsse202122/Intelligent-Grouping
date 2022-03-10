@@ -372,10 +372,10 @@ function constructGroupingFromUI() {
   const groupObjs = []
   const excludedObjs = []
   for(const idList of Array.from(groupScatter.children).filter(e => e.id != "add-group").map(e => Array.from(e.children[2].children).map(s => s.id))){
-    groupObjs.push({ids:idList, row:-1, col:-1, groupNum:-1})
+    groupObjs.push({ids:idList, row:-1, col:-1})
   }
   for(const idList of Array.from(excludedStudentsListDiv.children).map(e => e.id)){
-    excludedObjs.push({ids:idList, row:-1, col:-1, groupNum:-1})
+    excludedObjs.push({ids:idList, row:-1, col:-1})
   }
 
   return {
