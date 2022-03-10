@@ -999,6 +999,14 @@ h1 {
   transition: 0.3s all;
 }
 
+#view-responses {
+  padding: 0 40px;
+  background-color: var(--accent);
+  color: var(--light-bg-alt);
+  justify-self: center;
+  transition: 0.3s all;
+}
+
 .add-preference-modal > select {
   font-size: 1.3em;
   padding: 4px 8px;

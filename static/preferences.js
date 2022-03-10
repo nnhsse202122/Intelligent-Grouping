@@ -270,5 +270,14 @@ async function formLink() {
   }, 1500)
 }
 
+function showStudentResponses() {
+  for(student in classes[state.info.id].obj.students.student) {
+    console.log(student)
+    console.log(student.preference)
+    console.log(student.preferences)
+  }
+}
+
 addPreference.addEventListener("click", showAddPreferenceModal)
 copyFormLink.addEventListener("click", formLink)
+viewResponses.addEventListener("click", showStudentResponses)
