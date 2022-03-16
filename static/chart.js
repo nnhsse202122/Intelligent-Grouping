@@ -10,10 +10,7 @@ function seatingChart(grouping){
         createGrid(5,8); // Note that this only runs if the grid class in HTML has no child elements
     }
     //all testing of grid groups below
-    clearBox(2,2);
-    clearBox(3,2);
-    createGridGroup(groups[0], getBox(2,2));
-    createGridGroup(groups[1], getBox(3,2));
+    loadGroupsToChart(groups)
 }
 
 //expand and hide menu
@@ -29,7 +26,7 @@ function getGroups(grouping){
     const groups = [];
     for(let i = 0; i < grouping.groups.length; i++){
         const groupObj = grouping.group[i];
-        const group = {ids:[...groupObj.ids], row:groupObj.row, col:groupObj.col}
+        const group = {ids:[...groupObj.ids], row:groupObj.row, col:groupObj.col};
         groups.push(group);
     }
     
@@ -144,6 +141,9 @@ function destroyGrid()
  * @returns the DOM div of the box in the seating chart grid
  */
 function getBox(row,col){
+  if(row < 0 || col < 0){
+    throw `box at row ${row}, column ${col} is out of bounds`
+  }
   let currentRow = 0;
   let currentCol = 0;
   let foundBox = null;
@@ -193,3 +193,15 @@ function createGridGroup(group, box){
   box.appendChild(gridGroupContainer);
 }
 
+function loadGroupsToChart(groups){
+  const sidebarGroups = [];
+  for(const group of groups){
+    if(group.row == -1 && group.col == -1){
+      sidebarGroups.push(group);
+    }
+    else{
+      createGridGroup(group, getBox(group.row,group.col));
+    }
+  }
+  populateSidebar(sidebarGroups);
+}

@@ -158,6 +158,7 @@ app.post("/addClasses", async (req, res) => {
     for (const classObj of req.body.classObjs) {
       if (!await User.findOne({id: verification.user.sub, classes: {$elemMatch: {id: classObj.id}}}).exec()) {
         await User.updateOne({id: verification.user.sub}, {$push: {classes: classObj}})
+        console.log(classObj)
         newClasses.push(classObj)
       }
     }
