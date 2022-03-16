@@ -457,7 +457,8 @@ function showActionsModal(grouping,groupingContainer){
     })
     let csvText = "Pre-assign Room Name,Email Address\n"
     for (let i = 0; i < grouping.groups.length; i++) {
-      for (const stu of grouping.groups.ids[i]) {
+      console.log(grouping.groups)
+      for (const stu of grouping.groups[i].ids) {
         csvText += `group${i+1},${classes[state.info.id].obj.students.find(s => s.id == stu).email}\n`
       }
     }
