@@ -271,10 +271,13 @@ async function formLink() {
 }
 
 function showStudentResponses() {
-  for(student in classes[state.info.id].obj.students.student) {
-    console.log(student)
-    console.log(student.preference)
-    console.log(student.preferences)
+  console.log("t0")
+  //for(let student in group)
+  // Find a way to loop through the students in a class individually and call .preferences on each and print it out.
+  for(pref in classes[state.info.id].obj.preferences) {
+    console.log("t1")
+    console.log(pref)
+    console.log("t2")
   }
 }
 
