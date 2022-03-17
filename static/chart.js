@@ -25,7 +25,7 @@ function getGroups(grouping){
     //making deep copy of groups for names
     const groups = [];
     for(let i = 0; i < grouping.groups.length; i++){
-        const groupObj = grouping.group[i];
+        const groupObj = grouping.groups[i];
         const group = {ids:[...groupObj.ids], row:groupObj.row, col:groupObj.col};
         groups.push(group);
     }
@@ -34,7 +34,7 @@ function getGroups(grouping){
     for(const student of classes[state.info.id].obj.students){
         for(const group of groups){
             
-            for(let i = 0; i < group.length; i++){
+            for(let i = 0; i < group.ids.length; i++){
                 //console.log(`STU: ${student.id} vs GROUP: ${group[i]}`)
                 if(student.id == group.ids[i]){
                     group.ids[i] = student; //changes it to a student OBJECT (not string)
@@ -44,7 +44,7 @@ function getGroups(grouping){
         }
     }
     
-    return nameGroups;
+    return groups;
 }
 
 function populateSidebar(groups){
@@ -204,4 +204,5 @@ function loadGroupsToChart(groups){
     }
   }
   populateSidebar(sidebarGroups);
+  console.log("GROUPS LOADED");
 }
