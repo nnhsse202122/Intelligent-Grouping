@@ -9,7 +9,10 @@ function seatingChart(grouping){
     if(chartGrid.children.length <= 0) {
         createGrid(5,8); // Note that this only runs if the grid class in HTML has no child elements
     }
+    groups[0].row = 2
+    groups[0].col = 1
     //all testing of grid groups below
+    groupNumber = 1;
     loadGroupsToChart(groups)
 }
 
@@ -48,17 +51,16 @@ function getGroups(grouping){
 }
 
 function populateSidebar(groups){
-    const seatingChartSidebar = document.createElement('div') //temp PLS CHANGE JONATHAN
+    const seatingChartSidebar = document.getElementById('chart-sidebar') //temp PLS CHANGE JONATHAN
     const MAX_STUDENTS_DISPLAYED = 3 //how many student names are shown before it is cut off by ellipse (...)
-    let count = 1
     for(const group of groups){
         const groupDiv = document.createElement('div')
         groupDiv.classList.add("chart-sidebar-group-div")
-        groupDiv.id = `group-${count}`
+        groupDiv.id = `group-${groupNumber}`
 
         const groupName = document.createElement("h1")
         groupName.classList.add("chart-sidebar-header")
-        groupName.innerText = `Group ${count}`
+        groupName.innerText = `Group ${groupNumber}`
         groupDiv.appendChild(groupName)
 
         const studentCount = document.createElement('h2')
@@ -91,7 +93,7 @@ function populateSidebar(groups){
         }
         groupDiv.appendChild(ellipseEnd)
         seatingChartSidebar.appendChild(groupDiv)
-        count++
+        groupNumber+= 1
     }
     
 }
@@ -176,7 +178,8 @@ function createGridGroup(group, box){
   gridGroupContainer.classList.add('grid-group-container');
   const title = document.createElement('h1');
   title.classList.add("grid-group-title");
-  title.innerText = `Group ${group[0]}:`;
+  title.innerText = `${groupNumber}:`;
+  groupNumber++;
 
   const namesList = document.createElement('ul');
   namesList.classList.add('grid-names-list');
@@ -196,6 +199,7 @@ function createGridGroup(group, box){
 function loadGroupsToChart(groups){
   const sidebarGroups = [];
   for(const group of groups){
+    console.log(group.row, group.col)
     if(group.row == -1 && group.col == -1){
       sidebarGroups.push(group);
     }
@@ -203,6 +207,7 @@ function loadGroupsToChart(groups){
       createGridGroup(group, getBox(group.row,group.col));
     }
   }
+  console.log(sidebarGroups);
   populateSidebar(sidebarGroups);
   console.log("GROUPS LOADED");
 }
