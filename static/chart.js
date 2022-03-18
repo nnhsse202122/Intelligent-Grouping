@@ -12,6 +12,7 @@ function seatingChart(grouping){
     statusTitle.innerText = "Seating Chart"
     switchSection(seatingChartSection)
     setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
+    clearSidebar()
     const groups = getGroups(grouping)
     populateSidebar(groups)
     if(chartGrid.children.length <= 0) {
@@ -20,11 +21,12 @@ function seatingChart(grouping){
     //all testing of grid groups below
 }
 
-//expand and hide menu
-document.getElementById('chart-button').addEventListener('click', function(){
-  this.toggle('active')
-  document.getElementById('chart-sidebar').classList.toggle('active')
-})
+function clearSidebar(){
+  const groupDivs = document.getElementsByClassName('chart-sidebar-group-div')
+  for(groupDiv of groupDivs){
+    groupDiv.remove()
+  }
+}
 
 
 //returns a list of groups filled with student objects
