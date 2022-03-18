@@ -15,6 +15,7 @@ let state = {mode: 0, info: {}}
 5 = create group
 6 = edit group
 7 = seating chart
+8 = student responses overview
 */
 //-------\\
 

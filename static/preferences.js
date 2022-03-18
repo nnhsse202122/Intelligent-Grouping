@@ -270,30 +270,9 @@ async function formLink() {
   }, 1500)
 }
 
-function showStudentResponses() {
-  console.log("t0")
-  //for(let student in group)
-  // Find a way to loop through the students in a class individually and call .preferences on each and print it out.
-  /*for(pref in classes[state.info.id].obj.preferences) {
-    console.log("t1")
-    console.log(pref)
-    console.log("t2")
-  }*/
-  console.log(classes[state.info.id])
-  console.log(classes[state.info.id].obj)
-  console.log(classes[state.info.id].obj.students)
-  console.log(classes[state.info.id].obj.student)
-  console.log(classes[state.info.id].obj.preferences)
-  console.log(classes[state.info.id].obj.preference)
-  for(let i = 0; i < 19; i++/*let student in classes[state.info.id].obj.students*/) {
-    
-    console.log(classes[state.info.id].obj.students[i])
-    console.log(classes[state.info.id].obj.students[i].preferences)
-    console.log(classes[state.info.id].obj.students[i].preferences.studentLike[0])
-    console.log(classes[state.info.id].obj.students[i].preferences.studentLike[1])
-  }
-}
-
 addPreference.addEventListener("click", showAddPreferenceModal)
 copyFormLink.addEventListener("click", formLink)
-viewResponses.addEventListener("click", showStudentResponses)
+viewResponses.addEventListener("click", async (e) =>{
+  e.stopPropagation()
+  showResponses()
+})
