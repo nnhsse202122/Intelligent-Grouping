@@ -1,4 +1,5 @@
 let selectedGroup = null;
+let selectedChild = null;
 
 //expand and hide menu
 document.getElementById('chart-button').addEventListener('click', function(){
@@ -12,7 +13,6 @@ function seatingChart(grouping){
     switchSection(seatingChartSection)
     setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
     const groups = getGroups(grouping)
-    //clearSidebar()
     populateSidebar(groups)
     if(chartGrid.children.length <= 0) {
         createGrid(5,8); // Note that this only runs if the grid class in HTML has no child elements
@@ -101,18 +101,29 @@ function populateSidebar(groups){
         }
         groupDiv.appendChild(ellipseEnd)
         groupDiv.addEventListener("click", function() {
-          selectedGroup = group;
-          console.log(selectedGroup)
+          if(selectedGroup == group){
+            selectedGroup = null;
+            selectedChild = null;
+            groupDiv.style.borderColor = getComputedStyle(document.documentElement)
+            .getPropertyValue('--dark')
+          } else {
+            selectedGroup = group;
+
+            unhighlightPrevious();
+            selectedChild = groupDiv;
+            groupDiv.style.borderColor = getComputedStyle(document.documentElement)
+            .getPropertyValue('--accent')
+          }
         });
         seatingChartSidebar.appendChild(groupDiv)
         groupNum++
     }
 }
 
-function clearSidebar() { //fix later lol
-  const seatingChartSidebar = document.getElementById('chart-sidebar')
-  while (seatingChartSidebar.firstChild) {
-    seatingChartSidebar.removeChild(seatingChartSidebar.firstChild);
+function unhighlightPrevious(){
+  if(selectedChild){
+    selectedChild.style.borderColor = getComputedStyle(document.documentElement)
+            .getPropertyValue('--dark')
   }
 }
 
@@ -141,9 +152,17 @@ function createGrid(rows,columns)
       console.log(`[${box.getAttribute('row')}][${box.getAttribute('col')}]`)
       let selectedB = getBox(box.getAttribute('row'),box.getAttribute('col'))
       if(box.querySelector(".grid-group-container")) {
-        box.removeChild(box.querySelector(".grid-group-container"))
-      } else {
+        unhighlightPrevious();
+        
+        selectedGroup = JSON.parse(box.getAttribute("grouping"))
+        selectedChild = box.querySelector(".grid-group-container")
+        selectedChild.style.borderColor = getComputedStyle(document.documentElement)
+        .getPropertyValue('--accent')
+      } else if (selectedGroup) {
         createGridGroup(selectedGroup,selectedB)
+        selectedGroup = null
+        selectedChild.remove()
+        selectedChild = null
       }
     });
   });
@@ -214,5 +233,6 @@ function createGridGroup(group, box){
   gridGroupContainer.appendChild(title);
   gridGroupContainer.appendChild(namesList);
   box.appendChild(gridGroupContainer);
+  box.setAttribute("grouping", JSON.stringify(group));
 }
 
