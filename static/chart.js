@@ -191,6 +191,9 @@ function createGridGroup(group, box){
     studentName.classList.add('grid-name');
     namesList.appendChild(studentName);
   }
+
+  group.row =box.attributes.row.value;
+  group.col = box.attributes.col.value;
   gridGroupContainer.appendChild(title);
   gridGroupContainer.appendChild(namesList);
   box.appendChild(gridGroupContainer);
@@ -210,4 +213,8 @@ function loadGroupsToChart(groups){
   console.log(sidebarGroups);
   populateSidebar(sidebarGroups);
   console.log("GROUPS LOADED");
+}
+
+function saveGroupsFromChart(){
+  //druh
 }
