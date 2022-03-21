@@ -28,6 +28,15 @@ function clearSidebar(){
   }
 }
 
+//move groups back to sidebar
+document.getElementById('chart-sidebar').addEventListener("click", function() {
+  if (selectedChild == ".grid-group-container") {
+    //createGridGroup(selectedGroup,selectedB)
+    selectedGroup = null
+    selectedChild.remove()
+    selectedChild = null
+  }
+});
 
 //returns a list of groups filled with student objects
 function getGroups(grouping){
