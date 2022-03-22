@@ -23,15 +23,18 @@ function seatingChart(grouping){
 
 function clearSidebar(){
   const groupDivs = document.getElementsByClassName('chart-sidebar-group-div')
+  console.log(groupDivs) //wasntworking but is now working?
   for(groupDiv of groupDivs){
     groupDiv.remove()
+    console.log(groupDiv)
   }
 }
 
 //move groups back to sidebar
 document.getElementById('chart-sidebar').addEventListener("click", function() {
-  if (selectedChild == ".grid-group-container") {
-    //createGridGroup(selectedGroup,selectedB)
+  if (selectedChild.classList.contains("grid-group-container")) { //ERR: cannot read classlist of null
+    groupNum = selectedGroup[0]
+    populateSidebar([selectedGroup], groupNum)
     selectedGroup = null
     selectedChild.remove()
     selectedChild = null
@@ -65,10 +68,9 @@ function getGroups(grouping){
     return nameGroups;
 }
 
-function populateSidebar(groups){
+function populateSidebar(groups, groupNum = 1){
     const seatingChartSidebar = document.getElementById('chart-sidebar')
     const MAX_STUDENTS_DISPLAYED = 3 //how many student names are shown before it is cut off by ellipse (...)
-    let groupNum = 1; //current group being displauyed
     for(const group of groups){
         const groupDiv = document.createElement('div')
         groupDiv.classList.add("chart-sidebar-group-div")
@@ -160,7 +162,7 @@ function createGrid(rows,columns)
 
   Array.from(boxes, function(box) {
     box.addEventListener("click", function() {
-      console.log(`[${box.getAttribute('row')}][${box.getAttribute('col')}]`)
+      //console.log(`[${box.getAttribute('row')}][${box.getAttribute('col')}]`)
       let selectedB = getBox(box.getAttribute('row'),box.getAttribute('col'))
       if(box.querySelector(".grid-group-container")) {
         unhighlightPrevious();
