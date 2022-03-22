@@ -11,6 +11,7 @@ document.getElementById('chart-button').addEventListener('click', function(){
 //all the code for the seating chart of groups 
 function seatingChart(grouping){
     statusTitle.innerText = "Seating Chart"
+    groupNumber = 1
     switchSection(seatingChartSection)
     setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
     const groups = getGroups(grouping)
@@ -142,7 +143,16 @@ function createGrid(rows,columns)
       console.log(`[${box.getAttribute('row')}][${box.getAttribute('col')}]`)
       let selectedB = getBox(box.getAttribute('row'),box.getAttribute('col'))
       if(box.querySelector(".grid-group-container")) {
-        box.removeChild(box.querySelector(".grid-group-container"))
+        const removed = box.removeChild(box.querySelector(".grid-group-container"))
+        const name = removed.children[1].children[0].innerText
+        const firstName;
+        const lastInitial;
+        firstName,lastInitial = name.split(' ');
+        for(const group of groups){
+          const splitName = group.ids[0].split(' ')
+          //if(&&){}
+        }
+        groupNumber--
       } else {
         createGridGroup(selectedGroup,selectedB)
       }
