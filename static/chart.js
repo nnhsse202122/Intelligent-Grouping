@@ -1,3 +1,4 @@
+
 let selectedGroup = null;
 
 //expand and hide menu
@@ -5,6 +6,7 @@ document.getElementById('chart-button').addEventListener('click', function(){
     this.classList.toggle('active')
     document.getElementById('chart-sidebar').classList.toggle('active')
 })
+
 
 //all the code for the seating chart of groups 
 function seatingChart(grouping){
@@ -20,6 +22,7 @@ function seatingChart(grouping){
     //all testing of grid groups below
 }
 
+
 //expand and hide menu
 document.getElementById('chart-button').addEventListener('click', function(){
   this.toggle('active')
@@ -30,59 +33,57 @@ document.getElementById('chart-button').addEventListener('click', function(){
 //returns a list of groups filled with student objects
 function getGroups(grouping){
     //making deep copy of groups for names
-    const nameGroups = [];
+    const groups = [];
     for(let i = 0; i < grouping.groups.length; i++){
-        const list = [...grouping.groups[i]];
-        list.unshift(i+1);
-        nameGroups.push(list);
+        const groupObj = grouping.groups[i];
+        const group = {ids:[...groupObj.ids], row:groupObj.row, col:groupObj.col};
+        groups.push(group);
     }
     
     //changing from ids to names
     for(const student of classes[state.info.id].obj.students){
-        for(const group of nameGroups){
+        for(const group of groups){
             
-            for(let i = 0; i < group.length; i++){
+            for(let i = 0; i < group.ids.length; i++){
                 //console.log(`STU: ${student.id} vs GROUP: ${group[i]}`)
-                if(student.id == group[i]){
-                    group[i] = student; //changes it to a student OBJECT (not string)
+                if(student.id == group.ids[i]){
+                    group.ids[i] = student; //changes it to a student OBJECT (not string)
                 }
             }
             
         }
     }
     
-    return nameGroups;
+    return groups;
 }
 
 function populateSidebar(groups){
+
     const seatingChartSidebar = document.getElementById('chart-sidebar')
+
     const MAX_STUDENTS_DISPLAYED = 3 //how many student names are shown before it is cut off by ellipse (...)
-    let groupNum = 1; //current group being displauyed
     for(const group of groups){
         const groupDiv = document.createElement('div')
         groupDiv.classList.add("chart-sidebar-group-div")
-        groupDiv.id = `group-${groupNum}`
+        groupDiv.id = `group-${groupNumber}`
 
         const groupName = document.createElement("h1")
         groupName.classList.add("chart-sidebar-header")
-        groupName.innerText = `Group ${groupNum}`
+        groupName.innerText = `Group ${groupNumber}`
         groupDiv.appendChild(groupName)
 
         const studentCount = document.createElement('h2')
         studentCount.classList.add('chart-student-count')
         let plural = ""
-        if(group.length-1 > 1){
+        if(group.ids.length-1 > 1){
             plural = "s"
         }
-        studentCount.innerText = `${group.length} Student${plural}`
+        studentCount.innerText = `${group.ids.length} Student${plural}`
         groupDiv.appendChild(studentCount)
 
         let displayed = 0
         let isShortened = false;
-        for(const student of group){
-            if(student == group[0]){
-              continue; //skipping the group number
-            }
+        for(const student of group.ids){
             if(displayed >= MAX_STUDENTS_DISPLAYED){
                 isShortened = true;
                 break;
@@ -105,7 +106,7 @@ function populateSidebar(groups){
           console.log(selectedGroup)
         });
         seatingChartSidebar.appendChild(groupDiv)
-        groupNum++
+        groupNumber+= 1
     }
 }
 
@@ -167,6 +168,9 @@ function destroyGrid()
  * @returns the DOM div of the box in the seating chart grid
  */
 function getBox(row,col){
+  if(row < 0 || col < 0){
+    throw `box at row ${row}, column ${col} is out of bounds`
+  }
   let currentRow = 0;
   let currentCol = 0;
   let foundBox = null;
@@ -199,20 +203,43 @@ function createGridGroup(group, box){
   gridGroupContainer.classList.add('grid-group-container');
   const title = document.createElement('h1');
   title.classList.add("grid-group-title");
-  title.innerText = `Group ${group[0]}:`;
+  title.innerText = `${groupNumber}:`;
+  groupNumber++;
 
   const namesList = document.createElement('ul');
   namesList.classList.add('grid-names-list');
 
-  for(let i = 1; i < group.length;i++){
+  for(let i = 1; i < group.ids.length;i++){
     const studentName = document.createElement('li');
-    const student = group[i];
+    const student = group.ids[i];
     studentName.innerText = `${student.first} ${student.last[0]}`;
     studentName.classList.add('grid-name');
     namesList.appendChild(studentName);
   }
+
+  group.row =box.attributes.row.value;
+  group.col = box.attributes.col.value;
   gridGroupContainer.appendChild(title);
   gridGroupContainer.appendChild(namesList);
   box.appendChild(gridGroupContainer);
 }
 
+function loadGroupsToChart(groups){
+  const sidebarGroups = [];
+  for(const group of groups){
+    console.log(group.row, group.col)
+    if(group.row == -1 && group.col == -1){
+      sidebarGroups.push(group);
+    }
+    else{
+      createGridGroup(group, getBox(group.row,group.col));
+    }
+  }
+  console.log(sidebarGroups);
+  populateSidebar(sidebarGroups);
+  console.log("GROUPS LOADED");
+}
+
+function saveGroupsFromChart(){
+  //druh
+}
