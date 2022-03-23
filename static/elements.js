@@ -42,3 +42,4 @@ const tutorialSection = document.getElementById("tutorial-sec")
 const seatingChartSection = document.getElementById("seating-chart-sec")
 
 const chartGrid = document.getElementById("chart-grid")
+const chartSidebar = document.getElementById("chart-sidebar")
