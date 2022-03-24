@@ -1403,3 +1403,5 @@ h1 {
 }
 
 .dropdown-content a:hover {background-color: #ddd}
+
+.show {display: block;}
