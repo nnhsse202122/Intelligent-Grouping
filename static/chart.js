@@ -174,24 +174,35 @@ function createGrid(rows,columns)
   Array.from(boxes, function(box) {
     box.addEventListener("click", function() {
       //console.log(`[${box.getAttribute('row')}][${box.getAttribute('col')}]`)
-      let selectedB = getBox(box.getAttribute('row'),box.getAttribute('col'))
-      if(box.querySelector(".grid-group-container")) {
-        const group = JSON.parse(box.getAttribute("grouping"))
-        if(selectedGroup == group) {
+      const clickedB = getBox(box.getAttribute('row'),box.getAttribute('col'))
+      const clickedChild = box.querySelector(".grid-group-container")
+      if (clickedChild) {
+        unhighlightPrevious()
+        const clickedGroup = JSON.parse(box.getAttribute("grouping"))
+        if (selectedGroup && selectedGroup[0] == clickedGroup[0]) { // (selectedGroup == group) wasnt working for some reason
           unhighlightSidebar()
           selectedGroup = null
           selectedChild = null
-          //todo
+        } else if (selectedGroup){ //swap groups
+          console.log("were in")
+          selectedChild.remove()
+          const clickedB = getBox(box.getAttribute('row'),box.getAttribute('col'))
+          createGridGroup(clickedGroup,selectedB)
+          clickedChild.remove()
+          createGridGroup(selectedGroup,clickedB)
+          unhighlightSidebar()
+          selectedGroup = null
+          selectedChild = null
         } else {
-        unhighlightPrevious()
         highlightSidebar()
-        selectedGroup = group
-        selectedChild = box.querySelector(".grid-group-container")
+        selectedGroup = clickedGroup
+        selectedChild = clickedChild
         selectedChild.style.borderColor = getComputedStyle(document.documentElement)
         .getPropertyValue('--accent')
         }
       } else if (selectedGroup) {
-        createGridGroup(selectedGroup,selectedB)
+        unhighlightSidebar()
+        createGridGroup(selectedGroup,clickedB)
         selectedGroup = null
         selectedChild.remove()
         selectedChild = null
