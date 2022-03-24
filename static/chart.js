@@ -1,6 +1,6 @@
 
 let selectedGroup = null;
-
+let groups = null;
 //expand and hide menu
 document.getElementById('chart-button').addEventListener('click', function(){
     this.classList.toggle('active')
@@ -14,13 +14,15 @@ function seatingChart(grouping){
     groupNumber = 1
     switchSection(seatingChartSection)
     setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
-    const groups = getGroups(grouping)
+    groups = getGroups(grouping)
+
     //clearSidebar()
-    populateSidebar(groups)
+    
     if(chartGrid.children.length <= 0) {
         createGrid(5,8); // Note that this only runs if the grid class in HTML has no child elements
     }
     //all testing of grid groups below
+    loadGroupsToChart(groups);
 }
 
 
@@ -34,16 +36,15 @@ document.getElementById('chart-button').addEventListener('click', function(){
 //returns a list of groups filled with student objects
 function getGroups(grouping){
     //making deep copy of groups for names
-    const groups = [];
+    const newGroups = [];
     for(let i = 0; i < grouping.groups.length; i++){
         const groupObj = grouping.groups[i];
         const group = {ids:[...groupObj.ids], row:groupObj.row, col:groupObj.col};
-        groups.push(group);
+        newGroups.push(group);
     }
-    
     //changing from ids to names
     for(const student of classes[state.info.id].obj.students){
-        for(const group of groups){
+        for(const group of newGroups){
             
             for(let i = 0; i < group.ids.length; i++){
                 //console.log(`STU: ${student.id} vs GROUP: ${group[i]}`)
@@ -55,15 +56,14 @@ function getGroups(grouping){
         }
     }
     
-    return groups;
+    return newGroups;
 }
 
-function populateSidebar(groups){
+function populateSidebar(sidebarGroups){
 
     const seatingChartSidebar = document.getElementById('chart-sidebar')
-
     const MAX_STUDENTS_DISPLAYED = 3 //how many student names are shown before it is cut off by ellipse (...)
-    for(const group of groups){
+    for(const group of sidebarGroups){
         const groupDiv = document.createElement('div')
         groupDiv.classList.add("chart-sidebar-group-div")
         groupDiv.id = `group-${groupNumber}`
@@ -104,7 +104,6 @@ function populateSidebar(groups){
         groupDiv.appendChild(ellipseEnd)
         groupDiv.addEventListener("click", function() {
           selectedGroup = group;
-          console.log(selectedGroup)
         });
         seatingChartSidebar.appendChild(groupDiv)
         groupNumber+= 1
@@ -144,15 +143,21 @@ function createGrid(rows,columns)
       let selectedB = getBox(box.getAttribute('row'),box.getAttribute('col'))
       if(box.querySelector(".grid-group-container")) {
         const removed = box.removeChild(box.querySelector(".grid-group-container"))
+        console.log(removed, selectedGroup)
         const name = removed.children[1].children[0].innerText
-        const firstName;
-        const lastInitial;
-        firstName,lastInitial = name.split(' ');
+        const splitName = name.split(' ');
+        const firstName = splitName[0];
+        const lastInitial = splitName[1];
+        
         for(const group of groups){
-          const splitName = group.ids[0].split(' ')
-          //if(&&){}
+          console.log(`checking ${firstName}${lastInitial} against  ${group.ids[0].first} ${group.ids[0].last[0]}`)
+          if(splitName[0] == group.ids[0].first && group.ids[0].last[0]){
+            group.row = -1;
+            group.col = -1;
+            break;
+          }
         }
-        groupNumber--
+        groupNumber--;
       } else {
         createGridGroup(selectedGroup,selectedB)
       }
@@ -219,7 +224,7 @@ function createGridGroup(group, box){
   const namesList = document.createElement('ul');
   namesList.classList.add('grid-names-list');
 
-  for(let i = 1; i < group.ids.length;i++){
+  for(let i = 0; i < group.ids.length;i++){
     const studentName = document.createElement('li');
     const student = group.ids[i];
     studentName.innerText = `${student.first} ${student.last[0]}`;
@@ -234,9 +239,10 @@ function createGridGroup(group, box){
   box.appendChild(gridGroupContainer);
 }
 
-function loadGroupsToChart(groups){
+function loadGroupsToChart(chartGroups){
   const sidebarGroups = [];
-  for(const group of groups){
+  console.log(groups)
+  for(const group of chartGroups){
     console.log(group.row, group.col)
     if(group.row == -1 && group.col == -1){
       sidebarGroups.push(group);
