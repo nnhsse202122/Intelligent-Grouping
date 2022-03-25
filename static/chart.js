@@ -257,5 +257,32 @@ function loadGroupsToChart(chartGroups){
 }
 
 function saveGroupsFromChart(){
-  //druh
+  const changedGroups = [];
+  for(const group of groups){
+    const studentIds = [];
+    for(const stuObj of group.ids){
+      studentIds.push(stuobj.id);
+    }
+    changedGroups.push({
+      ids:studentIds,
+      row:group.row,
+      col:group.col,
+    });
+  }
+  return fetch("/saveChart", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      token: auth2.currentUser.get().getAuthResponse().id_token
+    },
+    body: JSON.stringify({
+      newGroups: changedGroups,
+      classId: state.info.id,
+      groupId:state.info.groupId,
+    })
+  }).then(res => res.json())
 }
+//REFERENCE COMPLETE GROUP ADD TO SEE HOW TO MAKE LOADING METHOD
+saveChartBtn.addEventListener("click", async () => {
+  await saveGroupsFromChart();//change  to laod method later
+})
