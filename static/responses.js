@@ -2,7 +2,7 @@ function showResponses() {
     statusTitle.innerText = "Student Responses"
     switchSection(responsesSection)
     setState(8, {id: state.info.id/*, groupingId: grouping.id, currentGroup:grouping*/})
-    somethingOrOther()
+    appendClassStudents();
 }
 
 function somethingOrOther(){
@@ -16,17 +16,21 @@ function somethingOrOther(){
 /***
  * Adds student names to dropdown menu
  */
-function adjustDropdown(){
-
+function appendClassStudents(){
   for(let i = 0; i < classes[state.info.id].obj.students.length; i++) {
     classes[state.info.id].obj.students[i]
+    let newOption = document.createElement('option');
+    newOption.setAttribute('id', classes[state.info.id].obj.students[i].id)
+    newOption.addEventListener('click', function(){
+      readOption(i)
+    });
+    newOption.innerText = classes[state.info.id].obj.students[i].first + " " + classes[state.info.id].obj.students[i].last
 
-    let student = document.createElement('a');
-    student.setAttribute('href', '#' + classes[state.info.id].obj.students[i].id);
-    student.innerText = classes[state.info.id].obj.students[i].first + " " + classes[state.info.id].obj.students[i].last
-
-    document.getElementById("studentDropdown").appendChild(student)
+    document.getElementById("student-selector").appendChild(newOption)
   }
+}
 
-  document.getElementById("studentDropdown").classList.toggle("show");
+function readOption(index)
+{
+  console.log(classes[state.info.id].obj.students[index])
 }
