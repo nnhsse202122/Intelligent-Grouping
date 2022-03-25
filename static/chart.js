@@ -1,5 +1,6 @@
-let selectedGroup = null;
-let selectedChild = null;
+let selectedGroup = null
+let selectedChild = null
+let selectedB = null
 
 //expand and hide menu
 document.getElementById('chart-button').addEventListener('click', function(){
@@ -13,7 +14,7 @@ function seatingChart(grouping){
     switchSection(seatingChartSection)
     setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
     clearSidebar()
-    unhighlightSidebar()
+    unlighlightAll()
     const groups = getGroups(grouping)
     populateSidebar(groups)
     if(chartGrid.children.length <= 0) {
@@ -24,7 +25,7 @@ function seatingChart(grouping){
 
 function clearSidebar(){
   const groupDivs = document.getElementsByClassName('chart-sidebar-group-div')
-  console.log(groupDivs) //wasntworking but is now working?
+  console.log(groupDivs) //TODO: FIX BUG
   for(groupDiv of groupDivs){
     groupDiv.remove()
     console.log(groupDiv)
@@ -39,7 +40,7 @@ chartSidebar.addEventListener("click", function() {
     selectedGroup = null
     selectedChild.remove()
     selectedChild = null
-    unhighlightSidebar()
+    unlighlightAll()
   }
 });
 
@@ -123,7 +124,6 @@ function populateSidebar(groups, groupNum = 1){
             .getPropertyValue('--dark')
           } else {
             selectedGroup = group;
-
             unhighlightPrevious();
             selectedChild = groupDiv;
             groupDiv.style.borderColor = getComputedStyle(document.documentElement)
@@ -135,21 +135,38 @@ function populateSidebar(groups, groupNum = 1){
     }
 }
 
+//todo: fix confusing function names xd
 function unhighlightPrevious(){
   if(selectedChild){
     selectedChild.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--dark')
-    unhighlightSidebar()
+    unlighlightAll()
   }
+}
+
+function unlighlightAll(){
+  unlighlightSidebar()
+  unhighlightGrid()
 }
 
 function highlightSidebar(){
   chartSidebar.style.cursor = "pointer"
-  chartSidebar.style.background = getComputedStyle(document.documentElement).getPropertyValue('--light-gray')
-}
-function unhighlightSidebar(){
+  chartSidebar.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--accent')
+} function unhighlightSidebar(){
   chartSidebar.style.cursor = "auto"
-  chartSidebar.style.background = getComputedStyle(document.documentElement).getPropertyValue('--dark')
+  chartSidebar.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--dark')
 }
+function highlightGrid(){
+  const boxes = document.getElementsByClassName('box')
+  for(box of boxes){
+    box.style.cursor = "pointer"
+  }
+} function unhighlightGrid(){
+  const boxes = document.getElementsByClassName('box')
+  for(box of boxes){
+    box.style.cursor = "auto"
+  }
+}
+
 
 /***
  * Creates a grid of interactable boxes
@@ -180,28 +197,29 @@ function createGrid(rows,columns)
         unhighlightPrevious()
         const clickedGroup = JSON.parse(box.getAttribute("grouping"))
         if (selectedGroup && selectedGroup[0] == clickedGroup[0]) { // (selectedGroup == group) wasnt working for some reason
-          unhighlightSidebar()
+          unlighlightAll()
           selectedGroup = null
           selectedChild = null
         } else if (selectedGroup){ //swap groups
           console.log("were in")
           selectedChild.remove()
-          const clickedB = getBox(box.getAttribute('row'),box.getAttribute('col'))
           createGridGroup(clickedGroup,selectedB)
           clickedChild.remove()
           createGridGroup(selectedGroup,clickedB)
-          unhighlightSidebar()
+          unlighlightAll()
           selectedGroup = null
           selectedChild = null
         } else {
         highlightSidebar()
+        highlightGrid()
         selectedGroup = clickedGroup
         selectedChild = clickedChild
         selectedChild.style.borderColor = getComputedStyle(document.documentElement)
         .getPropertyValue('--accent')
+        selectedB = clickedB
         }
       } else if (selectedGroup) {
-        unhighlightSidebar()
+        unlighlightAll()
         createGridGroup(selectedGroup,clickedB)
         selectedGroup = null
         selectedChild.remove()
