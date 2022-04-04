@@ -14,7 +14,7 @@ function seatingChart(grouping){
     switchSection(seatingChartSection)
     setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
     clearSidebar()
-    unlighlightAll()
+    unhighlightAll()
     const groups = getGroups(grouping)
     populateSidebar(groups)
     if(chartGrid.children.length <= 0) {
@@ -40,7 +40,7 @@ chartSidebar.addEventListener("click", function() {
     selectedGroup = null
     selectedChild.remove()
     selectedChild = null
-    unlighlightAll()
+    unhighlightAll()
   }
 });
 
@@ -118,14 +118,15 @@ function populateSidebar(groups, groupNum = 1){
         groupDiv.appendChild(ellipseEnd)
         groupDiv.addEventListener("click", function() {
           if(selectedGroup == group){
-            selectedGroup = null;
-            selectedChild = null;
+            selectedGroup = null
+            selectedChild = null
             groupDiv.style.borderColor = getComputedStyle(document.documentElement)
             .getPropertyValue('--dark')
           } else {
-            selectedGroup = group;
-            unhighlightPrevious();
-            selectedChild = groupDiv;
+            highlightGrid()
+            selectedGroup = group
+            unhighlightPrevious()
+            selectedChild = groupDiv
             groupDiv.style.borderColor = getComputedStyle(document.documentElement)
             .getPropertyValue('--accent')
           }
@@ -139,12 +140,12 @@ function populateSidebar(groups, groupNum = 1){
 function unhighlightPrevious(){
   if(selectedChild){
     selectedChild.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--dark')
-    unlighlightAll()
+    unhighlightAll()
   }
 }
 
-function unlighlightAll(){
-  unlighlightSidebar()
+function unhighlightAll(){
+  unhighlightSidebar()
   unhighlightGrid()
 }
 
@@ -197,7 +198,7 @@ function createGrid(rows,columns)
         unhighlightPrevious()
         const clickedGroup = JSON.parse(box.getAttribute("grouping"))
         if (selectedGroup && selectedGroup[0] == clickedGroup[0]) { // (selectedGroup == group) wasnt working for some reason
-          unlighlightAll()
+          unhighlightAll()
           selectedGroup = null
           selectedChild = null
         } else if (selectedGroup){ //swap groups
@@ -206,7 +207,7 @@ function createGrid(rows,columns)
           createGridGroup(clickedGroup,selectedB)
           clickedChild.remove()
           createGridGroup(selectedGroup,clickedB)
-          unlighlightAll()
+          unhighlightAll()
           selectedGroup = null
           selectedChild = null
         } else {
@@ -219,7 +220,7 @@ function createGrid(rows,columns)
         selectedB = clickedB
         }
       } else if (selectedGroup) {
-        unlighlightAll()
+        unhighlightAll()
         createGridGroup(selectedGroup,clickedB)
         selectedGroup = null
         selectedChild.remove()
