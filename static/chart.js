@@ -261,7 +261,7 @@ function saveGroupsFromChart(){
   for(const group of groups){
     const studentIds = [];
     for(const stuObj of group.ids){
-      studentIds.push(stuobj.id);
+      studentIds.push(stuObj.id);
     }
     changedGroups.push({
       ids:studentIds,
@@ -269,6 +269,7 @@ function saveGroupsFromChart(){
       col:group.col,
     });
   }
+  console.log(changedGroups)
   return fetch("/saveChart", {
     method: "POST",
     headers: {
@@ -284,5 +285,6 @@ function saveGroupsFromChart(){
 }
 //REFERENCE COMPLETE GROUP ADD TO SEE HOW TO MAKE LOADING METHOD
 saveChartBtn.addEventListener("click", async () => {
+  console.log('attemping save')
   await saveGroupsFromChart();//change  to laod method later
 })

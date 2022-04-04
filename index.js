@@ -152,20 +152,25 @@ app.post("/saveStudentPreferences", async (req, res) => {
 })
 
 app.post("/saveChart", async (req,res) => {
-  const user = await User.findOne({id: req.body.userId, classes: {$elemMatch: {id: req.body.id}}}).exec()
-  if(user){
-    const groupingObj = user.classes.find(c => c.id == req.body.id).groupings.find(g => g.id == req.body.groupId);
-    const newGroups = req.body.newGroups;
-    if(groupingObj){
-      for(let i = 0; i < groupingObj.groups; i++){
-        groupingObj[i] = newGroups[i];
+  const verification = await verifyUser(req.header("token"))
+  
+  if(verification.status){
+    const user = await User.findOne({id: req.body.userId, classes: {$elemMatch: {id: req.body.id}}}).exec()
+    if(user){
+      const groupingObj = user.classes.find(c => c.id == req.body.id).groupings.find(g => g.id == req.body.groupId);
+      const newGroups = req.body.newGroups;
+      console.log(groupingObj, '\n',newgroups);
+      if(groupingObj){
+        for(let i = 0; i < groupingObj.groups; i++){
+          groupingObj[i] = newGroups[i];
+        }
+        await user.save();
+      } else{
+        res.json({status: false, error:"No Grouping Found"})
       }
-      await user.save();
     } else{
-      res.json({status: false, error:"No Grouping Found"})
+      res.json({status: false, error: "No Class Found"})
     }
-  } else{
-    res.json({status: false, error: "No Class Found"})
   }
 })
 
