@@ -1,10 +1,11 @@
-let selectedGroup = null;
-let selectedChild = null;
+let selectedGroup = null
+let selectedChild = null
+let selectedB = null
 
 //expand and hide menu
 document.getElementById('chart-button').addEventListener('click', function(){
     this.classList.toggle('active')
-    document.getElementById('chart-sidebar').classList.toggle('active')
+    chartSidebar.classList.toggle('active')
 })
 
 //all the code for the seating chart of groups 
@@ -12,6 +13,8 @@ function seatingChart(grouping){
     statusTitle.innerText = "Seating Chart"
     switchSection(seatingChartSection)
     setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
+    clearSidebar()
+    unhighlightAll()
     const groups = getGroups(grouping)
     populateSidebar(groups)
     if(chartGrid.children.length <= 0) {
@@ -20,12 +23,26 @@ function seatingChart(grouping){
     //all testing of grid groups below
 }
 
-//expand and hide menu
-document.getElementById('chart-button').addEventListener('click', function(){
-  this.toggle('active')
-  document.getElementById('chart-sidebar').classList.toggle('active')
-})
+function clearSidebar(){
+  const groupDivs = document.getElementsByClassName('chart-sidebar-group-div')
+  console.log(groupDivs) //TODO: FIX BUG
+  for(groupDiv of groupDivs){
+    groupDiv.remove()
+    console.log(groupDiv)
+  }
+}
 
+//move groups back to sidebar
+chartSidebar.addEventListener("click", function() {
+  if (selectedChild && selectedChild.classList.contains("grid-group-container")) {
+    groupNum = selectedGroup[0]
+    populateSidebar([selectedGroup], groupNum)
+    selectedGroup = null
+    selectedChild.remove()
+    selectedChild = null
+    unhighlightAll()
+  }
+});
 
 //returns a list of groups filled with student objects
 function getGroups(grouping){
@@ -54,10 +71,9 @@ function getGroups(grouping){
     return nameGroups;
 }
 
-function populateSidebar(groups){
-    const seatingChartSidebar = document.getElementById('chart-sidebar')
+function populateSidebar(groups, groupNum = 1){
+    const seatingChartSidebar = chartSidebar
     const MAX_STUDENTS_DISPLAYED = 3 //how many student names are shown before it is cut off by ellipse (...)
-    let groupNum = 1; //current group being displauyed
     for(const group of groups){
         const groupDiv = document.createElement('div')
         groupDiv.classList.add("chart-sidebar-group-div")
@@ -102,15 +118,15 @@ function populateSidebar(groups){
         groupDiv.appendChild(ellipseEnd)
         groupDiv.addEventListener("click", function() {
           if(selectedGroup == group){
-            selectedGroup = null;
-            selectedChild = null;
+            selectedGroup = null
+            selectedChild = null
             groupDiv.style.borderColor = getComputedStyle(document.documentElement)
             .getPropertyValue('--dark')
           } else {
-            selectedGroup = group;
-
-            unhighlightPrevious();
-            selectedChild = groupDiv;
+            highlightGrid()
+            selectedGroup = group
+            unhighlightPrevious()
+            selectedChild = groupDiv
             groupDiv.style.borderColor = getComputedStyle(document.documentElement)
             .getPropertyValue('--accent')
           }
@@ -120,12 +136,38 @@ function populateSidebar(groups){
     }
 }
 
+//todo: fix confusing function names xd
 function unhighlightPrevious(){
   if(selectedChild){
-    selectedChild.style.borderColor = getComputedStyle(document.documentElement)
-            .getPropertyValue('--dark')
+    selectedChild.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--dark')
+    unhighlightAll()
   }
 }
+
+function unhighlightAll(){
+  unhighlightSidebar()
+  unhighlightGrid()
+}
+
+function highlightSidebar(){
+  chartSidebar.style.cursor = "pointer"
+  chartSidebar.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--accent')
+} function unhighlightSidebar(){
+  chartSidebar.style.cursor = "auto"
+  chartSidebar.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--dark')
+}
+function highlightGrid(){
+  const boxes = document.getElementsByClassName('box')
+  for(box of boxes){
+    box.style.cursor = "pointer"
+  }
+} function unhighlightGrid(){
+  const boxes = document.getElementsByClassName('box')
+  for(box of boxes){
+    box.style.cursor = "auto"
+  }
+}
+
 
 /***
  * Creates a grid of interactable boxes
@@ -149,17 +191,37 @@ function createGrid(rows,columns)
 
   Array.from(boxes, function(box) {
     box.addEventListener("click", function() {
-      console.log(`[${box.getAttribute('row')}][${box.getAttribute('col')}]`)
-      let selectedB = getBox(box.getAttribute('row'),box.getAttribute('col'))
-      if(box.querySelector(".grid-group-container")) {
-        unhighlightPrevious();
-        
-        selectedGroup = JSON.parse(box.getAttribute("grouping"))
-        selectedChild = box.querySelector(".grid-group-container")
+      //console.log(`[${box.getAttribute('row')}][${box.getAttribute('col')}]`)
+      const clickedB = getBox(box.getAttribute('row'),box.getAttribute('col'))
+      const clickedChild = box.querySelector(".grid-group-container")
+      if (clickedChild) {
+        unhighlightPrevious()
+        const clickedGroup = JSON.parse(box.getAttribute("grouping"))
+        if (selectedGroup && selectedGroup[0] == clickedGroup[0]) { // (selectedGroup == group) wasnt working for some reason
+          unhighlightAll()
+          selectedGroup = null
+          selectedChild = null
+        } else if (selectedGroup){ //swap groups
+          console.log("were in")
+          selectedChild.remove()
+          createGridGroup(clickedGroup,selectedB)
+          clickedChild.remove()
+          createGridGroup(selectedGroup,clickedB)
+          unhighlightAll()
+          selectedGroup = null
+          selectedChild = null
+        } else {
+        highlightSidebar()
+        highlightGrid()
+        selectedGroup = clickedGroup
+        selectedChild = clickedChild
         selectedChild.style.borderColor = getComputedStyle(document.documentElement)
         .getPropertyValue('--accent')
+        selectedB = clickedB
+        }
       } else if (selectedGroup) {
-        createGridGroup(selectedGroup,selectedB)
+        unhighlightAll()
+        createGridGroup(selectedGroup,clickedB)
         selectedGroup = null
         selectedChild.remove()
         selectedChild = null
