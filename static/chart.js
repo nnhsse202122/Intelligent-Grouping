@@ -1,6 +1,7 @@
 
 let selectedGroup = null;
 let groups = null;
+
 //expand and hide menu
 document.getElementById('chart-button').addEventListener('click', function(){
     this.classList.toggle('active')
@@ -270,16 +271,24 @@ function saveGroupsFromChart(){
     });
   }
   console.log(changedGroups)
-  return fetch("/saveChart", {
+  const oldGroup = classes[state.info.id].obj.groupings.find(g => g.id == state.info.groupingId);
+  console.log(state.info.groupingId, oldGroup)
+  const newGrouping = {
+    id:oldGroup.id,
+    name:oldGroup.name,
+    excluded:oldGroup.excluded,
+    groups:changedGroups,
+  };
+  return fetch("/editGrouping", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       token: auth2.currentUser.get().getAuthResponse().id_token
     },
     body: JSON.stringify({
-      newGroups: changedGroups,
-      classId: state.info.id,
-      groupId:state.info.groupId,
+      id: state.info.id,
+      oldId: state.info.groupId,
+      grouping: newGrouping,
     })
   }).then(res => res.json())
 }

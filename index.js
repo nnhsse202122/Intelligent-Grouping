@@ -153,7 +153,7 @@ app.post("/saveStudentPreferences", async (req, res) => {
 
 app.post("/saveChart", async (req,res) => {
   const verification = await verifyUser(req.header("token"))
-  
+  console.log("verification", verification.status)
   if(verification.status){
     const user = await User.findOne({id: req.body.userId, classes: {$elemMatch: {id: req.body.id}}}).exec()
     if(user){
