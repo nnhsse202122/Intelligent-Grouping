@@ -84,7 +84,7 @@ function saveEditedGrouping(grouping, oldId, id) {
     },
     body: JSON.stringify({
       id: id,
-      oldId: id,
+      oldId: oldId,
       grouping: grouping
     })
   }).then(res => res.json())

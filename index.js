@@ -251,6 +251,7 @@ app.post("/addGrouping", async (req, res) => {
 app.post("/editGrouping", async (req, res) => {
   const verification = await verifyUser(req.header("token"))
   if (verification.status) {
+    console.log(req.body.id, req.body.oldId)
     const user = await User.findOne({id: verification.user.sub}).exec()
     const groupings = user.classes.find(c => c.id == req.body.id).groupings
 
