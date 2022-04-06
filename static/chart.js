@@ -14,7 +14,7 @@ function seatingChart(grouping){
     switchSection(seatingChartSection)
     setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
     clearSidebar()
-    unhighlightAll()
+    unhighlightSidebarAndGrid()
     const groups = getGroups(grouping)
     populateSidebar(groups)
     if(chartGrid.children.length <= 0) {
@@ -40,7 +40,7 @@ chartSidebar.addEventListener("click", function() {
     selectedGroup = null
     selectedChild.remove()
     selectedChild = null
-    unhighlightAll()
+    unhighlightSidebarAndGrid()
   }
 });
 
@@ -136,38 +136,6 @@ function populateSidebar(groups, groupNum = 1){
     }
 }
 
-//todo: fix confusing function names xd
-function unhighlightPrevious(){
-  if(selectedChild){
-    selectedChild.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--dark')
-    unhighlightAll()
-  }
-}
-
-function unhighlightAll(){
-  unhighlightSidebar()
-  unhighlightGrid()
-}
-
-function highlightSidebar(){
-  chartSidebar.style.cursor = "pointer"
-  chartSidebar.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--accent')
-} function unhighlightSidebar(){
-  chartSidebar.style.cursor = "auto"
-  chartSidebar.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--dark')
-}
-function highlightGrid(){
-  const boxes = document.getElementsByClassName('box')
-  for(box of boxes){
-    box.style.cursor = "pointer"
-  }
-} function unhighlightGrid(){
-  const boxes = document.getElementsByClassName('box')
-  for(box of boxes){
-    box.style.cursor = "auto"
-  }
-}
-
 
 /***
  * Creates a grid of interactable boxes
@@ -198,7 +166,7 @@ function createGrid(rows,columns)
         unhighlightPrevious()
         const clickedGroup = JSON.parse(box.getAttribute("grouping"))
         if (selectedGroup && selectedGroup[0] == clickedGroup[0]) { // (selectedGroup == group) wasnt working for some reason
-          unhighlightAll()
+          unhighlightSidebarAndGrid()
           selectedGroup = null
           selectedChild = null
         } else if (selectedGroup){ //swap groups
@@ -207,7 +175,7 @@ function createGrid(rows,columns)
           createGridGroup(clickedGroup,selectedB)
           clickedChild.remove()
           createGridGroup(selectedGroup,clickedB)
-          unhighlightAll()
+          unhighlightSidebarAndGrid()
           selectedGroup = null
           selectedChild = null
         } else {
@@ -220,7 +188,7 @@ function createGrid(rows,columns)
         selectedB = clickedB
         }
       } else if (selectedGroup) {
-        unhighlightAll()
+        unhighlightSidebarAndGrid()
         createGridGroup(selectedGroup,clickedB)
         selectedGroup = null
         selectedChild.remove()
@@ -298,3 +266,34 @@ function createGridGroup(group, box){
   box.setAttribute("grouping", JSON.stringify(group));
 }
 
+// unhighlight functions:
+
+function unhighlightPrevious(){
+  if(selectedChild){
+    selectedChild.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--dark')
+    unhighlightSidebarAndGrid()
+  }
+}
+
+function unhighlightSidebarAndGrid(){
+  unhighlightSidebar()
+  unhighlightGrid()
+}
+function highlightSidebar(){
+  chartSidebar.style.cursor = "pointer"
+  chartSidebar.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-dark')
+} function unhighlightSidebar(){
+  chartSidebar.style.cursor = "auto"
+  chartSidebar.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--dark')
+}
+function highlightGrid(){
+  const boxes = document.getElementsByClassName('box')
+  for(box of boxes){
+    box.style.cursor = "pointer"
+  }
+} function unhighlightGrid(){
+  const boxes = document.getElementsByClassName('box')
+  for(box of boxes){
+    box.style.cursor = "auto"
+  }
+}
