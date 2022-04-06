@@ -21,8 +21,9 @@ function appendClassStudents(){
     classes[state.info.id].obj.students[i]
     let newOption = document.createElement('option');
     newOption.setAttribute('id', classes[state.info.id].obj.students[i].id)
+    newOption.setAttribute('index', i)
     newOption.addEventListener('click', function(){
-      updateStudentInformation(i);
+      updateStudentInformation(newOption.getAttribute('index'));
     });
     newOption.innerText = classes[state.info.id].obj.students[i].first + " " + classes[state.info.id].obj.students[i].last
 
@@ -31,6 +32,32 @@ function appendClassStudents(){
 }
 
 function updateStudentInformation(index) {
-  //classes[state.info.id].obj.students[index]
-  // Check if student prefs
+  let thisStudent = classes[state.info.id].obj.students[index]
+ 
+  console.log(thisStudent);
+  let list = document.getElementById("given-responses")
+  while(list.firstChild) {
+    list.removeChild(list.firstChild);
+  }
+
+  if(thisStudent.preferences.studentLike.length > 0) {
+    let head = document.createElement('h1');
+    head.innerHTML = "Preferred Classmates"
+
+    let studentOne = findStudentById(thisStudent.preferences.studentLike[0].inputs[0])
+    let studentTwo = findStudentById(thisStudent.preferences.studentLike[0].inputs[1])
+    let liOne = document.createElement('li');
+    let liTwo = document.createElement('li');
+
+    liOne.innerHTML = studentOne.first
+    list.appendChild(liOne);
+  }
+}
+
+function findStudentById(id){
+  for(let i = 0; i < classes[state.info.id].obj.students.length; i++) {
+    if(classes[state.info.id].obj.students[i].id == id) {
+      return classes[state.info.id].obj.students[i]
+    }
+  }
 }
