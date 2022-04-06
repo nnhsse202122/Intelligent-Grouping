@@ -22,7 +22,7 @@ function appendClassStudents(){
     let newOption = document.createElement('option');
     newOption.setAttribute('id', classes[state.info.id].obj.students[i].id)
     newOption.addEventListener('click', function(){
-      readOption(i)
+      updateStudentInformation(i);
     });
     newOption.innerText = classes[state.info.id].obj.students[i].first + " " + classes[state.info.id].obj.students[i].last
 
@@ -30,7 +30,7 @@ function appendClassStudents(){
   }
 }
 
-function readOption(index)
-{
-  console.log(classes[state.info.id].obj.students[index])
+function updateStudentInformation(index) {
+  //classes[state.info.id].obj.students[index]
+  // Check if student prefs
 }
