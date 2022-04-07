@@ -140,18 +140,18 @@ function createGrid(rows,columns)
 
   Array.from(boxes, function(box) {
     box.addEventListener("click", function() {
-      console.log(`[${box.getAttribute('row')}][${box.getAttribute('col')}]`)
+      
       let selectedB = getBox(box.getAttribute('row'),box.getAttribute('col'))
       if(box.querySelector(".grid-group-container")) {
         const removed = box.removeChild(box.querySelector(".grid-group-container"))
-        console.log(removed, selectedGroup)
+        
         const name = removed.children[1].children[0].innerText
         const splitName = name.split(' ');
         const firstName = splitName[0];
         const lastInitial = splitName[1];
         
         for(const group of groups){
-          console.log(`checking ${firstName}${lastInitial} against  ${group.ids[0].first} ${group.ids[0].last[0]}`)
+          
           if(splitName[0] == group.ids[0].first && group.ids[0].last[0]){
             group.row = -1;
             group.col = -1;
@@ -242,9 +242,9 @@ function createGridGroup(group, box){
 
 function loadGroupsToChart(chartGroups){
   const sidebarGroups = [];
-  console.log(groups)
+  
   for(const group of chartGroups){
-    console.log(group.row, group.col)
+    
     if(group.row == -1 && group.col == -1){
       sidebarGroups.push(group);
     }
@@ -252,9 +252,9 @@ function loadGroupsToChart(chartGroups){
       createGridGroup(group, getBox(group.row,group.col));
     }
   }
-  console.log(sidebarGroups);
+  
   populateSidebar(sidebarGroups);
-  console.log("GROUPS LOADED");
+  
 }
 
 function saveGroupsFromChart(){
@@ -270,9 +270,9 @@ function saveGroupsFromChart(){
       col:group.col,
     });
   }
-  console.log(changedGroups)
+  
   const oldGroup = classes[state.info.id].obj.groupings.find(g => g.id == state.info.groupingId);
-  console.log(state.info.groupingId, oldGroup)
+  
   const newGrouping = {
     id:oldGroup.id,
     name:oldGroup.name,
@@ -294,6 +294,6 @@ function saveGroupsFromChart(){
 }
 //REFERENCE COMPLETE GROUP ADD TO SEE HOW TO MAKE LOADING METHOD
 saveChartBtn.addEventListener("click", async () => {
-  console.log('attemping save')
+  
   await saveGroupsFromChart();//change  to laod method later
 })
