@@ -49,8 +49,33 @@ function updateStudentInformation(index) {
     let liOne = document.createElement('li');
     let liTwo = document.createElement('li');
 
-    liOne.innerHTML = studentOne.first
+    list.appendChild(head);
+
+    liOne.innerHTML = `${studentOne.first} ${studentOne.last}`
+    liTwo.innerHTML = `${studentTwo.first} ${studentTwo.last}`
     list.appendChild(liOne);
+    list.appendChild(liTwo);
+  }
+
+  if(thisStudent.preferences.studentDislike.length > 0) {
+    let head = document.createElement('h1');
+    head.innerHTML = "Unpreferred Classmates"
+
+    let studentOne = findStudentById(thisStudent.preferences.studentDislike[0].inputs[0])
+    let studentTwo = findStudentById(thisStudent.preferences.studentDislike[0].inputs[1])
+    let liOne = document.createElement('li');
+    let liTwo = document.createElement('li');
+
+    list.appendChild(head);
+
+    liOne.innerHTML = `${studentOne.first} ${studentOne.last}`
+    liTwo.innerHTML = `${studentTwo.first} ${studentTwo.last}`
+    list.appendChild(liOne);
+    list.appendChild(liTwo);
+  }
+
+  if(!list.firstChild) {
+    list.append(document.createElement('h2').innerHTML = "This student has not responded")
   }
 }
 
