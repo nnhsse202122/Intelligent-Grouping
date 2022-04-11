@@ -41,10 +41,9 @@ function updateStudentInformation(index) {
   while(list.firstChild) {
     list.removeChild(list.firstChild);
   }
-  let info = null; // THIS IS A TEST I think hmmmmmmmmmmm
 
   // Preferred Students
-  for(let i = 0; i < thisStudent.preferences.studentLike.length; i++)
+  for(let i = 0; i < thisStudent.preferences.studentLike[0].inputs.length; i++)
   {
     if(i == 0) {
       let head = document.createElement('h1')
@@ -53,13 +52,13 @@ function updateStudentInformation(index) {
     }
 
     let student = findStudentById(thisStudent.preferences.studentLike[0].inputs[i])
-    info = document.createElement('li') // beep boop testing REMOVED LET AND MOVED VARIABLE UP
+    let info = document.createElement('li')
     info.innerHTML = `${student.first} ${student.last}`
     list.appendChild(info) 
   }
 
   // Unpreferred Students
-  for(let i = 0; i < thisStudent.preferences.studentDislike.length; i++)
+  for(let i = 0; i < thisStudent.preferences.studentDislike.inputs.length; i++)
   {
     if(i == 0) {
       let head = document.createElement('h1')
@@ -74,7 +73,7 @@ function updateStudentInformation(index) {
   }
 
   // Preferred Topics
-  for(let i = 0; i < thisStudent.preferences.topicLike.length; i++)
+  for(let i = 0; i < thisStudent.preferences.topicLike.inputs.length; i++)
   {
     if(i == 0) {
       let head = document.createElement('h1')
@@ -89,7 +88,7 @@ function updateStudentInformation(index) {
   }
 
   // Unpreferred Topics
-  for(let i = 0; i < thisStudent.preferences.topicDislike.length; i++)
+  for(let i = 0; i < thisStudent.preferences.topicDislike.inputs.length; i++)
   {
     if(i == 0) {
       let head = document.createElement('h1')
