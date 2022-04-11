@@ -33,45 +33,74 @@ function appendClassStudents(){
 
 function updateStudentInformation(index) {
   let thisStudent = classes[state.info.id].obj.students[index]
+
+  console.log(thisStudent.preferences)
  
   console.log(thisStudent);
   let list = document.getElementById("given-responses")
   while(list.firstChild) {
     list.removeChild(list.firstChild);
   }
+  let info = null; // THIS IS A TEST I think hmmmmmmmmmmm
 
-  if(thisStudent.preferences.studentLike.length > 0) {
-    let head = document.createElement('h1');
-    head.innerHTML = "Preferred Classmates"
+  // Preferred Students
+  for(let i = 0; i < thisStudent.preferences.studentLike.length; i++)
+  {
+    if(i == 0) {
+      let head = document.createElement('h1')
+      head.innerHTML = "Preferred Classmate(s)"
+      list.appendChild(head)
+    }
 
-    let studentOne = findStudentById(thisStudent.preferences.studentLike[0].inputs[0])
-    let studentTwo = findStudentById(thisStudent.preferences.studentLike[0].inputs[1])
-    let liOne = document.createElement('li');
-    let liTwo = document.createElement('li');
-
-    list.appendChild(head);
-
-    liOne.innerHTML = `${studentOne.first} ${studentOne.last}`
-    liTwo.innerHTML = `${studentTwo.first} ${studentTwo.last}`
-    list.appendChild(liOne);
-    list.appendChild(liTwo);
+    let student = findStudentById(thisStudent.preferences.studentLike[0].inputs[i])
+    info = document.createElement('li') // beep boop testing REMOVED LET AND MOVED VARIABLE UP
+    info.innerHTML = `${student.first} ${student.last}`
+    list.appendChild(info) 
   }
 
-  if(thisStudent.preferences.studentDislike.length > 0) {
-    let head = document.createElement('h1');
-    head.innerHTML = "Unpreferred Classmates"
+  // Unpreferred Students
+  for(let i = 0; i < thisStudent.preferences.studentDislike.length; i++)
+  {
+    if(i == 0) {
+      let head = document.createElement('h1')
+      head.innerHTML = "Unpreferred Classmate(s)"
+      list.appendChild(head)
+    }
 
-    let studentOne = findStudentById(thisStudent.preferences.studentDislike[0].inputs[0])
-    let studentTwo = findStudentById(thisStudent.preferences.studentDislike[0].inputs[1])
-    let liOne = document.createElement('li');
-    let liTwo = document.createElement('li');
+    let student = findStudentById(thisStudent.preferences.studentDislike[0].inputs[i])
+    let info = document.createElement('li')
+    info.innerHTML = `${student.first} ${student.last}`
+    list.appendChild(info)
+  }
 
-    list.appendChild(head);
+  // Preferred Topics
+  for(let i = 0; i < thisStudent.preferences.topicLike.length; i++)
+  {
+    if(i == 0) {
+      let head = document.createElement('h1')
+      head.innerHTML = "Preferred Topic(s)"
+      list.appendChild(head)
+    }
 
-    liOne.innerHTML = `${studentOne.first} ${studentOne.last}`
-    liTwo.innerHTML = `${studentTwo.first} ${studentTwo.last}`
-    list.appendChild(liOne);
-    list.appendChild(liTwo);
+    let topic = thisStudent.preferences.topicLike[0].inputs[i]
+    let info = document.createElement('li')
+    info.innerHTML = topic
+    list.appendChild(info)
+  }
+
+  // Unpreferred Topics
+  for(let i = 0; i < thisStudent.preferences.topicDislike.length; i++)
+  {
+    if(i == 0) {
+      let head = document.createElement('h1')
+      head.innerHTML = "Unpreferred Topic(s)"
+      list.appendChild(head)
+    }
+
+    let topic = thisStudent.preferences.topicDislike[0].inputs[i]
+    let info = document.createElement('li')
+    info.innerHTML = topic
+    list.appendChild(info)
   }
 
   if(!list.firstChild) {
