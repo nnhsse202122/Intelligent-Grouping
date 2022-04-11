@@ -169,8 +169,8 @@ function createGrid(rows,columns)
           unhighlightSidebarAndGrid()
           selectedGroup = null
           selectedChild = null
-        } else if (selectedGroup){ //swap groups
-          console.log("were in")
+        } else if (selectedGroup && selectedB){ //swap groups
+          console.log("swap groups")
           selectedChild.remove()
           createGridGroup(clickedGroup,selectedB)
           clickedChild.remove()
@@ -285,6 +285,7 @@ function highlightSidebar(){
 } function unhighlightSidebar(){
   chartSidebar.style.cursor = "auto"
   chartSidebar.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--dark')
+  selectedB = null
 }
 function highlightGrid(){
   const boxes = document.getElementsByClassName('box')
