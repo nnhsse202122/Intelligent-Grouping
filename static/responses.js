@@ -58,7 +58,7 @@ function updateStudentInformation(index) {
   }
 
   // Unpreferred Students
-  for(let i = 0; i < thisStudent.preferences.studentDislike.inputs.length; i++)
+  for(let i = 0; i < thisStudent.preferences.studentDislike[0].inputs.length; i++)
   {
     if(i == 0) {
       let head = document.createElement('h1')
@@ -73,7 +73,7 @@ function updateStudentInformation(index) {
   }
 
   // Preferred Topics
-  for(let i = 0; i < thisStudent.preferences.topicLike.inputs.length; i++)
+  for(let i = 0; i < thisStudent.preferences.topicLike[0].inputs.length; i++)
   {
     if(i == 0) {
       let head = document.createElement('h1')
@@ -88,7 +88,7 @@ function updateStudentInformation(index) {
   }
 
   // Unpreferred Topics
-  for(let i = 0; i < thisStudent.preferences.topicDislike.inputs.length; i++)
+  for(let i = 0; i < thisStudent.preferences.topicDislike[0].inputs.length; i++)
   {
     if(i == 0) {
       let head = document.createElement('h1')
