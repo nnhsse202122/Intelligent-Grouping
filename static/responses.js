@@ -2,6 +2,9 @@ function showResponses() {
     statusTitle.innerText = "Student Responses"
     switchSection(responsesSection)
     setState(8, {id: state.info.id/*, groupingId: grouping.id, currentGroup:grouping*/})
+
+    clearSideText(document.getElementById("given-responses"))
+    document.getElementById("given-responses").append(document.createElement('h1').innerHTML = "gegewogewojg")
     appendClassStudents();
 }
 
@@ -17,6 +20,10 @@ function somethingOrOther(){
  * Adds student names to dropdown menu
  */
 function appendClassStudents(){
+  while(document.getElementById("student-selector").firstChild) {
+    document.getElementById("student-selector").removeChild(document.getElementById("student-selector").firstChild)
+  }
+
   for(let i = 0; i < classes[state.info.id].obj.students.length; i++) {
     classes[state.info.id].obj.students[i]
     let newOption = document.createElement('option');
@@ -31,16 +38,17 @@ function appendClassStudents(){
   }
 }
 
-function updateStudentInformation(index) {
-  let thisStudent = classes[state.info.id].obj.students[index]
-
-  console.log(thisStudent.preferences)
- 
-  console.log(thisStudent);
-  let list = document.getElementById("given-responses")
+function clearSideText(list) {
   while(list.firstChild) {
     list.removeChild(list.firstChild);
   }
+}
+
+function updateStudentInformation(index) {
+  let thisStudent = classes[state.info.id].obj.students[index]
+
+  let list = document.getElementById("given-responses")
+  clearSideText(list);
 
   // Preferred Students
   if(thisStudent.preferences.studentLike.length > 0) {
