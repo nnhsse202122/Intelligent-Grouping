@@ -11,10 +11,10 @@ document.getElementById('chart-button').addEventListener('click', function(){
 //all the code for the seating chart of groups 
 function seatingChart(grouping){
     statusTitle.innerText = "Seating Chart"
-    switchSection(seatingChartSection)
-    setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
     clearSidebar()
     unhighlightSidebarAndGrid()
+    switchSection(seatingChartSection)
+    setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
     const groups = getGroups(grouping)
     populateSidebar(groups)
     if(chartGrid.children.length <= 0) {
@@ -25,10 +25,9 @@ function seatingChart(grouping){
 
 function clearSidebar(){
   const groupDivs = document.getElementsByClassName('chart-sidebar-group-div')
-  console.log(groupDivs) //TODO: FIX BUG
-  for(groupDiv of groupDivs){
-    groupDiv.remove()
-    console.log(groupDiv)
+  const length = groupDivs.length
+  for(let i = 0; i < length; i++){
+    groupDivs[0].remove()
   }
 }
 
