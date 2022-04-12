@@ -43,63 +43,59 @@ function updateStudentInformation(index) {
   }
 
   // Preferred Students
-  for(let i = 0; i < thisStudent.preferences.studentLike[0].inputs.length; i++)
-  {
-    if(i == 0) {
-      let head = document.createElement('h1')
-      head.innerHTML = "Preferred Classmate(s)"
-      list.appendChild(head)
+  if(thisStudent.preferences.studentLike.length > 0) {
+    let head = document.createElement('h2')
+    head.innerHTML = "Preferred Classmate(s)"
+    list.appendChild(head)
+    for(let i = 0; i < thisStudent.preferences.studentLike[0].inputs.length; i++)
+    {
+      let student = findStudentById(thisStudent.preferences.studentLike[0].inputs[i])
+      let info = document.createElement('li')
+      info.innerHTML = `${student.first} ${student.last}`
+      list.appendChild(info) 
     }
-
-    let student = findStudentById(thisStudent.preferences.studentLike[0].inputs[i])
-    let info = document.createElement('li')
-    info.innerHTML = `${student.first} ${student.last}`
-    list.appendChild(info) 
   }
-
+  
   // Unpreferred Students
-  for(let i = 0; i < thisStudent.preferences.studentDislike[0].inputs.length; i++)
-  {
-    if(i == 0) {
-      let head = document.createElement('h1')
-      head.innerHTML = "Unpreferred Classmate(s)"
-      list.appendChild(head)
+  if(thisStudent.preferences.studentDislike.length > 0) {
+    let head = document.createElement('h2')
+    head.innerHTML = "Unpreferred Classmate(s)"
+    list.appendChild(head)
+    for(let i = 0; i < thisStudent.preferences.studentDislike[0].inputs.length; i++)
+    {
+      let student = findStudentById(thisStudent.preferences.studentDislike[0].inputs[i])
+      let info = document.createElement('li')
+      info.innerHTML = `${student.first} ${student.last}`
+      list.appendChild(info)
     }
-
-    let student = findStudentById(thisStudent.preferences.studentDislike[0].inputs[i])
-    let info = document.createElement('li')
-    info.innerHTML = `${student.first} ${student.last}`
-    list.appendChild(info)
   }
 
   // Preferred Topics
-  for(let i = 0; i < thisStudent.preferences.topicLike[0].inputs.length; i++)
-  {
-    if(i == 0) {
-      let head = document.createElement('h1')
-      head.innerHTML = "Preferred Topic(s)"
-      list.appendChild(head)
+  if(thisStudent.preferences.topicLike.length > 0) {
+    let head = document.createElement('h2')
+    head.innerHTML = "Preferred Topic(s)"
+    list.appendChild(head)
+    for(let i = 0; i < thisStudent.preferences.topicLike[0].inputs.length; i++)
+    {
+      let topic = thisStudent.preferences.topicLike[0].inputs[i]
+      let info = document.createElement('li')
+      info.innerHTML = topic
+      list.appendChild(info)
     }
-
-    let topic = thisStudent.preferences.topicLike[0].inputs[i]
-    let info = document.createElement('li')
-    info.innerHTML = topic
-    list.appendChild(info)
   }
 
   // Unpreferred Topics
-  for(let i = 0; i < thisStudent.preferences.topicDislike[0].inputs.length; i++)
-  {
-    if(i == 0) {
-      let head = document.createElement('h1')
-      head.innerHTML = "Unpreferred Topic(s)"
-      list.appendChild(head)
+  if(thisStudent.preferences.topicDislike.length > 0) {
+    let head = document.createElement('h2')
+    head.innerHTML = "Unpreferred Topic(s)"
+    list.appendChild(head)
+    for(let i = 0; i < thisStudent.preferences.topicDislike[0].inputs.length; i++)
+    {
+      let topic = thisStudent.preferences.topicDislike[0].inputs[i]
+      let info = document.createElement('li')
+      info.innerHTML = topic
+      list.appendChild(info)
     }
-
-    let topic = thisStudent.preferences.topicDislike[0].inputs[i]
-    let info = document.createElement('li')
-    info.innerHTML = topic
-    list.appendChild(info)
   }
 
   if(!list.firstChild) {
