@@ -1,11 +1,16 @@
 
-let selectedGroup = null;
+
 let groups = null;
+
+let selectedGroup = null
+let selectedChild = null
+let selectedB = null
+
 
 //expand and hide menu
 document.getElementById('chart-button').addEventListener('click', function(){
     this.classList.toggle('active')
-    document.getElementById('chart-sidebar').classList.toggle('active')
+    chartSidebar.classList.toggle('active')
 })
 
 
@@ -15,10 +20,12 @@ function seatingChart(grouping){
     groupNumber = 1
     switchSection(seatingChartSection)
     setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
-    groups = getGroups(grouping)
 
-    //clearSidebar()
-    
+    clearSidebar()
+    unhighlightAll()
+    groups = getGroups(grouping)
+    populateSidebar(groups)
+
     if(chartGrid.children.length <= 0) {
         createGrid(5,8); // Note that this only runs if the grid class in HTML has no child elements
     }
@@ -27,12 +34,27 @@ function seatingChart(grouping){
 }
 
 
-//expand and hide menu
-document.getElementById('chart-button').addEventListener('click', function(){
-  this.toggle('active')
-  document.getElementById('chart-sidebar').classList.toggle('active')
-})
+function clearSidebar(){
+  const groupDivs = document.getElementsByClassName('chart-sidebar-group-div')
+  console.log(groupDivs) //TODO: FIX BUG
+  for(groupDiv of groupDivs){
+    groupDiv.remove()
+    console.log(groupDiv)
+  }
+}
 
+
+//move groups back to sidebar
+chartSidebar.addEventListener("click", function() {
+  if (selectedChild && selectedChild.classList.contains("grid-group-container")) {
+    groupNum = selectedGroup[0]
+    populateSidebar([selectedGroup], groupNum)
+    selectedGroup = null
+    selectedChild.remove()
+    selectedChild = null
+    unhighlightAll()
+  }
+});
 
 //returns a list of groups filled with student objects
 function getGroups(grouping){
@@ -60,11 +82,12 @@ function getGroups(grouping){
     return newGroups;
 }
 
-function populateSidebar(sidebarGroups){
 
-    const seatingChartSidebar = document.getElementById('chart-sidebar')
+function populateSidebar(sidebarGroups, groupNum = 1){
+    const seatingChartSidebar = chartSidebar
     const MAX_STUDENTS_DISPLAYED = 3 //how many student names are shown before it is cut off by ellipse (...)
     for(const group of sidebarGroups){
+
         const groupDiv = document.createElement('div')
         groupDiv.classList.add("chart-sidebar-group-div")
         groupDiv.id = `group-${groupNumber}`
@@ -104,19 +127,58 @@ function populateSidebar(sidebarGroups){
         }
         groupDiv.appendChild(ellipseEnd)
         groupDiv.addEventListener("click", function() {
-          selectedGroup = group;
+
+          if(selectedGroup == group){
+            selectedGroup = null
+            selectedChild = null
+            groupDiv.style.borderColor = getComputedStyle(document.documentElement)
+            .getPropertyValue('--dark')
+          } else {
+            highlightGrid()
+            selectedGroup = group
+            unhighlightPrevious()
+            selectedChild = groupDiv
+            groupDiv.style.borderColor = getComputedStyle(document.documentElement)
+            .getPropertyValue('--accent')
+          }
         });
         seatingChartSidebar.appendChild(groupDiv)
         groupNumber+= 1
     }
 }
 
-function clearSidebar() { //fix later lol
-  const seatingChartSidebar = document.getElementById('chart-sidebar')
-  while (seatingChartSidebar.firstChild) {
-    seatingChartSidebar.removeChild(seatingChartSidebar.firstChild);
+//todo: fix confusing function names xd
+function unhighlightPrevious(){
+  if(selectedChild){
+    selectedChild.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--dark')
+    unhighlightAll()
   }
 }
+
+function unhighlightAll(){
+  unhighlightSidebar()
+  unhighlightGrid()
+}
+
+function highlightSidebar(){
+  chartSidebar.style.cursor = "pointer"
+  chartSidebar.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--accent')
+} function unhighlightSidebar(){
+  chartSidebar.style.cursor = "auto"
+  chartSidebar.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--dark')
+}
+function highlightGrid(){
+  const boxes = document.getElementsByClassName('box')
+  for(box of boxes){
+    box.style.cursor = "pointer"
+  }
+} function unhighlightGrid(){
+  const boxes = document.getElementsByClassName('box')
+  for(box of boxes){
+    box.style.cursor = "auto"
+  }
+}
+
 
 /***
  * Creates a grid of interactable boxes
@@ -140,27 +202,54 @@ function createGrid(rows,columns)
 
   Array.from(boxes, function(box) {
     box.addEventListener("click", function() {
-      
-      let selectedB = getBox(box.getAttribute('row'),box.getAttribute('col'))
-      if(box.querySelector(".grid-group-container")) {
-        const removed = box.removeChild(box.querySelector(".grid-group-container"))
-        
-        const name = removed.children[1].children[0].innerText
-        const splitName = name.split(' ');
-        const firstName = splitName[0];
-        const lastInitial = splitName[1];
-        
-        for(const group of groups){
-          
-          if(splitName[0] == group.ids[0].first && group.ids[0].last[0]){
-            group.row = -1;
-            group.col = -1;
-            break;
+
+      //console.log(`[${box.getAttribute('row')}][${box.getAttribute('col')}]`)
+      const clickedB = getBox(box.getAttribute('row'),box.getAttribute('col'))
+      const clickedChild = box.querySelector(".grid-group-container")
+      if (clickedChild) {
+        unhighlightPrevious()
+        const clickedGroup = JSON.parse(box.getAttribute("grouping"))
+        if (selectedGroup && selectedGroup[0] == clickedGroup[0]) { // (selectedGroup == group) wasnt working for some reason
+          unhighlightAll()
+          selectedGroup = null
+          selectedChild = null
+        } else if (selectedGroup){ //swap groups
+          console.log("were in")
+          selectedChild.remove()
+          createGridGroup(clickedGroup,selectedB)
+          // changing db values
+          const name = clickedChild.children[0].innerText
+          const splitName = name.split(' ');
+          const firstName = splitName[0];
+          const lastInitial = splitName[1];
+          for(const group of groups){
+            if(splitName[0] == group.ids[0].first && group.ids[0].last[0]){
+              group.row = -1
+              group.col = -1
+              break;
+            }
           }
+          clickedChild.remove()
+          //
+          createGridGroup(selectedGroup,clickedB)
+          unhighlightAll()
+          selectedGroup = null
+          selectedChild = null
+        } else {
+        highlightSidebar()
+        highlightGrid()
+        selectedGroup = clickedGroup
+        selectedChild = clickedChild
+        selectedChild.style.borderColor = getComputedStyle(document.documentElement)
+        .getPropertyValue('--accent')
+        selectedB = clickedB
         }
-        groupNumber--;
-      } else {
-        createGridGroup(selectedGroup,selectedB)
+      } else if (selectedGroup) {
+        unhighlightAll()
+        createGridGroup(selectedGroup,clickedB)
+        selectedGroup = null
+        selectedChild.remove()
+        selectedChild = null
       }
     });
   });
@@ -238,6 +327,7 @@ function createGridGroup(group, box){
   gridGroupContainer.appendChild(title);
   gridGroupContainer.appendChild(namesList);
   box.appendChild(gridGroupContainer);
+  box.setAttribute("grouping", JSON.stringify(group));
 }
 
 function loadGroupsToChart(chartGroups){
