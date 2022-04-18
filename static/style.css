@@ -7,7 +7,7 @@
   --light-gray: #bebebe;
   --lighter-gray: #d3d3d3;
   --error: #ff5166;
-  --placeholder: #a3a3a3
+  --placeholder: #a3a3a3;
 }
 
 * {
@@ -1210,7 +1210,8 @@ h1 {
   right: -240px;
   height: 100%;
   background: var(--dark);
-  transition: all .5s ease;
+  border: 4px solid var(--accent);
+  transition: all 0.6s ease;
   overflow-y:auto;
 }
 #chart-sidebar .buttons{
@@ -1246,7 +1247,7 @@ h1 {
   width: 45px;
   text-align: center;
   line-height: 45px;
-  transition: all .5s ease;
+  transition: all 0.6s ease;
 }
 #chart-sidebar.active{
   right: 0;
@@ -1255,14 +1256,14 @@ h1 {
   right: 250px;
 }
 #chart-button i{
-  transition: all .5s ease;
+  transition: all 0.6s ease;
 }
 #chart-button.active i{
   transform: rotate(180deg);
 }
 
 .chart-sidebar-group-div{
-  border: var(--accent) solid 3px;
+  border: var(--dark) solid 3px;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -1271,6 +1272,7 @@ h1 {
   background: var(--light-bg-alt);
   margin: 10px;
   cursor: pointer;
+  transition: 0.3s all;
 }
 
 .chart-sidebar-header{
@@ -1317,14 +1319,12 @@ h1 {
   color: #fff;
   border-radius: 1px;
   font-size: 150%;
-  cursor: pointer;
   padding-top:1px;
   padding-left: 1px;
   
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
 
 .box:hover {
@@ -1352,7 +1352,8 @@ h1 {
   height: 100%;
   border-radius: 4px;
   border: 4px solid var(--dark);
-  background-color: #FFFFFF
+  background-color: #FFFFFF;
+  cursor: pointer;
 }
 
 .no-size{
