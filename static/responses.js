@@ -4,7 +4,9 @@ function showResponses() {
     setState(8, {id: state.info.id/*, groupingId: grouping.id, currentGroup:grouping*/})
 
     clearSideText(document.getElementById("given-responses"))
-    document.getElementById("given-responses").append(document.createElement('h1').innerHTML = "gegewogewojg")
+    let info = document.createElement('h2')
+    info.innerHTML = "Click on a Student"
+    document.getElementById("given-responses").append(info)
     appendClassStudents();
 }
 
@@ -107,7 +109,9 @@ function updateStudentInformation(index) {
   }
 
   if(!list.firstChild) {
-    list.append(document.createElement('h2').innerHTML = "This student has not responded")
+    let info = document.createElement('h2')
+    info.innerHTML = "This student has not responded"
+    list.append(info)
   }
 }
 
