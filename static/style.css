@@ -1378,6 +1378,7 @@ h1 {
 
 .selector {
   flex-grow: 4;
+  width:35em;
   border: 5px solid var(--accent);
   border-radius: 8px;
 }
@@ -1392,6 +1393,18 @@ h1 {
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
+}
+
+#response-panel { 
+  float:right;
+  text-align:center;
+  position: fixed;
+  width: 50em;
+  height: 40em;
+  top: 30%;
+  left: 55%;
+  margin-top: -100px;
+  margin-left: -100px;
 }
 
 option {
