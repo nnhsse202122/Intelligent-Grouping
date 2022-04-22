@@ -14,8 +14,8 @@ function deleteGroupFromDB(id, groupingId) {
       token: auth2.currentUser.get().getAuthResponse().id_token
     },
     body: JSON.stringify({
-      id: id,
-      groupingId: groupingId
+      id,
+      groupingId
     })
   }).then(res => res.json())
 }
@@ -28,8 +28,8 @@ function saveNewGrouping(grouping, id) {
       token: auth2.currentUser.get().getAuthResponse().id_token
     },
     body: JSON.stringify({
-      id: id,
-      grouping: grouping
+      id,
+      grouping
     })
   }).then(res => res.json())
 }
@@ -83,9 +83,9 @@ function saveEditedGrouping(grouping, oldId, id) {
       token: auth2.currentUser.get().getAuthResponse().id_token
     },
     body: JSON.stringify({
-      id: id,
-      oldId: id,
-      grouping: grouping
+      id,
+      oldId,
+      grouping
     })
   }).then(res => res.json())
 }
@@ -167,7 +167,7 @@ function editGrouping(grouping) {
   }
 }
 
-function getRandomGroups(type, num, classId, excluded) {
+function getRandomGroups(type, num, id, excluded) {
   return fetch("/randomGroups", {
     method: "POST",
     headers: {
@@ -175,10 +175,10 @@ function getRandomGroups(type, num, classId, excluded) {
       token: auth2.currentUser.get().getAuthResponse().id_token
     },
     body: JSON.stringify({
-      id: classId,
-      type: type,
-      num: num,
-      excluded: excluded
+      id,
+      type,
+      num,
+      excluded
     })
   }).then(res => res.json())
 }
