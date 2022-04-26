@@ -45,3 +45,8 @@ const seatingChartSection = document.getElementById("seating-chart-sec")
 const chartGrid = document.getElementById("chart-grid")
 
 const responsesSection = document.getElementById("responses-sec")
+
+const saveChartBtn = document.getElementById('save-chart')
+const resetChartBtn = document.getElementById('reset-chart')
+
+const chartSidebar = document.getElementById("chart-sidebar")
