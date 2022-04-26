@@ -1378,7 +1378,8 @@ h1 {
 
 .selector {
   flex-grow: 4;
-  width:35em;
+  min-width:10em;
+  max-width:35em;
   border: 5px solid var(--accent);
   border-radius: 8px;
 }
