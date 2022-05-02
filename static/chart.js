@@ -17,13 +17,13 @@ document.getElementById('chart-button').addEventListener('click', function(){
 //all the code for the seating chart of groups 
 function seatingChart(grouping){
     statusTitle.innerText = "Seating Chart"
-    groupNumber = 1
+    clearSidebar()
+    unhighlightSidebarAndGrid()
     switchSection(seatingChartSection)
     setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
-
-    clearSidebar()
-    unhighlightAll()
     groups = getGroups(grouping)
+    groupNumber = 1
+    clearSidebar()
     populateSidebar(groups)
 
     if(chartGrid.children.length <= 0) {
@@ -36,10 +36,9 @@ function seatingChart(grouping){
 
 function clearSidebar(){
   const groupDivs = document.getElementsByClassName('chart-sidebar-group-div')
-  console.log(groupDivs) //TODO: FIX BUG
-  for(groupDiv of groupDivs){
-    groupDiv.remove()
-    console.log(groupDiv)
+  const length = groupDivs.length
+  for(let i = 0; i < length; i++){
+    groupDivs[0].remove()
   }
 }
 
@@ -52,7 +51,7 @@ chartSidebar.addEventListener("click", function() {
     selectedGroup = null
     selectedChild.remove()
     selectedChild = null
-    unhighlightAll()
+    unhighlightSidebarAndGrid()
   }
 });
 
@@ -147,38 +146,6 @@ function populateSidebar(sidebarGroups, groupNum = 1){
     }
 }
 
-//todo: fix confusing function names xd
-function unhighlightPrevious(){
-  if(selectedChild){
-    selectedChild.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--dark')
-    unhighlightAll()
-  }
-}
-
-function unhighlightAll(){
-  unhighlightSidebar()
-  unhighlightGrid()
-}
-
-function highlightSidebar(){
-  chartSidebar.style.cursor = "pointer"
-  chartSidebar.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--accent')
-} function unhighlightSidebar(){
-  chartSidebar.style.cursor = "auto"
-  chartSidebar.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--dark')
-}
-function highlightGrid(){
-  const boxes = document.getElementsByClassName('box')
-  for(box of boxes){
-    box.style.cursor = "pointer"
-  }
-} function unhighlightGrid(){
-  const boxes = document.getElementsByClassName('box')
-  for(box of boxes){
-    box.style.cursor = "auto"
-  }
-}
-
 
 /***
  * Creates a grid of interactable boxes
@@ -210,11 +177,11 @@ function createGrid(rows,columns)
         unhighlightPrevious()
         const clickedGroup = JSON.parse(box.getAttribute("grouping"))
         if (selectedGroup && selectedGroup[0] == clickedGroup[0]) { // (selectedGroup == group) wasnt working for some reason
-          unhighlightAll()
+          unhighlightSidebarAndGrid()
           selectedGroup = null
           selectedChild = null
-        } else if (selectedGroup){ //swap groups
-          console.log("were in")
+        } else if (selectedGroup && selectedB){ //swap groups
+          console.log("swap groups")
           selectedChild.remove()
           createGridGroup(clickedGroup,selectedB)
           // changing db values
@@ -232,7 +199,7 @@ function createGrid(rows,columns)
           clickedChild.remove()
           //
           createGridGroup(selectedGroup,clickedB)
-          unhighlightAll()
+          unhighlightSidebarAndGrid()
           selectedGroup = null
           selectedChild = null
         } else {
@@ -245,7 +212,7 @@ function createGrid(rows,columns)
         selectedB = clickedB
         }
       } else if (selectedGroup) {
-        unhighlightAll()
+        unhighlightSidebarAndGrid()
         createGridGroup(selectedGroup,clickedB)
         selectedGroup = null
         selectedChild.remove()
@@ -328,6 +295,39 @@ function createGridGroup(group, box){
   gridGroupContainer.appendChild(namesList);
   box.appendChild(gridGroupContainer);
   box.setAttribute("grouping", JSON.stringify(group));
+}
+
+// unhighlight functions:
+
+function unhighlightPrevious(){
+  if(selectedChild){
+    selectedChild.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--dark')
+    unhighlightSidebarAndGrid()
+  }
+}
+
+function unhighlightSidebarAndGrid(){
+  unhighlightSidebar()
+  unhighlightGrid()
+}
+function highlightSidebar(){
+  chartSidebar.style.cursor = "pointer"
+  chartSidebar.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-dark')
+} function unhighlightSidebar(){
+  chartSidebar.style.cursor = "auto"
+  chartSidebar.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--dark')
+  selectedB = null
+}
+function highlightGrid(){
+  const boxes = document.getElementsByClassName('box')
+  for(box of boxes){
+    box.style.cursor = "pointer"
+  }
+} function unhighlightGrid(){
+  const boxes = document.getElementsByClassName('box')
+  for(box of boxes){
+    box.style.cursor = "auto"
+  }
 }
 
 function loadGroupsToChart(chartGroups){
