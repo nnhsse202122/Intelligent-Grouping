@@ -37,9 +37,16 @@ const groupingsList = document.getElementById("groupings-list")
 const addPreference = document.getElementById("add-preference")
 const preferencesList = document.getElementById("preferences-list")
 const copyFormLink = document.getElementById("copy-form-link")
+const viewResponses = document.getElementById("view-responses")
 const openTutorial = document.getElementById("open-tutorial")
 const tutorialSection = document.getElementById("tutorial-sec")
 const seatingChartSection = document.getElementById("seating-chart-sec")
 
 const chartGrid = document.getElementById("chart-grid")
+
+const responsesSection = document.getElementById("responses-sec")
+
+const saveChartBtn = document.getElementById('save-chart')
+const resetChartBtn = document.getElementById('reset-chart')
+
 const chartSidebar = document.getElementById("chart-sidebar")
