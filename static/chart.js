@@ -22,13 +22,15 @@ function seatingChart(grouping){
     setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
 
     clearSidebar()
+    clearContents()
+
     unhighlightAll()
     groups = getGroups(grouping)
     populateSidebar(groups)
 
     if(chartGrid.children.length <= 0) {
-        createGrid(5,8); // Note that this only runs if the grid class in HTML has no child elements
-    }
+      createGrid(5,8); // Note that this only runs if the grid class in HTML has no child elements
+
     //all testing of grid groups below
     loadGroupsToChart(groups);
 }
@@ -179,6 +181,10 @@ function highlightGrid(){
   }
 }
 
+function clearContents(rows,cols)
+{
+  clearBox(row,col);
+}
 
 /***
  * Creates a grid of interactable boxes
@@ -382,8 +388,8 @@ function saveGroupsFromChart(){
     })
   }).then(res => res.json())
 }
+
 //REFERENCE COMPLETE GROUP ADD TO SEE HOW TO MAKE LOADING METHOD
 saveChartBtn.addEventListener("click", async () => {
-  
   await saveGroupsFromChart();//change  to laod method later
-})
+})}
