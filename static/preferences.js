@@ -272,3 +272,7 @@ async function formLink() {
 
 addPreference.addEventListener("click", showAddPreferenceModal)
 copyFormLink.addEventListener("click", formLink)
+viewResponses.addEventListener("click", async (e) =>{
+  e.stopPropagation()
+  showResponses()
+})

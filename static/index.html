@@ -166,6 +166,7 @@
           <div id="preferences-list"></div>
           <button id="add-preference" class="button">Add Question</button>
           <button id="copy-form-link" class="button">Copy Form Link</button>
+          <button id="view-responses" class="button">View Responses</button>
         </div>
         
         
@@ -221,9 +222,18 @@
         </div>
        <div id="chart-sidebar">
           <div class="buttons">
-              <i class="fas fa-trash"></i>
-            <i class="fas fa-save"></i>
+              <i class="fas fa-trash" id='reset-chart'></i>
+            <i class="fas fa-save" id='save-chart'></i>
           </div>
+        </div>
+      </div>
+      <div id="responses-sec" class="section">
+        <select id="student-selector" class="selector" size=18>
+        </select>
+        <div class="panel" id="response-panel">
+          <ul id="given-responses">
+            <h1>Click the name of a student on the list to see their response.</h1>
+          </ul>
         </div>
       </div>
     </div>
@@ -242,5 +252,6 @@
   <script src="/script.js"></script>
   <script src="/genetesting.js"></script>
   <script src="/chart.js"></script>
+  <script src="/responses.js"></script>
   <script> </script>
 </body>

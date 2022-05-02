@@ -84,7 +84,7 @@ function saveEditedGrouping(grouping, oldId, id) {
     },
     body: JSON.stringify({
       id: id,
-      oldId: id,
+      oldId: oldId,
       grouping: grouping
     })
   }).then(res => res.json())
@@ -142,7 +142,7 @@ function editGrouping(grouping) {
     groupNameInput.value = grouping.name
     initialName = grouping.name
     switchSection(editGroupSection)
-    setState(6, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
+    setState(6, {id: state.info.id, groupingId: grouping.id})
   } else {
     statusTitle.innerText = "Create Grouping"
     groupNameInput.value = ""
@@ -353,7 +353,7 @@ function setGroups(groups) {
   clearDiv(groupScatter)
   for (let i = 0; i < groups.length; i++) {
     const groupContainer = addGroup()
-    for (const student of groups[i]) {
+    for (const student of groups[i].ids) {
       groupContainer.children[2].appendChild(Array.from(ungroupedStudentsListDiv.children).find(e => e.id == student))
     }
   }
@@ -369,11 +369,20 @@ function normalizeGroupTitles() {
 }
 
 function constructGroupingFromUI() {
+  const groupObjs = []
+  const excludedObjs = []
+  for(const idList of Array.from(groupScatter.children).filter(e => e.id != "add-group").map(e => Array.from(e.children[2].children).map(s => s.id))){
+    groupObjs.push({ids:idList, row:-1, col:-1})
+  }
+  for(const idList of Array.from(excludedStudentsListDiv.children).map(e => e.id)){
+    excludedObjs.push({ids:idList, row:-1, col:-1})
+  }
+
   return {
     id: md5(groupNameInput.value),
     name: groupNameInput.value,
-    groups: Array.from(groupScatter.children).filter(e => e.id != "add-group").map(e => Array.from(e.children[2].children).map(s => s.id)),
-    excluded: Array.from(excludedStudentsListDiv.children).map(e => e.id)
+    groups: groupObjs,
+    excluded: excludedObjs
   }
 }
 
@@ -448,7 +457,8 @@ function showActionsModal(grouping,groupingContainer){
     })
     let csvText = "Pre-assign Room Name,Email Address\n"
     for (let i = 0; i < grouping.groups.length; i++) {
-      for (const stu of grouping.groups[i]) {
+      console.log(grouping.groups)
+      for (const stu of grouping.groups[i].ids) {
         csvText += `group${i+1},${classes[state.info.id].obj.students.find(s => s.id == stu).email}\n`
       }
     }
