@@ -76,6 +76,10 @@ function getGroupingInfo(grouping) {
 
 
 function saveEditedGrouping(grouping, oldId, id) {
+  console.log("geg")
+  console.log(grouping)
+  console.log(oldId)
+  console.log(id)
   return fetch("/editGrouping", {
     method: "POST",
     headers: {
