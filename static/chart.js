@@ -21,7 +21,7 @@ function seatingChart(grouping){
     unhighlightSidebarAndGrid()
     switchSection(seatingChartSection)
     setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
-    const groups = getGroups(grouping)
+    groups = getGroups(grouping)
     groupNumber = 1
     clearSidebar()
     populateSidebar(groups)
