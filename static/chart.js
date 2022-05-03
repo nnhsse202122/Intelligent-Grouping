@@ -1,6 +1,11 @@
+
+
+let groups = null;
+
 let selectedGroup = null
 let selectedChild = null
 let selectedB = null
+
 
 //expand and hide menu
 document.getElementById('chart-button').addEventListener('click', function(){
@@ -8,29 +13,35 @@ document.getElementById('chart-button').addEventListener('click', function(){
     chartSidebar.classList.toggle('active')
 })
 
+
 //all the code for the seating chart of groups 
 function seatingChart(grouping){
     statusTitle.innerText = "Seating Chart"
+    clearSidebar()
+    unhighlightSidebarAndGrid()
     switchSection(seatingChartSection)
     setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
+    groups = getGroups(grouping)
+    groupNumber = 1
     clearSidebar()
-    unhighlightAll()
-    const groups = getGroups(grouping)
     populateSidebar(groups)
+
     if(chartGrid.children.length <= 0) {
         createGrid(5,8); // Note that this only runs if the grid class in HTML has no child elements
     }
     //all testing of grid groups below
+    loadGroupsToChart(groups);
 }
+
 
 function clearSidebar(){
   const groupDivs = document.getElementsByClassName('chart-sidebar-group-div')
-  console.log(groupDivs) //TODO: FIX BUG
-  for(groupDiv of groupDivs){
-    groupDiv.remove()
-    console.log(groupDiv)
+  const length = groupDivs.length
+  for(let i = 0; i < length; i++){
+    groupDivs[0].remove()
   }
 }
+
 
 //move groups back to sidebar
 chartSidebar.addEventListener("click", function() {
@@ -40,65 +51,63 @@ chartSidebar.addEventListener("click", function() {
     selectedGroup = null
     selectedChild.remove()
     selectedChild = null
-    unhighlightAll()
+    unhighlightSidebarAndGrid()
   }
 });
 
 //returns a list of groups filled with student objects
 function getGroups(grouping){
     //making deep copy of groups for names
-    const nameGroups = [];
+    const newGroups = [];
     for(let i = 0; i < grouping.groups.length; i++){
-        const list = [...grouping.groups[i]];
-        list.unshift(i+1);
-        nameGroups.push(list);
+        const groupObj = grouping.groups[i];
+        const group = {ids:[...groupObj.ids], row:groupObj.row, col:groupObj.col};
+        newGroups.push(group);
     }
-    
     //changing from ids to names
     for(const student of classes[state.info.id].obj.students){
-        for(const group of nameGroups){
+        for(const group of newGroups){
             
-            for(let i = 0; i < group.length; i++){
+            for(let i = 0; i < group.ids.length; i++){
                 //console.log(`STU: ${student.id} vs GROUP: ${group[i]}`)
-                if(student.id == group[i]){
-                    group[i] = student; //changes it to a student OBJECT (not string)
+                if(student.id == group.ids[i]){
+                    group.ids[i] = student; //changes it to a student OBJECT (not string)
                 }
             }
             
         }
     }
     
-    return nameGroups;
+    return newGroups;
 }
 
-function populateSidebar(groups, groupNum = 1){
+
+function populateSidebar(sidebarGroups, groupNum = 1){
     const seatingChartSidebar = chartSidebar
     const MAX_STUDENTS_DISPLAYED = 3 //how many student names are shown before it is cut off by ellipse (...)
-    for(const group of groups){
+    for(const group of sidebarGroups){
+
         const groupDiv = document.createElement('div')
         groupDiv.classList.add("chart-sidebar-group-div")
-        groupDiv.id = `group-${groupNum}`
+        groupDiv.id = `group-${groupNumber}`
 
         const groupName = document.createElement("h1")
         groupName.classList.add("chart-sidebar-header")
-        groupName.innerText = `Group ${groupNum}`
+        groupName.innerText = `Group ${groupNumber}`
         groupDiv.appendChild(groupName)
 
         const studentCount = document.createElement('h2')
         studentCount.classList.add('chart-student-count')
         let plural = ""
-        if(group.length-1 > 1){
+        if(group.ids.length-1 > 1){
             plural = "s"
         }
-        studentCount.innerText = `${group.length} Student${plural}`
+        studentCount.innerText = `${group.ids.length} Student${plural}`
         groupDiv.appendChild(studentCount)
 
         let displayed = 0
         let isShortened = false;
-        for(const student of group){
-            if(student == group[0]){
-              continue; //skipping the group number
-            }
+        for(const student of group.ids){
             if(displayed >= MAX_STUDENTS_DISPLAYED){
                 isShortened = true;
                 break;
@@ -117,6 +126,7 @@ function populateSidebar(groups, groupNum = 1){
         }
         groupDiv.appendChild(ellipseEnd)
         groupDiv.addEventListener("click", function() {
+
           if(selectedGroup == group){
             selectedGroup = null
             selectedChild = null
@@ -132,40 +142,8 @@ function populateSidebar(groups, groupNum = 1){
           }
         });
         seatingChartSidebar.appendChild(groupDiv)
-        groupNum++
+        groupNumber+= 1
     }
-}
-
-//todo: fix confusing function names xd
-function unhighlightPrevious(){
-  if(selectedChild){
-    selectedChild.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--dark')
-    unhighlightAll()
-  }
-}
-
-function unhighlightAll(){
-  unhighlightSidebar()
-  unhighlightGrid()
-}
-
-function highlightSidebar(){
-  chartSidebar.style.cursor = "pointer"
-  chartSidebar.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--accent')
-} function unhighlightSidebar(){
-  chartSidebar.style.cursor = "auto"
-  chartSidebar.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--dark')
-}
-function highlightGrid(){
-  const boxes = document.getElementsByClassName('box')
-  for(box of boxes){
-    box.style.cursor = "pointer"
-  }
-} function unhighlightGrid(){
-  const boxes = document.getElementsByClassName('box')
-  for(box of boxes){
-    box.style.cursor = "auto"
-  }
 }
 
 
@@ -191,6 +169,7 @@ function createGrid(rows,columns)
 
   Array.from(boxes, function(box) {
     box.addEventListener("click", function() {
+
       //console.log(`[${box.getAttribute('row')}][${box.getAttribute('col')}]`)
       const clickedB = getBox(box.getAttribute('row'),box.getAttribute('col'))
       const clickedChild = box.querySelector(".grid-group-container")
@@ -198,16 +177,29 @@ function createGrid(rows,columns)
         unhighlightPrevious()
         const clickedGroup = JSON.parse(box.getAttribute("grouping"))
         if (selectedGroup && selectedGroup[0] == clickedGroup[0]) { // (selectedGroup == group) wasnt working for some reason
-          unhighlightAll()
+          unhighlightSidebarAndGrid()
           selectedGroup = null
           selectedChild = null
-        } else if (selectedGroup){ //swap groups
-          console.log("were in")
+        } else if (selectedGroup && selectedB){ //swap groups
+          console.log("swap groups")
           selectedChild.remove()
           createGridGroup(clickedGroup,selectedB)
+          // changing db values
+          const name = clickedChild.children[0].innerText
+          const splitName = name.split(' ');
+          const firstName = splitName[0];
+          const lastInitial = splitName[1];
+          for(const group of groups){
+            if(splitName[0] == group.ids[0].first && group.ids[0].last[0]){
+              group.row = -1
+              group.col = -1
+              break;
+            }
+          }
           clickedChild.remove()
+          //
           createGridGroup(selectedGroup,clickedB)
-          unhighlightAll()
+          unhighlightSidebarAndGrid()
           selectedGroup = null
           selectedChild = null
         } else {
@@ -220,7 +212,7 @@ function createGrid(rows,columns)
         selectedB = clickedB
         }
       } else if (selectedGroup) {
-        unhighlightAll()
+        unhighlightSidebarAndGrid()
         createGridGroup(selectedGroup,clickedB)
         selectedGroup = null
         selectedChild.remove()
@@ -248,6 +240,9 @@ function destroyGrid()
  * @returns the DOM div of the box in the seating chart grid
  */
 function getBox(row,col){
+  if(row < 0 || col < 0){
+    throw `box at row ${row}, column ${col} is out of bounds`
+  }
   let currentRow = 0;
   let currentCol = 0;
   let foundBox = null;
@@ -280,21 +275,115 @@ function createGridGroup(group, box){
   gridGroupContainer.classList.add('grid-group-container');
   const title = document.createElement('h1');
   title.classList.add("grid-group-title");
-  title.innerText = `Group ${group[0]}:`;
+  title.innerText = `${groupNumber}:`;
+  groupNumber++;
 
   const namesList = document.createElement('ul');
   namesList.classList.add('grid-names-list');
 
-  for(let i = 1; i < group.length;i++){
+  for(let i = 0; i < group.ids.length;i++){
     const studentName = document.createElement('li');
-    const student = group[i];
+    const student = group.ids[i];
     studentName.innerText = `${student.first} ${student.last[0]}`;
     studentName.classList.add('grid-name');
     namesList.appendChild(studentName);
   }
+
+  group.row =box.attributes.row.value;
+  group.col = box.attributes.col.value;
   gridGroupContainer.appendChild(title);
   gridGroupContainer.appendChild(namesList);
   box.appendChild(gridGroupContainer);
   box.setAttribute("grouping", JSON.stringify(group));
 }
 
+// unhighlight functions:
+
+function unhighlightPrevious(){
+  if(selectedChild){
+    selectedChild.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--dark')
+    unhighlightSidebarAndGrid()
+  }
+}
+
+function unhighlightSidebarAndGrid(){
+  unhighlightSidebar()
+  unhighlightGrid()
+}
+function highlightSidebar(){
+  chartSidebar.style.cursor = "pointer"
+  chartSidebar.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-dark')
+} function unhighlightSidebar(){
+  chartSidebar.style.cursor = "auto"
+  chartSidebar.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--dark')
+  selectedB = null
+}
+function highlightGrid(){
+  const boxes = document.getElementsByClassName('box')
+  for(box of boxes){
+    box.style.cursor = "pointer"
+  }
+} function unhighlightGrid(){
+  const boxes = document.getElementsByClassName('box')
+  for(box of boxes){
+    box.style.cursor = "auto"
+  }
+}
+
+function loadGroupsToChart(chartGroups){
+  const sidebarGroups = [];
+  
+  for(const group of chartGroups){
+    
+    if(group.row == -1 && group.col == -1){
+      sidebarGroups.push(group);
+    }
+    else{
+      createGridGroup(group, getBox(group.row,group.col));
+    }
+  }
+  
+  populateSidebar(sidebarGroups);
+  
+}
+
+function saveGroupsFromChart(){
+  const changedGroups = [];
+  for(const group of groups){
+    const studentIds = [];
+    for(const stuObj of group.ids){
+      studentIds.push(stuObj.id);
+    }
+    changedGroups.push({
+      ids:studentIds,
+      row:group.row,
+      col:group.col,
+    });
+  }
+  
+  const oldGroup = classes[state.info.id].obj.groupings.find(g => g.id == state.info.groupingId);
+  
+  const newGrouping = {
+    id:oldGroup.id,
+    name:oldGroup.name,
+    excluded:oldGroup.excluded,
+    groups:changedGroups,
+  };
+  return fetch("/editGrouping", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      token: auth2.currentUser.get().getAuthResponse().id_token
+    },
+    body: JSON.stringify({
+      id: state.info.id,
+      oldId: state.info.groupId,
+      grouping: newGrouping,
+    })
+  }).then(res => res.json())
+}
+//REFERENCE COMPLETE GROUP ADD TO SEE HOW TO MAKE LOADING METHOD
+saveChartBtn.addEventListener("click", async () => {
+  
+  await saveGroupsFromChart();//change  to laod method later
+})
