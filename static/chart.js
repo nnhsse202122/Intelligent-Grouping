@@ -24,7 +24,7 @@ function seatingChart(grouping){
     clearSidebar()
     unhighlightAll()
     groups = getGroups(grouping)
-    populateSidebar(groups)
+    
 
     if(chartGrid.children.length <= 0) {
         createGrid(5,8); // Note that this only runs if the grid class in HTML has no child elements
@@ -49,8 +49,20 @@ chartSidebar.addEventListener("click", function() {
   if (selectedChild && selectedChild.classList.contains("grid-group-container")) {
     groupNum = selectedGroup[0]
     populateSidebar([selectedGroup], groupNum)
+    const name = selectedChild.children[1].innerText
+    const topName = name.split('\n')[0]; //first name and last initial (ie. Ryan B)
+    
+    console.log(topName)
+    for(const group of groups){
+      if(topName == group.ids[0].first + ' ' + group.ids[0].last[0]){
+        group.row = -1
+        group.col = -1
+        console.log("MATCH FOUND")
+        break;
+      }
+    }
     selectedGroup = null
-    selectedChild.remove()
+    selectedChild.remove() 
     selectedChild = null
     unhighlightAll()
   }
@@ -91,11 +103,12 @@ function populateSidebar(sidebarGroups, groupNum = 1){
         const groupDiv = document.createElement('div')
         groupDiv.classList.add("chart-sidebar-group-div")
         groupDiv.id = `group-${groupNumber}`
-
+        /*
         const groupName = document.createElement("h1")
         groupName.classList.add("chart-sidebar-header")
         groupName.innerText = `Group ${groupNumber}`
         groupDiv.appendChild(groupName)
+        */
 
         const studentCount = document.createElement('h2')
         studentCount.classList.add('chart-student-count')
@@ -143,7 +156,7 @@ function populateSidebar(sidebarGroups, groupNum = 1){
           }
         });
         seatingChartSidebar.appendChild(groupDiv)
-        groupNumber+= 1
+        
     }
 }
 
@@ -218,14 +231,14 @@ function createGrid(rows,columns)
           selectedChild.remove()
           createGridGroup(clickedGroup,selectedB)
           // changing db values
-          const name = clickedChild.children[0].innerText
-          const splitName = name.split(' ');
-          const firstName = splitName[0];
-          const lastInitial = splitName[1];
+          const name = clickedChild.children[1].innerText
+          const topName = name.split('\n')[0]; //first name and last initial (ie. Ryan B
+          console.log(topName)
           for(const group of groups){
-            if(splitName[0] == group.ids[0].first && group.ids[0].last[0]){
+            if(topName == group.ids[0].first + ' ' + group.ids[0].last[0]){
               group.row = -1
               group.col = -1
+              console.log("MATCH FOUND")
               break;
             }
           }
@@ -321,7 +334,7 @@ function createGridGroup(group, box){
     studentName.classList.add('grid-name');
     namesList.appendChild(studentName);
   }
-
+ 
   group.row =box.attributes.row.value;
   group.col = box.attributes.col.value;
   gridGroupContainer.appendChild(title);
@@ -384,6 +397,5 @@ function saveGroupsFromChart(){
 }
 //REFERENCE COMPLETE GROUP ADD TO SEE HOW TO MAKE LOADING METHOD
 saveChartBtn.addEventListener("click", async () => {
-  
-  await saveGroupsFromChart();//change  to laod method later
+  await saveGroupsFromChart();
 })
