@@ -136,7 +136,8 @@ PORT=8080
 
 ```
 sudo npm install pm2 -g
-sudo pm2 --name intelligentgrouping start index.js
+sudo pm2 --name intelligentGrouping start "node index.js"
+sudo pm2 intelligentGrouping restart --watch
 ```
 
 18. Verify that the node server is running: `sudo pm2 list`
@@ -144,7 +145,7 @@ sudo pm2 --name intelligentgrouping start index.js
 20. Add a crontab entry to pull from GitHub every 15 minutes: `crontab -e`
 
 ```
-*/15 * * * * cd /home/ubuntu/Intelligent-Grouping-App && git pull
+*/15 * * * * cd /home/ubuntu/Intelligent-Grouping && git pull
 ```
 
 21. Restart the node server: `sudo pm2 restart index`
