@@ -2,7 +2,7 @@ let auth2
 let currentUser
 gapi.load('auth2', () => {
   auth2 = gapi.auth2.init({
-    client_id: '245771948528-c31us1t1k3l0tpmlcm2kq8jd33jmd6rj.apps.googleusercontent.com'
+    client_id: '780971210578-bfc5navls1cnbu97ola43ve3igb3rrri.apps.googleusercontent.com'
   })
 
   auth2.then(() => {

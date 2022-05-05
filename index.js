@@ -10,10 +10,11 @@ const fs = require("fs")
 const md5 = require("./md5.js")
 
 // Constants \\
-const DBName = "data"
 
 // Database \\
-mongoose.connect(`mongodb+srv://GroupingApp:${process.env.DBPASS}@groupingapp.iz1de.mongodb.net/${DBName}?retryWrites=true&w=majority`, {useNewUrlParser: true, useUnifiedTopology: true})
+const connectionStr = `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@${process.env.DBID}.mongodb.net/${process.env.DBNAME}?retryWrites=true&w=majority`;
+console.log(connectionStr);
+mongoose.connect(connectionStr, {useNewUrlParser: true, useUnifiedTopology: true})
 const db = mongoose.connection
 
 db.on('error', console.error.bind(console, 'Connection Error:'))
@@ -50,7 +51,11 @@ const userSchema = new mongoose.Schema({
           id: String,
           name: String,
           excluded: [],
-          groups: [[String]]
+          groups: [{
+            ids: [String],
+            row: Number,
+            col: Number,
+          }],
         }
       ]
     }
@@ -60,6 +65,9 @@ const userSchema = new mongoose.Schema({
 
 
 const User = mongoose.model("User", userSchema)
+
+
+
 
 // Express \\
 const sendFileOptions = {
@@ -143,6 +151,29 @@ app.post("/saveStudentPreferences", async (req, res) => {
   }
 })
 
+app.post("/saveChart", async (req,res) => {
+  const verification = await verifyUser(req.header("token"))
+  console.log("verification", verification.status)
+  if(verification.status){
+    const user = await User.findOne({id: req.body.userId, classes: {$elemMatch: {id: req.body.id}}}).exec()
+    if(user){
+      const groupingObj = user.classes.find(c => c.id == req.body.id).groupings.find(g => g.id == req.body.groupId);
+      const newGroups = req.body.newGroups;
+      console.log(groupingObj, '\n',newgroups);
+      if(groupingObj){
+        for(let i = 0; i < groupingObj.groups; i++){
+          groupingObj[i] = newGroups[i];
+        }
+        await user.save();
+      } else{
+        res.json({status: false, error:"No Grouping Found"})
+      }
+    } else{
+      res.json({status: false, error: "No Class Found"})
+    }
+  }
+})
+
 app.post("/addClasses", async (req, res) => {
   const verification = await verifyUser(req.header("token"))
   if (verification.status) {
@@ -150,6 +181,7 @@ app.post("/addClasses", async (req, res) => {
     for (const classObj of req.body.classObjs) {
       if (!await User.findOne({id: verification.user.sub, classes: {$elemMatch: {id: classObj.id}}}).exec()) {
         await User.updateOne({id: verification.user.sub}, {$push: {classes: classObj}})
+        console.log(classObj)
         newClasses.push(classObj)
       }
     }
@@ -219,12 +251,13 @@ app.post("/addGrouping", async (req, res) => {
 app.post("/editGrouping", async (req, res) => {
   const verification = await verifyUser(req.header("token"))
   if (verification.status) {
+    
     const user = await User.findOne({id: verification.user.sub}).exec()
     const groupings = user.classes.find(c => c.id == req.body.id).groupings
-
     groupings.splice(groupings.indexOf(groupings.find(g => g.id == req.body.oldId)), 1)
-
+    
     user.classes.find(c => c.id == req.body.id).groupings.push(req.body.grouping)
+    
     user.save()
     res.json({status: true})
   }
@@ -315,13 +348,17 @@ function makeGroupsByNumGroups(students, numGroups) {
   students = [...students]
   let groups = []
   for (let i = 0; i < numGroups; i++) {
-    groups.push([])
+    groups.push({
+      ids: [],
+      row: -1,
+      col: -1,
+    })
   }
 
   let counter = 0
   while (students.length) {
     const randomIndex = Math.floor(Math.random() * students.length)
-    groups[counter].push(students[randomIndex])
+    groups[counter].ids.push(students[randomIndex])
     students.splice(randomIndex, 1)
     counter = (counter+1) % groups.length
   }
@@ -337,14 +374,18 @@ function makeGroupsByNumStudents(students, numStudents) {
   }
   
   for (let i = 0; i < numGroups; i++) {
-    groups.push([])
+    groups.push({
+      ids: [],
+      row: -1,
+      col: -1,
+    })
   }
 
   let counter = 0
   
   while (students.length) {
     const randomIndex = Math.floor(Math.random() * students.length)
-    groups[counter].push(students[randomIndex])
+    groups[counter].ids.push(students[randomIndex])
     students.splice(randomIndex, 1)
     counter = (counter+1) % groups.length
   }
