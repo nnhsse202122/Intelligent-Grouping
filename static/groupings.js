@@ -14,8 +14,8 @@ function deleteGroupFromDB(id, groupingId) {
       token: auth2.currentUser.get().getAuthResponse().id_token
     },
     body: JSON.stringify({
-      id: id,
-      groupingId: groupingId
+      id,
+      groupingId
     })
   }).then(res => res.json())
 }
@@ -28,8 +28,8 @@ function saveNewGrouping(grouping, id) {
       token: auth2.currentUser.get().getAuthResponse().id_token
     },
     body: JSON.stringify({
-      id: id,
-      grouping: grouping
+      id,
+      grouping
     })
   }).then(res => res.json())
 }
@@ -76,6 +76,10 @@ function getGroupingInfo(grouping) {
 
 
 function saveEditedGrouping(grouping, oldId, id) {
+  console.log("geg")
+  console.log(grouping)
+  console.log(oldId)
+  console.log(id)
   return fetch("/editGrouping", {
     method: "POST",
     headers: {
@@ -83,9 +87,9 @@ function saveEditedGrouping(grouping, oldId, id) {
       token: auth2.currentUser.get().getAuthResponse().id_token
     },
     body: JSON.stringify({
-      id: id,
-      oldId: oldId,
-      grouping: grouping
+      id,
+      oldId,
+      grouping
     })
   }).then(res => res.json())
 }
@@ -167,7 +171,7 @@ function editGrouping(grouping) {
   }
 }
 
-function getRandomGroups(type, num, classId, excluded) {
+function getRandomGroups(type, num, id, excluded) {
   return fetch("/randomGroups", {
     method: "POST",
     headers: {
@@ -175,10 +179,10 @@ function getRandomGroups(type, num, classId, excluded) {
       token: auth2.currentUser.get().getAuthResponse().id_token
     },
     body: JSON.stringify({
-      id: classId,
-      type: type,
-      num: num,
-      excluded: excluded
+      id,
+      type,
+      num,
+      excluded
     })
   }).then(res => res.json())
 }
@@ -426,8 +430,7 @@ function showActionsModal(grouping,groupingContainer){
     const viewGroupsBtn = document.createElement('button')
     viewGroupsBtn.innerText = "Seating Chart"
 
-    const archiveGroupBtn = document.createElement('button')
-    archiveGroupBtn.innerText = "Archive Grouping"
+    
 
     const deleteBtn = document.createElement('button')
     deleteBtn.innerText = "Delete Grouping"
@@ -486,7 +489,7 @@ function showActionsModal(grouping,groupingContainer){
     btnDiv.appendChild(exportBtn)
     btnDiv.appendChild(duplicateBtn)
     btnDiv.appendChild(viewGroupsBtn)
-    btnDiv.appendChild(archiveGroupBtn)
+    
     btnDiv.appendChild(deleteBtn)
     
   })

@@ -116,9 +116,18 @@ server {
 15. Update the .env file:
 
 ```
-DBPASS=!!!
-CLIENT_SECRET=!!!
-CLIENT_ID=!!!
+DBUSER=???
+DBPASS=???
+DBNAME=data
+#unique connection details for connection string ie. <cluster name>.<random characters>
+DBID=???.????
+
+#google OAuth
+CLIENT_SECRET=???????
+CLIENT_ID=???.apps.googleusercontent.com
+#CLIENT_ID must be hardcoded in line 5 of auth.js as the client does not have access to the .env file
+#   this line MUST be changed to the client id as a string for the website to work
+
 PORT=8080
 ```
 
@@ -127,7 +136,8 @@ PORT=8080
 
 ```
 sudo npm install pm2 -g
-sudo pm2 --name intelligentgrouping start index.js
+sudo pm2 --name intelligentGrouping start "node index.js"
+sudo pm2 intelligentGrouping restart --watch
 ```
 
 18. Verify that the node server is running: `sudo pm2 list`
@@ -135,7 +145,50 @@ sudo pm2 --name intelligentgrouping start index.js
 20. Add a crontab entry to pull from GitHub every 15 minutes: `crontab -e`
 
 ```
-*/15 * * * * cd /home/ubuntu/Intelligent-Grouping-App && git pull
+*/15 * * * * cd /home/ubuntu/Intelligent-Grouping && git pull
 ```
 
 21. Restart the node server: `sudo pm2 restart index`
+
+## Detailed File Descriptions:
+
+### -HTML
+	* ./static/index.html: Main HTML for the website
+	* ./static/404/index.html: HTML for the 404 error page
+	* ./static/form/index.html: HTML for the student preference form
+### -JS
+	* index.js: The code for the server itself
+	* md5.js: Compression algorithm used elsewhere in code (multiple md5.js files are all the same)
+	
+	* ./static/auth.js: Google authorization for logging in to the website
+	* ./static/chart.js: Seating chart for groups
+	* ./static/classes.js: Code for the classes and students
+	* ./static/elements.js: Variables of important HTML elements for JS use
+	* ./static/gene.js: Genetic algorithm for grouping
+	* ./static/genetesting.js: Test methods for the genetic algorithm
+	* ./static/groupings.js: Code for the grouping objects, editing groupings, and creating groupings
+	* ./static/preferences.js: Used for getting and saving student preferences for genetic algorithm later
+	* ./static/script.js: Website state system
+	* ./static/tutorial.js: JS for the tutorial page
+	* ./static/ui.js: Methods to help with creating UI for the website
+	
+	* ./static/form/script.js: Code for entire student form fuctionality
+	* ./static/form/ui.js: UI methods for sutdent form
+### -CSS
+	* ./static/style.css: Main CSS for the website
+	* ./static/404/style.css: CSS for the 404 error page
+	* ./static/form/style.css: CSS for the student form
+## Dependencies:
+
+* [body-parser](https://www.npmjs.com/package/body-parser)
+	* Used for parsing request bodies
+* [dotenv](https://www.npmjs.com/package/dotenv)
+	* Used to contain environment variables for the server such as database information and port
+* [express](https://www.npmjs.com/package/express)
+	* Used to create the server itself
+* [google-auth-library](https://www.npmjs.com/package/google-auth-library)
+	* Used for signing in to the website using google
+* [mongodb](https://www.npmjs.com/package/mongodb)
+	* Used to access our mongodb database
+* [mongoose](https://www.npmjs.com/package/mongoose) - ([extra documentation](https://mongoosejs.com/))
+	* Used to create data for our mongodb database
