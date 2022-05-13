@@ -1,5 +1,3 @@
-
-
 let groups = null;
 
 let selectedGroup = null
@@ -17,22 +15,17 @@ document.getElementById('chart-button').addEventListener('click', function(){
 //all the code for the seating chart of groups 
 function seatingChart(grouping){
     statusTitle.innerText = "Seating Chart"
-    clearSidebar()
     unhighlightSidebarAndGrid()
     switchSection(seatingChartSection)
     setState(7, {id: state.info.id, groupingId: grouping.id, currentGroup:grouping})
     groups = getGroups(grouping)
 
-    clearSidebar()
+    destroyGrid();
+    createGrid(5,8);
 
-
-    if(chartGrid.children.length <= 0) {
-        createGrid(5,8); // Note that this only runs if the grid class in HTML has no child elements
-    }
-    //all testing of grid groups below
+    clearContents(false)
     loadGroupsToChart(groups);
 }
-
 
 function clearSidebar(){
   const groupDivs = document.getElementsByClassName('chart-sidebar-group-div')
@@ -159,6 +152,62 @@ function populateSidebar(sidebarGroups){
     }
 }
 
+//todo: fix confusing function names xd
+function unhighlightPrevious(){
+  if(selectedChild){
+    selectedChild.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--dark')
+    unhighlightSidebarAndGrid()
+  }
+}
+
+function highlightSidebar(){
+  chartSidebar.style.cursor = "pointer"
+  chartSidebar.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--accent')
+} function unhighlightSidebar(){
+  chartSidebar.style.cursor = "auto"
+  chartSidebar.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--dark')
+}
+function highlightGrid(){
+  const boxes = document.getElementsByClassName('box')
+  for(box of boxes){
+    box.style.cursor = "pointer"
+  }
+} function unhighlightGrid(){
+  const boxes = document.getElementsByClassName('box')
+  for(box of boxes){
+    box.style.cursor = "auto"
+  }
+}
+
+resetChartBtn.addEventListener("click", async () => {
+  clearContents(true)
+})
+
+function clearContents(isClick) {
+  let rows = document.querySelector('.grid').style.getPropertyValue('--rowSize')
+  let cols = document.querySelector('.grid').style.getPropertyValue('--colSize')
+  
+  for(let r = 0; r < rows; r++)
+  {
+    for(let c = 0; c < cols; c++)
+    {
+      clearBox(r,c);
+    }
+  }
+  if(isClick) {
+    for(const group of groups){
+      group.row = -1
+      group.col = -1
+    }
+  }
+
+    clearSidebar();
+    unhighlightSidebarAndGrid()
+    if(isClick){
+      populateSidebar(groups);
+    }
+  
+}
 
 /***
  * Creates a grid of interactable boxes
@@ -173,8 +222,8 @@ function createGrid(rows,columns)
     for(let col = 0; col < columns; col++) {
       let div = document.createElement("div");
       div.className = `box`;
-      div.setAttribute('row',row) // The divs created for each box have two attributes, their row position and col position
-      div.setAttribute('col',col) // Both positions run from 0 - 5
+      div.setAttribute('row',row)
+      div.setAttribute('col',col)
       chartGrid.appendChild(div);
     }
   }
@@ -183,13 +232,12 @@ function createGrid(rows,columns)
   Array.from(boxes, function(box) {
     box.addEventListener("click", function() {
 
-      //console.log(`[${box.getAttribute('row')}][${box.getAttribute('col')}]`)
       const clickedB = getBox(box.getAttribute('row'),box.getAttribute('col'))
       const clickedChild = box.querySelector(".grid-group-container")
       if (clickedChild) {
         unhighlightPrevious()
         const clickedGroup = JSON.parse(box.getAttribute("grouping"))
-        if (selectedGroup && selectedGroup[0] == clickedGroup[0]) { // (selectedGroup == group) wasnt working for some reason
+        if (selectedGroup && selectedGroup[0] == clickedGroup[0]) {
           unhighlightSidebarAndGrid()
           selectedGroup = null
           selectedChild = null
@@ -238,13 +286,13 @@ function createGrid(rows,columns)
 /**
  * Gets rid of all current boxes inside of the grid
  */
-function destroyGrid()
-{
-  while(chartGrid.firstChild)
-  {
-    chartGrid.removeChild(chartGrid.firstChild)
-  }
-}
+ function destroyGrid()
+ {
+   while(chartGrid.firstChild)
+   {
+     chartGrid.removeChild(chartGrid.firstChild)
+   }
+ }
 
 /**
  * 
@@ -297,8 +345,7 @@ function createGridGroup(group, box){
     studentName.classList.add('grid-name');
     namesList.appendChild(studentName);
   }
- 
-  group.row =box.attributes.row.value;
+  group.row = box.attributes.row.value;
   group.col = box.attributes.col.value;
   gridGroupContainer.appendChild(namesList);
   box.appendChild(gridGroupContainer);
@@ -390,6 +437,7 @@ function saveGroupsFromChart(){
     })
   }).then(res => res.json())
 }
+
 //REFERENCE COMPLETE GROUP ADD TO SEE HOW TO MAKE LOADING METHOD
 saveChartBtn.addEventListener("click", async () => {
   startLoad()
