@@ -234,6 +234,8 @@ function createGrid(rows,columns)
 
       const clickedB = getBox(box.getAttribute('row'),box.getAttribute('col'))
       const clickedChild = box.querySelector(".grid-group-container")
+      console.log("SELECTED",selectedGroup); //TEMP
+      console.log("Clickewd",clickedChild); //TEMP
       if (clickedChild) {
         unhighlightPrevious()
         const clickedGroup = JSON.parse(box.getAttribute("grouping"))
@@ -246,14 +248,27 @@ function createGrid(rows,columns)
           selectedChild.remove()
           createGridGroup(clickedGroup,selectedB)
           // changing db values
-          const name = clickedChild.children[0].innerText
-          const topName = name.split('\n')[0]; //first name and last initial (ie. Ryan B
+          
+          let clickedChildDB = null;
+          let selectedGroupDB = null;
+          //clickedDB changes
+          let name = clickedChild.children[0].innerText
+          let topName = name.split('\n')[0]; //first name and last initial (ie. Ryan B)
           console.log(topName)
           for(const group of groups){
             if(topName == group.ids[0].first + ' ' + group.ids[0].last[0]){
-              group.row = -1
-              group.col = -1
-              console.log("MATCH FOUND")
+              clickedChildDB = group;
+              break;
+            }
+          }
+          //selectedDB changes
+          console.log("SELECTEDGROUP", selectedGroup);
+          name = clickedChild.children[0].innerText
+          topName = name.split('\n')[0]; //first name and last initial (ie. Ryan B)
+          console.log(topName)
+          for(const group of groups){
+            if(topName == group.ids[0].first + ' ' + group.ids[0].last[0]){
+              clickedGroupDB = group;
               break;
             }
           }
@@ -274,7 +289,22 @@ function createGrid(rows,columns)
         }
       } else if (selectedGroup) {
         unhighlightSidebarAndGrid()
-        createGridGroup(selectedGroup,clickedB)
+        let dbGroup=null;
+        for(const group of groups){
+          console.log(group, "vs", selectedGroup)
+          if(group.row == selectedGroup.row && group.col == selectedGroup.col){
+            dbGroup = group;
+            break;
+          }
+        }
+        createGridGroup(selectedGroup,clickedB) //INVESTIAGE THIS FOR GROUP ROW COL CHANGE WOKRING HERE BUG
+        
+
+        dbGroup.row = clickedB.getAttribute('row');
+        dbGroup.col = clickedB.getAttribute('col');
+        console.log(clickedB.getAttribute('row'), clickedB.getAttribute('col'))
+        console.log(selectedGroup)
+        console.log(groups)
         selectedGroup = null
         selectedChild.remove()
         selectedChild = null
