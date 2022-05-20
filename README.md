@@ -8,8 +8,9 @@ The Intelligent Grouping web application is a website designed to provide teache
 * Manually create class rosters through an input system.
 * Generate random groupings of a specified number of groups or group size.
 * Exclude users from a group in case of absence or other purposes (like TAs)
-* Input user preferences through automatically generated forms
-* Easy-to-find utorial in the top right corner of all screens, accessible by a single click
+* Input user preferences through automatically generated forms for viewing and group creation
+* Easy-to-find tutorial in the top right corner of all screens, accessible by a single click
+* Organize groups on a grid for seating charts
 ## Instructions:
 * After the website finishes loading, simply press the "Sign in with Google" button and sign in using whatever email you wish, keeping in mind that that email is your account for this website.
   * Currently only naperville203.org organization emails are permitted
