@@ -45,10 +45,21 @@ The Intelligent Grouping web application is a website designed to provide teache
   * Enter your student ID into the Student ID field on the form.
   * Use the dropdown menus to rank other students and topics in the order in which you would rather not or would rather have as a part of your group.
   * Submit the form.
+* Instructions for viewing student responses
+  * On the right section of the view class screen, the view responses button can be found below the student survey information. 
+  * Clicking the button opens up the student responses panel, where a student can be selected from a list on the left and their responses will be shown on the right.
+  * Students who have not yet responded will be shown in the list on the left, but when clicked will show that there has been no response yet.
+    * It is important to note that a refresh is required to fetch the responses from the server, so until you refresh the page there will be no new responses.
 * Instructions for those who wish to use their newly generated preferences.
   * Follow the same steps as the steps for random grouping until you get to the "Choose an Arrangement" prompt.
   * Instead of selecting "random groupings" select "preferences" and fill out the information shown, i.e. either the amount of desired groups or the number of people in each group.
   * The groups will be automatically generated just like in random generation, after clicking "submit."
+* Instructions for the group seating chart.
+  * Press the sliders button on the side of a grouping in the view class screen
+  * Select "Seating Chart"
+  * The arrow button in the top right opens and closes the sidebar containing all groups not on the seating chart currently
+  * In the sidebar, the trash can button clears all groups from the seating chart (but does not save the clear)
+  * The floppy disk icon is the save button, and a loading bar at the top of the screen shows the progress of the save.
 ## Internal Configuration (gene.js):
 * In the aformentioned file, there are options provided to allow for adjustment of the genetic algorithm for tuning purposes.
   * Quarter Size: 
@@ -68,6 +79,7 @@ The Intelligent Grouping web application is a website designed to provide teache
 ## Known Issues
 * Genetic Algorithm is not fine-tuned yet, so it may not be perfect or accurate enough to satisfy everything, but it does at least work slightly better than randomization at this point.
 * "Topic" is an option in preferences but does not exist in the actual application yet.
+* Swapping groups on the seating chart is not functional, and the code outlined for saving the swap when it does happen is untested and likely does not work.
 ## Remaining User Stories
 * As a teacher, I want to be able to save student groups so that I can see a history of who everyone has been with and regroup based on past grouping activities arrangements so that they can interact with different members of the class
 * I want to be able to collect not only student preferences but also preferred roles within each group
@@ -150,34 +162,35 @@ sudo pm2 intelligentGrouping restart --watch
 
 21. Restart the node server: `sudo pm2 restart index`
 
-## Detailed File Descriptions:
+## File Descriptions:
 
 ### -HTML
-	* ./static/index.html: Main HTML for the website
-	* ./static/404/index.html: HTML for the 404 error page
-	* ./static/form/index.html: HTML for the student preference form
+* ./static/index.html: Main HTML for the website
+* ./static/404/index.html: HTML for the 404 error page
+* ./static/form/index.html: HTML for the student preference form
 ### -JS
-	* index.js: The code for the server itself
-	* md5.js: Compression algorithm used elsewhere in code (multiple md5.js files are all the same)
+* index.js: The code for the server itself
+* md5.js: Compression algorithm used elsewhere in code (multiple md5.js files are all the same)	
+
+* ./static/auth.js: Google authorization for logging in to the website
+* ./static/chart.js: Seating chart for groups
+* ./static/classes.js: Code for the classes and students
+* ./static/elements.js: Variables of important HTML elements for JS use
+* ./static/gene.js: Genetic algorithm for grouping
+* ./static/genetesting.js: Test methods for the genetic algorithm
+* ./static/groupings.js: Code for the grouping objects, editing groupings, and creating groupings
+* ./static/preferences.js: Used for getting and saving student preferences for genetic algorithm later
+* ./static/responses.js: All the code for the view student responses section
+* ./static/script.js: Website state system
+* ./static/tutorial.js: JS for the tutorial page
+* ./static/ui.js: Methods to help with creating UI for the website
 	
-	* ./static/auth.js: Google authorization for logging in to the website
-	* ./static/chart.js: Seating chart for groups
-	* ./static/classes.js: Code for the classes and students
-	* ./static/elements.js: Variables of important HTML elements for JS use
-	* ./static/gene.js: Genetic algorithm for grouping
-	* ./static/genetesting.js: Test methods for the genetic algorithm
-	* ./static/groupings.js: Code for the grouping objects, editing groupings, and creating groupings
-	* ./static/preferences.js: Used for getting and saving student preferences for genetic algorithm later
-	* ./static/script.js: Website state system
-	* ./static/tutorial.js: JS for the tutorial page
-	* ./static/ui.js: Methods to help with creating UI for the website
-	
-	* ./static/form/script.js: Code for entire student form fuctionality
-	* ./static/form/ui.js: UI methods for sutdent form
+* ./static/form/script.js: Code for entire student form fuctionality
+* ./static/form/ui.js: UI methods for sutdent form
 ### -CSS
-	* ./static/style.css: Main CSS for the website
-	* ./static/404/style.css: CSS for the 404 error page
-	* ./static/form/style.css: CSS for the student form
+* ./static/style.css: Main CSS for the website
+* ./static/404/style.css: CSS for the 404 error page
+* ./static/form/style.css: CSS for the student form
 ## Dependencies:
 
 * [body-parser](https://www.npmjs.com/package/body-parser)
