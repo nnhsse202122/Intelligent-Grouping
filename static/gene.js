@@ -123,7 +123,7 @@ function startGenetic(students, preferences, groupSizer, amountOrSize)
   }
 
   //maps the 2d array within the best generation to be a 2d array of student ids and returns the result
-  return {ids:bestGeneration[0].g.map(group => group.map(student => student.id)), row:-1, col:-1}
+  return bestGeneration[0].g.ids.map((group) => ({ids: group.map(student => student.id), row:-1, col:-1}))
 }
 
 /*
@@ -190,7 +190,7 @@ function score(grouping, preferences)
   }
   
   //loop through all students in array
-  for(let group of grouping) {for(let student of group.ids) 
+  for(let group of grouping.ids) {for(let student of group) 
   {
     //check whether a given preference is going to be checked or not for this student
     let checkLike = [] //array of length student.preferences.studentLike.length that tells the program whether to check a given studentLike preference or not based on value and position
@@ -201,7 +201,7 @@ function score(grouping, preferences)
     for(let sd of student.preferences.studentDislike) checkDislike.push((preferences.map(pref => pref.id)).includes(sd.id))
 
     //loop through all other students within the group other than the student currently being analyzed
-    for(let studentCheck of group.ids) { if(studentCheck.id != student.id) 
+    for(let studentCheck of group) { if(studentCheck.id != student.id) 
     {
       //because if it isn't in the like list it is either not in either or just in the dislike list, if it is found in the like list the dislike list will not be checked.
       let found = false
@@ -295,7 +295,7 @@ returns: a 2 dimensional array containing all values from linearized, with subar
 function reInflate(linearized, groupingData)
 {
   //declare output
-  let output = []
+  let output = {col: -1, row: -1, ids: []}
 
   //loop through each group
   let index = 0 //the current group number
@@ -304,9 +304,9 @@ function reInflate(linearized, groupingData)
     //get the subarray from the linearized array by grabbing all values between the starting and ending index given by the current groupingData object
     let seg = getSegment(linearized, gd.startingIndex, gd.endingIndex)
     //declares subarray
-    output[index] = []
+    output.ids[index] = []
     //inserts all value from the computed subarray segment into the current subarray
-    for(let stu of seg) {output[index].push(stu)}
+    for(let stu of seg) {output.ids[index].push(stu)}
     //increments current group number
     index++
   }
@@ -328,10 +328,10 @@ function splice(parent1, parent2, cpoint)
   let child = []
 
   //linearize parents
-  let lp1 = linearize(parent1)
+  let lp1 = linearize(parent1.ids)
   let gd = lp1.d
   lp1 = lp1.a
-  let lp2 = linearize(parent2).a
+  let lp2 = linearize(parent2.ids).a
   
   //get segment from parent 1
   let seg1 = getSegment(lp1, 0, cpoint - 1)
