@@ -123,7 +123,7 @@ function startGenetic(students, preferences, groupSizer, amountOrSize)
   }
 
   //maps the 2d array within the best generation to be a 2d array of student ids and returns the result
-  return {ids:bestGeneration[0].g.map(group => group.map(student => student.id)), row:-1, col:-1}
+  return bestGeneration[0].g.map((group) => ({ids: group.map(student => student.id), row:-1, col:-1}))
 }
 
 /*
@@ -159,7 +159,7 @@ function randomize(students, groupSizer, amountOrSize)
   }
 
   //return the new 2d array
-  return {ids:output, row:-1, col:-1}
+  return output
 }
 /*
 scores a member of a genetic generation
@@ -190,7 +190,7 @@ function score(grouping, preferences)
   }
   
   //loop through all students in array
-  for(let group of grouping) {for(let student of group.ids) 
+  for(let group of grouping) {for(let student of group) 
   {
     //check whether a given preference is going to be checked or not for this student
     let checkLike = [] //array of length student.preferences.studentLike.length that tells the program whether to check a given studentLike preference or not based on value and position
@@ -201,7 +201,7 @@ function score(grouping, preferences)
     for(let sd of student.preferences.studentDislike) checkDislike.push((preferences.map(pref => pref.id)).includes(sd.id))
 
     //loop through all other students within the group other than the student currently being analyzed
-    for(let studentCheck of group.ids) { if(studentCheck.id != student.id) 
+    for(let studentCheck of group) { if(studentCheck.id != student.id) 
     {
       //because if it isn't in the like list it is either not in either or just in the dislike list, if it is found in the like list the dislike list will not be checked.
       let found = false
